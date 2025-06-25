@@ -1,0 +1,37 @@
+
+body {
+  --riv-card-title-font-size: 1.6em;
+  --riv-card-title-font-weight: 200;
+  --riv-card-subtitle-font-size: 1.3em;
+  --riv-card-subtitle-font-weight: 200;
+  --riv-card-description-font-size: 1em;
+  --riv-card-description-font-weight: 200;
+
+  --riv-card-bg: #242425;
+  --riv-card-padding: 1rem;
+}
+
+body.riv-dark {
+
+}
+
+.riv-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ROW */
+.riv-row {
+  display: flex;
+  flex-direction: row;
+  flex: 0 0 auto;
+}
+.riv-row.center {
+  align-items: center;
+}
+.riv-row.grow {
+  flex-grow: 1;
+}
+.riv-row.shrink {
+  flex-shrink: 1;
+}

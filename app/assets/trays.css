@@ -1,0 +1,17 @@
+/* styles for RivTray */
+
+body {
+  --riv-tray-width: 40em;
+  --riv-tray-outline: #d4d5d6;
+  --riv-tray-max-width: 40em;
+
+  /* sizes */
+  --riv-tray-sm-height: 2em;
+  --riv-tray-md-height: 4em;
+  --riv-tray-lg-height: 8em;
+  --riv-tray-xl-height: 12em;
+}
+
+body.riv-dark {
+  --riv-tray-outline: #505152;
+}

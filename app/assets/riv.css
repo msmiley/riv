@@ -1,0 +1,262 @@
+@import './colors.css';
+@import './controls.css';
+@import './containers.css';
+@import './layout.css';
+@import './sidebar.css';
+@import './text.css';
+@import './trays.css';
+@import './widgets.css';
+
+/* GLOBAL STYLE VARIABLES */
+body {
+  --riv-body-bg: #eee;
+  --riv-app-bg:#eee;
+
+  /* global dimensions */
+  --riv-base-font-size: 14px;
+  --riv-selection-border-radius: 8px;
+  /* z-index used as base for modal/tooltip/dropdown */
+  /* this is needed mainly to allow the sticky table header to work correctly */
+  --riv-popup-z-index: 100;
+
+  --riv-field-bg: #d1d1d1;
+
+  /* toolbar styling */
+  --riv-toolbar-gap: 0.5em;
+
+  /* grid styling */
+  --riv-grid-dots: var(--riv-outline);
+
+
+  --riv-popup-bg: #e1e1e1;
+  --riv-popup-fg: #323334;
+
+  --riv-logo-bg: #0079FF;
+
+
+  --riv-modal-border-radius: 8px;
+
+  --riv-primary-transition-time: 0.4s;
+  --riv-secondary-transition-time: 0.2s;
+  --riv-toolbar-height: 40px;
+
+
+  /* semantic colors */
+  --riv-primary: var(--riv-cobalt);
+  --riv-secondary: #dadada;
+  --riv-success: var(--riv-green);
+  --riv-info: var(--riv-cyan);
+  --riv-warning: var(--riv-yellow);
+  --riv-danger: var(--riv-red);
+
+  --riv-muted-primary: #21529e;
+  --riv-muted-secondary: #696767;
+  --riv-muted-success: #3c8a5b;
+  --riv-muted-info: #558fa5;
+  --riv-muted-warning: #dabe5e;
+  --riv-muted-danger: #981521;
+
+  /* colors responsible for change to dark */
+  --riv-content-bg: #ededed;
+  --riv-content-bg-alt: #d8d8d8;
+
+
+  --riv-tooltip-opacity: 0.8;
+
+  --riv-selection: #aab9d0;
+  --riv-outline: #ccc;
+  --riv-outline-dark: #777;
+  --riv-active: #cfdaee;
+  --riv-hover: #c4c7c9;
+  --riv-hover-fg: var(--riv-text-color);
+}
+
+/* DARK UI OVERRIDES, EITHER AUTO, OR IF DARK IS FORCED THROUGH .riv-dark */
+body.riv-dark {
+  --riv-body-bg: #1b1c21;
+  --riv-app-bg: #1b1c21;
+
+  --riv-content-bg: #1b1c21;
+  --riv-content-bg-alt: #2e2f34;
+
+
+
+  --riv-field-bg: var(--riv-darker);
+
+  --riv-outline: #7d7d7d;
+  --riv-outline-dark: #444;
+  --riv-layout-border-color: #444546;
+  --riv-active: #37383a;
+  --riv-hover: #535456;
+  --riv-hover-fg: var(--riv-text-color);
+
+  --riv-popup-bg: #303436;
+  --riv-popup-fg: #ddd;
+
+  --riv-primary: var(--riv-cobalt);
+  --riv-secondary: var(--riv-gray);
+  --riv-success: var(--riv-green);
+  --riv-info: var(--riv-cyan);
+  --riv-warning: var(--riv-yellow);
+  --riv-danger: var(--riv-red);
+
+  --riv-muted-primary: #21529e;
+  --riv-muted-secondary: #696767;
+  --riv-muted-success: #106532;
+  --riv-muted-info: #106686;
+  --riv-muted-warning: #826500;
+  --riv-muted-danger: #981521;
+
+  --riv-selection: var(--riv-cobalt);
+}
+
+/* if device has a touch screen */
+@media (any-pointer: coarse) {
+  body {
+    --riv-base-font-size: 32px;
+    --riv-control-border-radius: 10px;
+    --riv-control-border-width: 2px;
+    --riv-control-sm-height: 42px;
+    --riv-control-md-height: 50px;
+    --riv-control-lg-height: 64px;
+    --riv-control-xl-height: 74px;
+    --riv-control-margin-v: 7px;
+    --riv-control-margin-h: 5px;
+  }
+}
+
+/* MISC STYLE SHORT HANDS FOR USE ANYWHERE */
+.riv-mla {
+  margin-left: auto;
+}
+.riv-mra {
+  margin-right: auto;
+}
+.riv-clickable {
+  cursor: pointer;
+}
+
+.riv-emboss {
+  box-shadow: inset 0px 1px 0px 0px rgba(255,255,255,0.1), 0px 1px 2px 0px rgba(0,0,0,0.2);
+}
+
+.riv-transparent-slash::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  left: 2px;
+  background-color: red;
+  clip-path: polygon(0 100%, calc(100% - 3px) 0, 100% 0, 3px 100%);
+}
+
+
+/* RIV PADDING */
+.riv-padding-xs {
+  padding: 0.1rem;
+}
+.riv-padding-sm {
+  padding: 0.2rem;
+}
+.riv-padding-md {
+  padding: 0.3rem;
+}
+.riv-padding-lg {
+  padding: 0.5rem;
+}
+.riv-padding-xl {
+  padding: 0.8rem;
+}
+
+/* ----------------------- */
+/* DIRECTIVE HELPER STYLES */
+/* ----------------------- */
+.riv-rebasis-handle:hover {
+  background-color: var(--riv-selection);
+}
+
+/* --- */
+/* APP */
+/* --- */
+.riv-app {
+  color: var(--riv-text-color);
+  background: var(--riv-app-bg);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* stretches app down to bottom edge of body */
+}
+
+/* global override of input font */
+/* global override of link colors */
+a {
+  color: var(--riv-primary);
+}
+a:visited {
+  color: var(--riv-muted-primary);
+}
+
+p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+
+.riv-fonts {
+  font-size: var(--riv-base-font-size);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.riv-debug-red {
+  border: 2px dotted red;
+}
+.riv-debug-green {
+  border: 2px dotted green;
+}
+.riv-debug-blue {
+  border: 2px dotted blue;
+}
+
+/* CSS RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+body {
+  background-color: var(--riv-body-bg);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 100vh;
+}
+
+/* class added to body to help with certain layouts */
+body.absolute {
+  bottom: 0;
+}

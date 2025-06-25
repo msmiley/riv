@@ -1,0 +1,22 @@
+body {
+  --riv-sidebar-bg: #e7e7e7;
+  --riv-sidebar-user-menu-bg: #aab9d0;
+
+  --riv-sidebar-normal-width: 180px;
+  --riv-sidebar-mini-width: 70px;
+  --riv-sidebar-item-height: 40px;
+  --riv-sidebar-item-active: var(--riv-active);
+  --riv-sidebar-margin: 0.5em 0 0.5em 0.5em;
+  --riv-sidebar-font-weight: 400;
+  --riv-sidebar-item-font-size: 16px;
+
+  --riv-sidebar-sub-item-font-size: 15px;
+  --riv-sidebar-subroutes-padding-left: 2em;
+  --riv-sidebar-subroutes-item-height: 30px;
+  --riv-sidebar-subroute-active-fg: var(--riv-active);
+}
+
+body.riv-dark {
+  --riv-sidebar-bg: linear-gradient(to right, #272727 25%, #232323 100%);
+  --riv-sidebar-user-menu-bg: #344257;
+}

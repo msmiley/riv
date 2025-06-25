@@ -1,0 +1,67 @@
+/* global layout styles, we do these global so they can be co-opted for any div */
+
+body {
+  /* layout styling */
+  --riv-layout-margin-v: 0.4em;
+  --riv-layout-margin-h: 0.4em;
+  --riv-layout-padding-v: 0.5em;
+  --riv-layout-padding-h: 0.5em;
+  --riv-layout-border-color: #ddd;
+  --riv-layout-border-width: 1px;
+  --riv-layout-border-radius: 5px;
+  --riv-layout-gap: 0.3em;
+}
+
+body.riv-dark {
+
+}
+
+/* LAYOUTS */
+.riv-sidebar-only-content {
+  flex-grow: 1;
+  padding: 0.5em;
+
+}
+
+
+/* FLEX BASIS HELPERS */
+/* IF A MARGIN IS NEEDED, SET --riv-basis-margin */
+.riv-basis-0 {
+  flex-basis: auto;
+}
+.riv-basis-1 {
+  flex-basis: calc(8.333333% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-2 {
+  flex-basis: calc(16.666666% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-3 {
+  flex-basis: calc(25% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-4 {
+  flex-basis: calc(33.333333% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-5 {
+  flex-basis: calc(41.666666% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-6 {
+  flex-basis: calc(50% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-7 {
+  flex-basis: calc(58.333333% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-8 {
+  flex-basis: calc(66.666666% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-9 {
+  flex-basis: calc(75% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-10 {
+  flex-basis: calc(83.333333% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-11 {
+  flex-basis: calc(91.666666% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}
+.riv-basis-12 {
+  flex-basis: calc(100% - calc(var(--riv-basis-margin, 0px) * 2.0));
+}

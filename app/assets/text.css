@@ -1,0 +1,111 @@
+
+body {
+  /* text colors */
+  --riv-text-color: #323334;
+  --riv-text-color-secondary: #696969;
+  --riv-text-color-muted: #777;
+  --riv-text-color-placeholder: #747474;
+  --riv-text-color-inverse: #eee; /* inverse text, changes with theme */
+  --riv-text-color-light: #fff; /* meant for always light text */
+  --riv-text-color-dark: #323334; /* meant for always dark text */
+}
+
+body.riv-dark {
+  --riv-text-color: #ddd;
+  --riv-text-color-secondary: #696969;
+  --riv-text-color-muted: #999;
+  --riv-text-color-placeholder: #747474;
+  --riv-text-color-inverse: #323334; /* inverse text, changes with theme */
+  --riv-text-color-light: #ddd; /* meant for always light text */
+  --riv-text-color-dark: #323334; /* meant for always dark text */
+}
+
+.riv-fonts {
+  color: var(--riv-text-color);
+  font-size: var(--riv-base-font-size);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: subpixel-antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* bring in custom riv font */
+@font-face {
+  font-family: 'Varela';
+  src: url('/app/assets/VarelaRound-Regular.ttf');
+  font-style: normal;
+}
+
+/* UTILITY CLASSES */
+.riv-text-center {
+  text-align: center;
+}
+.riv-text-monospace {
+  font-family: Monaco, monospace;
+}
+.riv-text-larger {
+  font-size: 1.15em;
+}
+.riv-text-smaller {
+  font-size: 0.85em;
+}
+.riv-text-bold {
+  font-weight: 500;
+}
+.riv-text-light {
+  font-weight: 300;
+}
+.riv-text-uppercase {
+  text-transform: uppercase;
+}
+.riv-text-lowercase {
+  text-transform: lowercase;
+}
+.riv-text-underline {
+  text-decoration: underline;
+}
+.riv-text-italic {
+  font-style: italic;
+}
+.riv-text-muted {
+  color: var(--riv-text-color-muted);
+}
+.riv-text-primary {
+  color: var(--riv-primary);
+}
+.riv-text-secondary {
+  color: var(--riv-secondary);
+}
+.riv-text-success {
+  color: var(--riv-success);
+}
+.riv-text-info {
+  color: var(--riv-info);
+}
+.riv-text-warning {
+  color: var(--riv-warning);
+}
+.riv-text-danger {
+  color: var(--riv-danger);
+}
+.riv-text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.riv-text-shadow {
+  text-shadow: 1px 1px 0px rgba(0,0,0,.1);
+}
+.riv-text-nowrap {
+  white-space: nowrap;
+}

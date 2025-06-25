@@ -1,0 +1,90 @@
+/* riv palette */
+body {
+  --riv-accent-1: #ff595e;
+  --riv-accent-2: #a9dbb8;
+  --riv-accent-3: #003049;
+  --riv-accent-4: #ffb800;
+  --riv-accent-5: #1b98e0;
+
+  /* named colors */
+  --riv-indigo: #682fa1;
+  --riv-purple: #551A8B;
+  --riv-plum: #601A3E;
+  --riv-lavender: #b481e0;
+
+  --riv-magenta: #d831a0;
+  --riv-pink: #f13c6e;
+  --riv-watermelon: #fe7f9c;
+  --riv-salmon: #f13c6e;
+
+  --riv-prussian: #3b4161;
+  --riv-navy: #004475;
+  --riv-royal: #1a2c88;
+  --riv-blue: #217ada;
+  --riv-cobalt: #2163C9;
+  --riv-cyan: #42b9cc;
+  --riv-teal: #87e6ca;
+
+  --riv-green: #4bbc79;
+  --riv-emerald: #229649;
+  --riv-yellow: #fff700;
+  --riv-gold: #fce228;
+
+  --riv-orange: #f47633;
+
+  --riv-brick: #8a270c;
+  --riv-red: #ea4958;
+  --riv-crimson: #ba110c;
+  --riv-scarlet: #ff2400;
+
+  --riv-white: #fff;
+  --riv-light: #f5f5f5;
+  --riv-light-med: #ececec;
+  --riv-gray: #c8c8c8;
+  --riv-gray-med: #b3b3b3;
+  --riv-gray-dark: #676a6f;
+  --riv-dark: #1b1c21;
+  --riv-darker: #131313;
+  --riv-black: #000;
+}
+
+body.riv-dark {
+
+
+  --riv-indigo: #441473;
+  --riv-purple: #8747c1;
+  --riv-plum: #7c1f4e;
+  --riv-lavender: #b481e0;
+
+  --riv-magenta: #bd2c70;
+  --riv-pink: #e04aad;
+  --riv-watermelon: #de5676;
+  --riv-salmon: #ff7965;
+
+  --riv-prussian: #1f2233;
+  --riv-navy: #002540;
+  --riv-royal: #101c5a;
+  --riv-blue: #27538a;
+  --riv-cobalt: #2163C9;
+  --riv-cyan: #1787b0;
+  --riv-teal: #136f6a;
+
+  --riv-green: #137139;
+  --riv-emerald: #229649;
+  --riv-yellow: #c1a529;
+  --riv-gold: #b38c05;
+
+  --riv-orange: #ed6b26;
+  --riv-brick: #8a270c;
+  --riv-red: #de1f31;
+  --riv-crimson: #ba110c;
+  --riv-scarlet: #dd0000;
+
+  --riv-light: #9e9999;
+  --riv-light-med: #878585;
+
+  --riv-gray: #6B6C6D;
+  --riv-gray-med: #424141;
+  --riv-gray-dark: #3a3a3a;
+
+}

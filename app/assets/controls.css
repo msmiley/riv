@@ -1,0 +1,24 @@
+body {
+  /* control styling */
+  --riv-control-bg: #d1d1d1;
+  --riv-control-border-color: #555;
+  --riv-control-border-width: 1px;
+  --riv-control-border-radius: 5px;
+  --riv-control-sm-height: 18px;
+  --riv-control-md-height: 24px;
+  --riv-control-lg-height: 30px;
+  --riv-control-xl-height: 36px;
+  --riv-control-margin-v: 0.2em;
+  --riv-control-margin-h: 0.2em;
+  --riv-control-padding-v: 0.2em;
+  --riv-control-padding-h: 0.3em;
+  --riv-control-active-brightness: 110%;
+  --riv-control-gap: 0.3em;
+
+}
+
+body.riv-dark {
+
+  --riv-control-bg: var(--riv-secondary);
+
+}

@@ -1,0 +1,13 @@
+/* WIDGET STYLES */
+body {
+  --riv-widget-bg: #e1e1e1;
+  --riv-widget-border: none;
+  --riv-widget-border-radius: 5px;
+  --riv-widget-padding: 0;
+  --riv-title-shadow: 0 0 1em white;
+}
+
+body.riv-dark {
+  --riv-widget-bg: #262728;
+  --riv-title-shadow: 0 0 1em black;
+}
