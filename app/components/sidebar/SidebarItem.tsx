@@ -29,9 +29,18 @@ export default function SidebarItem(props: SidebarItemProps) {
   }
 
   // render sidebar item differently based on whether it has children or not
-  if (props.item.children) {
+  if (props.item.category) {
     return (
-      <div className={cls([styles.sidebarItem, { bottom: props.item.sidebarBottom }])}>
+      <div className={styles.sidebarItemCategory}>
+        {props.item.title}
+      </div>
+    );
+  } else if (props.item.children) {
+    return (
+      <div className={cls([styles.sidebarItem, { bottom: props.item.sidebarBottom }])}
+           style={{
+             '--riv-sidebar-item-bg': props.item.color,
+           }}>
         <a className={styles.sidebarItemLink} onClick={handleClick}>
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>

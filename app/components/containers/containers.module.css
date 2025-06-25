@@ -12,7 +12,7 @@
 
 /* PROP OPTIONS */
 .rivCard:global(.border) {
-  border: 1px solid var(--riv-outline);
+  border: var(--riv-card-border);
 }
 
 /* CARD SLOTS */
@@ -22,7 +22,7 @@
   font-weight: var(--riv-card-title-font-weight);
   text-align: left;
   padding: 0;
-  margin-bottom: 5px;
+  margin-bottom: 0.5em;
   display: flex;
   align-items: center;
   cursor: default;
@@ -35,8 +35,8 @@
   font-size: var(--riv-card-subtitle-font-size);
   font-weight: var(--riv-card-subtitle-font-weight);
   text-align: left;
-  padding: 2px 0px;
-  margin-bottom: 5px;
+  padding: 0;
+  margin-bottom: 0.5em;
   display: flex;
   align-items: center;
   cursor: default;
@@ -46,7 +46,15 @@
   display: none;
 }
 .rivCardDescription {
-
+  font-size: var(--riv-card-description-font-size);
+  font-weight: var(--riv-card-description-font-weight);
+  text-align: left;
+  padding: 0;
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  gap: var(--riv-card-gap, 0.3em);
 }
 .rivCardDescription:empty {
   display: none;

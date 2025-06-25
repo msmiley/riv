@@ -8,7 +8,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Settings({
+export default function Component({
   loaderData,
   actionData,
   params,

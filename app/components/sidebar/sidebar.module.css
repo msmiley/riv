@@ -33,6 +33,7 @@
 .sidebarItem {
   position: relative;
   flex: none;
+  background-color: var(--riv-sidebar-item-bg);
 }
 
 /* for items with sidebarBottom: true, pushes item and all below to bottom of sidebar */
@@ -41,6 +42,13 @@
   margin-top: auto;
 }
 
+.sidebarItemCategory {
+  text-transform: uppercase;
+  padding: 1em 1em 0.5em;
+  color: var(--riv-text-color-muted);
+  pointer-events: none;
+  flex: none;
+}
 .sidebarItemLink {
   min-height: var(--riv-sidebar-item-height);
   display: flex;

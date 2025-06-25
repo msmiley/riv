@@ -6,17 +6,15 @@ import useSlot from '../../hooks/useSlot';
 import styles from './buttons.module.css';
 
 interface ButtonProps extends React.PropsWithChildren {
-  name: string;
   size: 'sm' | 'md' | 'lg';
   variant: 'regular' | 'corners' | 'outline';
-  color: string,
-  grow: boolean,
-  active: boolean,
+  color: string;
+  grow: boolean;
+  active: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button({
-  name,
   size = 'md',
   variant = 'regular',
   color = 'var(--riv-secondary)',
@@ -29,8 +27,16 @@ export default function Button({
   return (
     <div className={cls([styles.button, { grow }])}
          style={{ '--riv-button-color': parseColor(color) }}
+         role="button" aria-pressed="false"
          onClick={onClick}>
-      <div className={cls([styles.buttonInner, size, variant, { active }])}>
+      <div className={cls([styles.buttonInner,
+                           styles.buttonSize,
+                           styles.buttonPadding,
+                           size,
+                           variant,
+                           {
+                             active
+                           }])}>
         <div className={styles.buttonContent}>
           {useSlot(children, 'default')}
         </div>

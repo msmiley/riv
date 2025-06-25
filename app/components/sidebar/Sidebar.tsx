@@ -11,6 +11,7 @@ interface SidebarProps extends PropsWithChildren {
 }
 
 export default function Sidebar(props: SidebarProps) {
+  // mini sidebar state
   const [mini, setMini] = useState(true);
 
   return (

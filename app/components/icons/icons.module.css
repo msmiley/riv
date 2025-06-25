@@ -11,9 +11,9 @@
   width: 100%;
   height: 100%;
 }
-
+/* make svg use cascaded text color */
 .icon :global(path),
 .icon :global(rect) {
-  fill: var(--riv-text-color);
-  stroke: var(--riv-text-color) !important;
+  fill: currentColor;
+  stroke: currentColor !important;
 }

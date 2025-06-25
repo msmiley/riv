@@ -88,3 +88,11 @@ body.riv-dark {
   --riv-gray-dark: #3a3a3a;
 
 }
+
+.riv-color-chip {
+  width: 100%;
+  padding: 1em;
+  border-radius: var(--riv-selection-border-radius);
+  color: white;
+  text-shadow: 0 0 5px black;
+}

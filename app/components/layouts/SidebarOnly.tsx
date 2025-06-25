@@ -10,7 +10,7 @@ interface SidebarOnlyProps extends PropsWithChildren {
 
 export default function SidebarOnly(props: SidebarOnlyProps) {
   return (
-    <Row grow gap="0">
+    <Row grow gap="0" nowrap>
       {/* SIDEBAR (RECEIVES ALL SLOTS) */}
       <Sidebar routes={props.routes} children={props.children}/>
 

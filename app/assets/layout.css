@@ -10,6 +10,8 @@ body {
   --riv-layout-border-width: 1px;
   --riv-layout-border-radius: 5px;
   --riv-layout-gap: 0.3em;
+
+  --rim-layout-columns: 12; /* number of columns by default, reduced for small screens */
 }
 
 body.riv-dark {

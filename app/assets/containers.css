@@ -8,7 +8,8 @@ body {
   --riv-card-description-font-weight: 200;
 
   --riv-card-bg: #242425;
-  --riv-card-padding: 1rem;
+  --riv-card-padding: 1em;
+  --riv-card-border: 1px solid var(--riv-outline);
 }
 
 body.riv-dark {
@@ -25,6 +26,7 @@ body.riv-dark {
   display: flex;
   flex-direction: row;
   flex: 0 0 auto;
+  flex-wrap: wrap;
 }
 .riv-row.center {
   align-items: center;

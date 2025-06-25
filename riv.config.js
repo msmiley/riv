@@ -15,13 +15,32 @@ export default {
     // in app/routes.ts
     routes: [
       {
+        title: '<username>',
+        iconComponent: '',
+        color: 'var(--riv-sidebar-user-menu-bg)',
+        children: [
+          {
+            title: 'Profile',
+            path: '/profile',
+          },
+          {
+            title: 'Logout',
+            path: '/logout',
+          },
+        ],
+      },
+      {
         title: 'Buttons',
         path: '/buttons',
         icon: 'button',
       },
       {
+        title: 'Colors',
+        path: '/colors',
+        icon: 'colors',
+      },
+      {
         title: 'Containers',
-        path: '/containers',
         icon: 'container',
         children: [
           {
@@ -29,6 +48,15 @@ export default {
             path: '/containers/row',
           },
         ]
+      },
+      {
+        title: 'Server',
+        category: true,
+      },
+      {
+        title: 'Socket.io',
+        path: '/socketio',
+        icon: 'plug',
       },
       {
         title: 'Settings',

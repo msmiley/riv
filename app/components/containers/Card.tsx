@@ -4,15 +4,17 @@ import { cls } from '../../utils';
 import styles from './containers.module.css';
 
 interface CardProps extends PropsWithChildren {
-  border: boolean;
+  border: boolean;     // true for a border around card
+  cols: number;        // bootstrap-style column width (1-12)
 }
 
 export default function Card({
   border = false,
+  cols = 0,
   children,
 }: CardProps) {
   return (
-    <div className={cls([styles.rivCard, { border }])}>
+    <div className={cls([styles.rivCard, `riv-basis-${cols}`, { border }])}>
       <div className={styles.rivCardTitle}>
         {useSlot(children, 'title')}
       </div>

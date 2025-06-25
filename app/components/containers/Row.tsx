@@ -7,6 +7,7 @@ interface RowProps extends PropsWithChildren {
   grow: boolean;   // set flex grow
   shrink: boolean; // set flex shrink
   self: string;    // flex align-self setting
+  nowrap: boolean; // flex nowrap
 }
 
 export default function Row(props: RowProps) {
@@ -18,6 +19,7 @@ export default function Row(props: RowProps) {
       flexGrow: props.grow ? 1:0,
       flexShrink: props.shrink ? 1:0,
       alignSelf: props.self,
+      flexWrap: props.nowrap ? 'nowrap':'wrap',
     }}>
       {props.children}
     </div>

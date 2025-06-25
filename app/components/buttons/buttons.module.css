@@ -1,5 +1,7 @@
 
-
+/*--------------------------------------*/
+/* BUTTON */
+/*--------------------------------------*/
 .button {
   position: relative;
   display: flex;
@@ -44,7 +46,7 @@
   overflow: hidden;
   position: relative;
   transition: background-color 0.4s;
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: var(--riv-control-shadow);
 }
 /* RIPPLE EFFECT */
 .buttonInner:after {
@@ -77,26 +79,35 @@
   background-color: var(--riv-selection);
 }
 /* SIZING */
-.buttonInner:global(.sm) {
+.buttonSize:global(.sm) {
   height: var(--riv-control-sm-height);
-  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
   font-size: calc(var(--riv-control-sm-height) * 0.8);
 }
-.buttonInner:global(.md) {
+.buttonSize:global(.md) {
   height: var(--riv-control-md-height);
-  padding: 0 calc(var(--riv-control-sm-height) * 0.3);
   font-size: calc(var(--riv-control-md-height) * 0.6);
 }
-.buttonInner:global(.lg) {
+.buttonSize:global(.lg) {
   height: var(--riv-control-lg-height);
-  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
   font-size: calc(var(--riv-control-lg-height) * 0.6);
 }
-.buttonInner:global(.xl) {
+.buttonSize:global(.xl) {
   height: var(--riv-control-xl-height);
-  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
   font-size: calc(var(--riv-control-xl-height) * 0.6);
 }
+.buttonPadding:global(.sm) {
+  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
+}
+.buttonPadding:global(.md) {
+  padding: 0 calc(var(--riv-control-sm-height) * 0.3);
+}
+.buttonPadding:global(.lg) {
+  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
+}
+.buttonPadding:global(.xl) {
+  padding: 0 calc(var(--riv-control-sm-height) * 0.4);
+}
+
 
 /* VARIANTS */
 .buttonInner:global(.outline) {
@@ -111,7 +122,7 @@
   background-color: transparent;
 }
 .buttonInner:global(.link):hover {
-  filter: brightness(150%);
+  filter: var(--riv-control-hover-filter);
 }
 
 /* CONTENT */
@@ -123,4 +134,61 @@
   align-items: center;
   white-space: nowrap;
   gap: var(--riv-control-gap);
+}
+
+/*--------------------------------------*/
+/* TOGGLE */
+/*--------------------------------------*/
+.toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 1px;
+  flex-grow: 1;
+  gap: 0.5em;
+  margin: var(--riv-control-margin-v) var(--riv-control-margin-h);
+  cursor: pointer;
+}
+.toggleTitle {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  gap: var(--riv-control-gap);
+}
+.toggleInner {
+  flex-grow: 0; /* cancel grow as it will stretch the toggle */
+  padding: 0; /* clear padding */
+  aspect-ratio: 1.7;
+  border: var(--riv-control-border-width) solid var(--riv-control-border-color);
+  background-color: var(--riv-field-bg);
+  box-shadow: none;
+  border-radius: 999px;
+  display: flex;
+  box-shadow: var(--riv-control-shadow);
+}
+
+.toggleInner:global(.active) {
+  background-color: var(--riv-button-color);
+}
+
+.toggleDot {
+  transition: all 0.2s;
+  position: relative;
+  aspect-ratio: 1;
+}
+.toggleDot:after {
+  content: " ";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  bottom: 1px;
+  aspect-ratio: 1;
+  background-color: var(--riv-white);
+  border-radius: 50%;
+}
+.toggleInner:global(.active) .toggleDot {
+  transform: translateX(70%);
 }

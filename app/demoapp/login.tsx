@@ -8,12 +8,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Login({
-  loaderData,
-  actionData,
-  params,
-  matches,
-}) {
+export default function Component() {
   return (
     <div>
       loginnnn

@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
+    "@victr/geopattern": "^1.2.10",
     "axios": "^1.9.0",
     "isbot": "^5.1.27",
     "lodash-es": "^4.17.21",
