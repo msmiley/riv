@@ -75,6 +75,15 @@ export default function Component() {
               </Button>
             </Row>
           </Card>
+          <Card border>
+            <Slot name="subtitle">Icon</Slot>
+            <Slot name="description">For a circular button with just an icon</Slot>
+            <Row>
+              <Button variant="icon" onClick={toggleClickState}>
+                <Icon name="colors"/>
+              </Button>
+            </Row>
+          </Card>
         </Row>
       </Card>
       <Card>
@@ -146,9 +155,16 @@ export default function Component() {
               </Row>
               <Row center>
                 <InlineCode>color="#0cb424"</InlineCode>
-                <Pill size="lg" color="#0cb424" onClick={() => setClickState(!clickState)}>
+                <Pill size="lg" color="#0cb424">
                   <Slot name="title">title Slot</Slot>
-                  <Slot name="value">value Slot</Slot>
+                  <Slot name="value">
+                    value Slot
+                  </Slot>
+                  <Slot name="buttons">
+                    <Button variant="icon" onClick={() => setClickState(!clickState)}>
+                      <Icon name="colors"/>
+                    </Button>
+                  </Slot>
                 </Pill>
               </Row>
             </Column>

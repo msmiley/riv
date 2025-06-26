@@ -2,8 +2,8 @@
 // Vite Plugin to load riv-backend
 //
 //
-export default function({ demoMode }) {
-  console.log('riv> installing riv-vite-plugin');
+export default function({ configPath, demoMode }) {
+  console.log(`riv> installing riv-vite-plugin with config at ${configPath}`);
   return {
     name: 'riv-vite-plugin',
     // main entry point called by vite plugin API, it is provided with
@@ -11,12 +11,13 @@ export default function({ demoMode }) {
     configureServer: async (server) => {
       let serverLoc = demoMode ? './server/riv-server.js' : 'riv/riv-server.js';
       const { RivServer } = await import(serverLoc);
-      // start riv-server with options provided in vite plugin section
-      new RivServer({
-        server,
-        parentRoot: process.cwd(),
-        ...arguments[0], // add all plugin options
-      });
+      console.log('riv> configureServer', RivServer);
+      // // start riv-server with options provided in vite plugin section
+      // new RivServer({
+      //   server,
+      //   parentRoot: process.cwd(),
+      //   ...arguments[0], // add all plugin options
+      // });
     },
   };
 }

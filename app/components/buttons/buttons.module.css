@@ -125,6 +125,20 @@
 .buttonInner:global(.link):hover {
   filter: var(--riv-control-hover-filter);
 }
+.buttonInner:global(.icon) {
+  box-shadow: none;
+  border-radius: 50%;
+  padding: 0;
+  flex-grow: 0;
+  background-color: transparent;
+  border: none;
+  aspect-ratio: 1;
+}
+.buttonInner:global(.icon):hover {
+  filter: var(--riv-control-hover-filter);
+  background-color: var(--riv-button-color);
+}
+
 
 /* CONTENT */
 .buttonContent {
@@ -203,6 +217,10 @@
   display: flex;
   min-width: 0;
   margin: var(--riv-control-margin-v) var(--riv-control-margin-h);
+  cursor: default;
+}
+.pill:global(.clickable) {
+  cursor: pointer;
 }
 .pillInner {
   display: flex;
@@ -240,4 +258,7 @@
 }
 .pillValue:empty {
   display: none;
+}
+.pillButtons {
+  display: flex;
 }

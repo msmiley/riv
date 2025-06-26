@@ -3,12 +3,20 @@
   "version": "0.0.1",
   "description": "React Integrated App Framework",
   "author": "Mike Smiley <msmiley@alumni.rice.edu>",
-  "type": "module",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
+  },
+  "bin": {
+    "riv": "server/index.js"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./server/index.js",
+    "./riv-vite-plugin.js": "./server/riv-vite-plugin.js",
+    "./riv-server.js": "./server/riv-server.js"
   },
   "dependencies": {
     "@react-router/node": "^7.5.3",
@@ -17,10 +25,15 @@
     "axios": "^1.9.0",
     "d3": "^7.9.0",
     "isbot": "^5.1.27",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
     "lodash-es": "^4.17.21",
+    "marked": "^15.0.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.5.3",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "vite-plugin-svgr": "^4.3.0"
   },
   "devDependencies": {
@@ -33,5 +46,15 @@
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4"
-  }
+  },
+  "keyboards":[
+    "React",
+    "gui",
+    "ux",
+    "framework",
+    "dashboard",
+    "widgets",
+    "ui",
+    "riv"
+  ]
 }

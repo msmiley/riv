@@ -7,7 +7,7 @@ import styles from './buttons.module.css';
 
 interface ButtonProps extends React.PropsWithChildren {
   size: 'sm' | 'md' | 'lg';
-  variant: 'regular' | 'corners' | 'outline';
+  variant: 'regular' | 'corners' | 'outline' | 'icon';
   color: string;
   grow: boolean;
   active: boolean;

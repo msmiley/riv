@@ -27,7 +27,7 @@ export default function Pill({
 }: ButtonProps) {
 
   return (
-    <div className={cls([styles.pill, styles.buttonSize, size, { grow }])}
+    <div className={cls([styles.pill, styles.buttonSize, size, { grow, clickable: !!onClick }])}
          style={{
            '--riv-pill-color': parseColor(color),
            '--riv-pill-geopattern': getGeoPattern(geopattern),
@@ -39,6 +39,9 @@ export default function Pill({
         </div>
         <div className={styles.pillValue}>
           {useSlot(children, 'value')}
+        </div>
+        <div className={styles.pillButtons}>
+          {useSlot(children, 'buttons')}
         </div>
       </div>
     </div>
