@@ -25,10 +25,17 @@ export default function Pill({
 }: ButtonProps) {
 
   return (
-    <div className={cls([styles.pill, { grow }])}
+    <div className={cls([styles.pill, styles.buttonSize, size, { grow }])}
          style={{ '--riv-pill-color': parseColor(color) }}
          onClick={onClick}>
-          {useSlot(children, 'default')}
+      <div className={styles.pillInner}>
+        <div className={styles.pillTitle}>
+          {useSlot(children, 'title')}
+        </div>
+        <div className={styles.pillValue}>
+          {useSlot(children, 'value')}
+        </div>
+      </div>
     </div>
   );
 }

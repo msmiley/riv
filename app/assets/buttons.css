@@ -1,0 +1,10 @@
+body {
+  --riv-pill-radius: 999px;
+  --riv-pill-value-fg: var(--riv-text-color);
+  --riv-pill-value-bg: var(--riv-widget-light-bg);
+}
+
+body.riv-dark {
+  --riv-pill-value-fg: var(--riv-text-color);
+  --riv-pill-value-bg: var(--riv-gray-med);
+}

@@ -18,13 +18,6 @@ body.riv-dark {
 
 }
 
-/* LAYOUTS */
-.riv-sidebar-only-content {
-  flex-grow: 1;
-  padding: 0.5em;
-
-}
-
 
 /* FLEX BASIS HELPERS */
 /* IF A MARGIN IS NEEDED, SET --riv-basis-margin */

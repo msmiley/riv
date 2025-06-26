@@ -44,6 +44,10 @@ export default {
         icon: 'container',
         children: [
           {
+            title: 'Column',
+            path: '/containers/column',
+          },
+          {
             title: 'Row',
             path: '/containers/row',
           },

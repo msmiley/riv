@@ -8,6 +8,7 @@ import Card from '../components/containers/Card';
 import Slot from '../components/slots/Slot';
 import Button from '../components/buttons/Button';
 import Toggle from '../components/buttons/Toggle';
+import Pill from '../components/buttons/Pill';
 import Icon from '../components/icons/Icon';
 
 // describe the route
@@ -88,6 +89,28 @@ export default function Component() {
                 <Slot name="title">title Slot</Slot>
               </Toggle>
             </Row>
+          </Card>
+        </Row>
+      </Card>
+
+      <Card>
+        <Slot name="title">&lt;Pill/&gt;</Slot>
+        <Slot name="subtitle">A pill-style button with ability to show 2-level data</Slot>
+
+        <Row>
+          <Card border>
+            <Slot name="subtitle">Basic</Slot>
+            <Slot name="description">The default mode for a pill</Slot>
+            <Column>
+              <Pill onClick={() => setClickState(!clickState)}>
+                <Slot name="title">t</Slot>
+                <Slot name="value">value Slot</Slot>
+              </Pill>
+              <Pill size="lg" onClick={() => setClickState(!clickState)}>
+                <Slot name="title">title Slot</Slot>
+                <Slot name="value">value Slot</Slot>
+              </Pill>
+            </Column>
           </Card>
         </Row>
       </Card>

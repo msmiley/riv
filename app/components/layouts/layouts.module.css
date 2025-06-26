@@ -1,0 +1,11 @@
+.sidebarOnly {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+.sidebarOnlyContent {
+  flex-grow: 1;
+  padding: 0.5em;
+  overflow: auto;
+}
+

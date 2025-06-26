@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+let colors = d3.scaleOrdinal([...Array(10).keys()], d3.schemeDark2);
 
 // helper to process classNames in Vue form
 //
@@ -60,3 +62,7 @@ export function parseColor(color) {
       return color;
   }
 };
+
+export function chartColorGenerator(color) {
+  return colors(color);
+}

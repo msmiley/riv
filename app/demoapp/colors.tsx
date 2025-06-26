@@ -1,5 +1,6 @@
 import type { Route } from "./+types/colors";
 
+import { chartColorGenerator } from '../utils';
 import Column from '../components/containers/Column';
 import Row from '../components/containers/Row';
 import Card from '../components/containers/Card';
@@ -93,7 +94,7 @@ export default function Component() {
         <Slot name="title">Colors</Slot>
       </Card>
 
-      <Card color="var(--riv-green)">
+      <Card>
         <Slot name="title">Geopattern</Slot>
         <Slot name="description">riv also provides a component: GeoPattern which will set its background to a generated geometric pattern based on the content or a seed given through a property.</Slot>
         <GeoPattern seed="test">
@@ -101,7 +102,7 @@ export default function Component() {
         </GeoPattern>
       </Card>
 
-      <Card color="var(--riv-brick)">
+      <Card>
         <Slot name="title">CSS Colors</Slot>
         <Slot name="description"><span>viv provides many pre-defined CSS vars for a rainbow of colors. Any of these may be redefined in your app by setting them on <em>.viv-app</em>. These color names can be obtained for use in a palette by calling the <em>vivColorPalette()</em> mixin.</span></Slot>
         <Row gap>
@@ -164,17 +165,19 @@ export default function Component() {
       </Card>
 
       <Card>
-        <Slot name="subtitle"><span>Viv also provides <em>vivChartColorGenerator()</em> a color palette generator for chart colors that works with either numbers or strings as a seed.</span></Slot>
-        {Object.keys(Array(10)).map((item, i) =>
-          <Card cols="3" key="i.toString()">
-            <div class="riv-color-chip" style={{
-              color: 'white',
-              backgroundColor: i,
-            }}>
-              {i}
-            </div>
-          </Card>
-        )}
+        <Slot name="subtitle"><span>riv also provides <em>chartColorGenerator()</em> a color palette generator for chart colors that works with either numbers or strings as a seed.</span></Slot>
+        <Row gap>
+          {Array.from(Array(10), (e, i) =>
+            <Card cols="3" key="i.toString()">
+              <div class="riv-color-chip" style={{
+                color: 'white',
+                backgroundColor: chartColorGenerator(i),
+              }}>
+                {i}
+              </div>
+            </Card>
+          )}
+        </Row>
       </Card>
     </Column>
   );

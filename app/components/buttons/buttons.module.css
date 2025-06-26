@@ -37,6 +37,7 @@
 }
 
 .buttonInner {
+  height: var(--riv-button-size);
   border-radius: var(--riv-control-border-radius);
   color: var(--riv-text-auto-color);
   cursor: pointer;
@@ -80,19 +81,19 @@
 }
 /* SIZING */
 .buttonSize:global(.sm) {
-  height: var(--riv-control-sm-height);
+  --riv-button-size: var(--riv-control-sm-height);
   font-size: calc(var(--riv-control-sm-height) * 0.8);
 }
 .buttonSize:global(.md) {
-  height: var(--riv-control-md-height);
+  --riv-button-size: var(--riv-control-md-height);
   font-size: calc(var(--riv-control-md-height) * 0.6);
 }
 .buttonSize:global(.lg) {
-  height: var(--riv-control-lg-height);
+  --riv-button-size: var(--riv-control-lg-height);
   font-size: calc(var(--riv-control-lg-height) * 0.6);
 }
 .buttonSize:global(.xl) {
-  height: var(--riv-control-xl-height);
+  --riv-button-size: var(--riv-control-xl-height);
   font-size: calc(var(--riv-control-xl-height) * 0.6);
 }
 .buttonPadding:global(.sm) {
@@ -159,6 +160,7 @@
   gap: var(--riv-control-gap);
 }
 .toggleInner {
+  height: var(--riv-button-size);
   flex-grow: 0; /* cancel grow as it will stretch the toggle */
   padding: 0; /* clear padding */
   aspect-ratio: 1.7;
@@ -191,4 +193,53 @@
 }
 .toggleInner:global(.active) .toggleDot {
   transform: translateX(70%);
+}
+
+/*--------------------------------------*/
+/* PILL */
+/*--------------------------------------*/
+.pill {
+  flex: 0 1 auto;
+  display: flex;
+  min-width: 0;
+  margin: var(--riv-control-margin-v) var(--riv-control-margin-h);
+}
+.pillInner {
+  display: flex;
+  /* default bg (non-inverted) */
+  background-color: var(--riv-pill-value-bg);
+  transition: background-color 0.4s;
+  border-radius: var(--riv-pill-radius);
+}
+.pillTitle {
+  min-height: var(--riv-button-size); /* for perfect circle */
+  min-width: var(--riv-button-size); /* for perfect circle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* normal mode background, inverted uses transparent */
+  background-color: var(--riv-pill-color);
+  /* normal mode foreground, inverted uses value-fg */
+  color: var(--riv-text-auto-color);
+  border-radius: var(--riv-pill-radius);
+  background-image: var(--riv-pill-geopattern);
+  padding-left: 0.6em;
+  padding-right: 0.6em;
+  gap: var(--riv-control-gap);
+}
+.pillTitle:empty {
+  display: none;
+}
+.pillValue {
+  display: flex;
+  align-items: center;
+  color: var(--riv-pill-value-fg);
+  border-top-right-radius: var(--riv-pill-radius);
+  border-bottom-right-radius: var(--riv-pill-radius);
+  padding-left: 0.3em;
+  padding-right: 0.6em; /* right padding for text */
+  gap: var(--riv-control-gap);
+}
+.pillValue:empty {
+  display: none;
 }

@@ -13,6 +13,7 @@ export default [
     route('colors', 'demoapp/colors.tsx'),
     // containers sub-menu
     ...prefix("containers", [
+      route('column', 'demoapp/column.tsx'),
       route('row', 'demoapp/row.tsx'),
     ]),
     route('settings', 'demoapp/settings.tsx'),
