@@ -3,7 +3,7 @@
 //
 //
 import { isArray } from 'lodash-es';
-import TimeRange from '../../../shared/utils/time-range.js';
+import TimeRange from '../../../shared/utils/time-range.ts';
 
 export default {
   name: 'Mongolap',

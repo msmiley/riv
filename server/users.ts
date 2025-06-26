@@ -1,7 +1,7 @@
 //
 // The UserModule handles all aspects of user accounting except authentication.
 //
-import utils from './auth/utils.js';
+import utils from './auth/utils.ts';
 import { find, isObject, pick } from 'lodash-es';
 
 export default {

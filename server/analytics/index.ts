@@ -9,7 +9,7 @@
 // your particular database connector
 //
 import { defaultsDeep, find } from 'lodash-es';
-import { AnalyticsSettings } from '../../shared/data/analytics-settings.js';
+import { AnalyticsSettings } from '../../shared/data/analytics-settings.ts';
 
 export default {
   name: 'Analytics',
@@ -52,7 +52,7 @@ export default {
       let count = await this.$.Mongo.count(this.exampleCollection);
       if (count === 0 && this.loadExampleData) {
         this.$warn('loading example data into mongo');
-        let mod = await import('./example/load-example-data.js');
+        let mod = await import('./example/load-example-data.ts');
         mod.default.loadData(this.insert);
       }
     },

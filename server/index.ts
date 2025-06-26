@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // production file, dev is implemented as vite middleware
 
-import { RivServer } from 'riv/riv-server.js';
+import { RivServer } from 'riv/riv-server.ts';
 
 let configPath = './riv.config.js';
 

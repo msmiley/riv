@@ -14,9 +14,9 @@
   },
   "type": "module",
   "exports": {
-    ".": "./server/index.js",
-    "./riv-vite-plugin.js": "./server/riv-vite-plugin.js",
-    "./riv-server.js": "./server/riv-server.js"
+    ".": "./server/index.ts",
+    "./riv-vite-plugin.ts": "./server/riv-vite-plugin.ts",
+    "./riv-server.ts": "./server/riv-server.ts"
   },
   "dependencies": {
     "@react-router/node": "^7.5.3",

@@ -2,7 +2,7 @@
 // entry point for riv server, sets up basically everything on the server side
 // this should be called with a config object
 //
-import utils from './utils.js';
+import utils from './utils.ts';
 
 import os from 'node:os';
 import path from 'node:path';
@@ -56,7 +56,7 @@ const DEFAULT_CONFIG = {
 export class RivServer extends EventEmitter {
   // constructor also initializes EventEmitter super
   constructor({
-    server,     // server object (either from vite or index.js)
+    server,     // server object (either from vite or index)
     parentRoot, // root of parent project, used to resolve config
     configPath, // path to config.json file for riv server side
   }) {

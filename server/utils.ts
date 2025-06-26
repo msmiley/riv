@@ -146,15 +146,15 @@ export default {
     let errors1 = [];
     let errors2 = [];
     // 1. try adding .js extension if not there (ES6 doesn't allow us to import without an extension 😢 ))
-    let jsPath = relPath;
-    if (jsPath.lastIndexOf('.') < 0) {
-      jsPath += '.js';
+    let tsPath = relPath;
+    if (tsPath.lastIndexOf('.') < 0) {
+      tsPath += '.ts';
     }
-    ({ mod, modPath, errors: errors1 } = await tryFindModule(root, jsPath));
-    // 2. if .js didn't work, try adding /index.js in case it's a folder with index.js inside
+    ({ mod, modPath, errors: errors1 } = await tryFindModule(root, tsPath));
+    // 2. if .js didn't work, try adding /index.ts in case it's a folder with index.ts inside
     if (!mod) {
       // try adding /index.js in case it is a dir module
-      let idxPath = `${relPath}/index.js`;
+      let idxPath = `${relPath}/index.ts`;
       ({ mod, modPath, errors: errors2 } = await tryFindModule(root, idxPath));
     }
     return {

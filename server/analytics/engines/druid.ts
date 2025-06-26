@@ -1,7 +1,7 @@
 import { find, flatMap, isString, isArray, cloneDeep } from 'lodash-es';
 import axios from 'axios';
 import https from 'node:https';
-import TimeRange from '../../../shared/utils/time-range.js';
+import TimeRange from '../../../shared/utils/time-range.ts';
 
 export default {
   name: 'Druid',

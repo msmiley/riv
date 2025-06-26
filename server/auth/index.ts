@@ -1,6 +1,6 @@
 import crypto from  'node:crypto';
 import { get } from 'lodash-es';
-import utils from './utils.js';
+import utils from './utils.ts';
 
 export default {
   name: 'Auth',

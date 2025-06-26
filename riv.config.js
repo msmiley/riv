@@ -76,9 +76,6 @@ export default {
   // provide/override props for those modules
   modules: {
     // example of loading a user-defined module in the same folder as front-end app code
-    './app/demoapp/server/mongo/mongo-example.js': {
-      // props for your module go here
-    },
     auth: {
       // enable2fa: true,
     },

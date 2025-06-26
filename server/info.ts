@@ -4,8 +4,8 @@
 //
 import fs from 'node:fs';
 import path from 'node:path';
-import utils from './utils.js';
-import { RivError } from '../shared/base/riv-error.js';
+import utils from './utils.ts';
+import { RivError } from '../shared/base/riv-error.ts';
 
 export default {
   name: 'Info',
