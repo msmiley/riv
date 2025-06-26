@@ -67,6 +67,9 @@ export default {
     });
     return server;
   },
+  //
+  // helper to set a value deep in an object using dot path
+  //
   deepSet(obj, path, value) {
     let a = path.split('.');
     let o = obj;
@@ -145,15 +148,15 @@ export default {
     let mod, modPath;
     let errors1 = [];
     let errors2 = [];
-    // 1. try adding .js extension if not there (ES6 doesn't allow us to import without an extension 😢 ))
+    // 1. try adding .ts extension if not there (ES6 doesn't allow us to import without an extension 😢 ))
     let tsPath = relPath;
     if (tsPath.lastIndexOf('.') < 0) {
       tsPath += '.ts';
     }
     ({ mod, modPath, errors: errors1 } = await tryFindModule(root, tsPath));
-    // 2. if .js didn't work, try adding /index.ts in case it's a folder with index.ts inside
+    // 2. if .ts didn't work, try adding /index.ts in case it's a folder with index.ts inside
     if (!mod) {
-      // try adding /index.js in case it is a dir module
+      // try adding /index.ts in case it is a dir module
       let idxPath = `${relPath}/index.ts`;
       ({ mod, modPath, errors: errors2 } = await tryFindModule(root, idxPath));
     }
@@ -183,7 +186,7 @@ export default {
       }
     }
   },
-  findFiles(p, ext = '.js') {
+  findFiles(p, ext = '.ts') {
     return fs.globSync(`${p}/**/*${ext}`);
   },
   async findClasses(p) {

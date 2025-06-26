@@ -9,7 +9,6 @@ import { isFunction } from 'lodash-es';
 //
 export default function useSlot(parentSlots, slotName, slotProps = {}) {
   // find slot by name prop
-  console.log(React.Children.toArray(parentSlots))
   let slot = React.Children.toArray(parentSlots).filter((child) => {
     // if it's a named slot, make sure it matches slotName
     if (child?.type?.name === 'Slot' && child?.props?.name) {
@@ -18,7 +17,6 @@ export default function useSlot(parentSlots, slotName, slotProps = {}) {
       return true;
     }
   });
-  // console.log(slot)
 
   // if a function was provided to the slot, call it with the slotProps as a
   // way to provide functionality back up the tree

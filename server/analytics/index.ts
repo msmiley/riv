@@ -33,14 +33,14 @@ export default {
     // merge in the defaults for activity dataset, user's riv.config can override these
     defaultsDeep(this.datasets.activity, {
       title: 'Activity',
-      engine: 'mongo',
+      engine: 'Mongolap',
       store: 'riv.activity',
     });
     // add example dataset
     if (this.loadExampleData) {
       this.datasets.example = {
         title: 'Example',
-        engine: 'mongo',
+        engine: 'Mongolap',
         store: this.exampleCollection,
       };
     }

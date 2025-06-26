@@ -54,6 +54,24 @@ export default {
         ]
       },
       {
+        title: 'Inputs',
+        icon: 'textfield',
+        children: [
+          {
+            title: 'Text',
+            path: '/inputs/text',
+          },
+          {
+            title: 'Date',
+            path: '/inputs/date',
+          },
+          {
+            title: 'Color',
+            path: '/inputs/color',
+          },
+        ]
+      },
+      {
         title: 'Server',
         category: true,
       },

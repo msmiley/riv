@@ -104,7 +104,7 @@ export default function Component() {
 
       <Card>
         <Slot name="title">CSS Colors</Slot>
-        <Slot name="description"><span>viv provides many pre-defined CSS vars for a rainbow of colors. Any of these may be redefined in your app by setting them on <em>.viv-app</em>. These color names can be obtained for use in a palette by calling the <em>vivColorPalette()</em> mixin.</span></Slot>
+        <Slot name="description"><span>riv provides many pre-defined CSS vars for a rainbow of colors. Any of these may be redefined in your app.</span></Slot>
         <Row gap>
           {colorVars.map((item, i) =>
             <Card cols="3" key="i.toString()">

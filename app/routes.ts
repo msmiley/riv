@@ -16,6 +16,12 @@ export default [
       route('column', 'demoapp/column.tsx'),
       route('row', 'demoapp/row.tsx'),
     ]),
+    // inputs sub-menu
+    ...prefix("inputs", [
+      route('text', 'demoapp/inputsText.tsx'),
+      route('date', 'demoapp/inputsDate.tsx'),
+      route('color', 'demoapp/inputsColor.tsx'),
+    ]),
     route('settings', 'demoapp/settings.tsx'),
     // fallback route
     route('*?', 'demoapp/home.tsx'),
