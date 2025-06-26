@@ -1,0 +1,10 @@
+/*--------------------------------------*/
+/* INLINECODE */
+/*--------------------------------------*/
+.inlineCode {
+  font-family: var(--riv-code-font-family);
+  border: var(--riv-code-border, 2px dashed var(--riv-outline));
+  padding: 0 0.2em;
+  border-radius: var(--riv-selection-border-radius);
+  box-shadow: inset 0px 0px 0.4em var(--riv-black);
+}

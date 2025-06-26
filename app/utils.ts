@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 let colors = d3.scaleOrdinal([...Array(10).keys()], d3.schemeDark2);
 
+import * as GP from '@victr/geopattern';
+
 // helper to process classNames in Vue form
 //
 export function cls(classnames) {
@@ -65,4 +67,10 @@ export function parseColor(color) {
 
 export function chartColorGenerator(color) {
   return colors(color);
-}
+};
+
+export function getGeoPattern(str) {
+  if (str) {
+    return GP.generate(str).toDataUrl()
+  }
+};

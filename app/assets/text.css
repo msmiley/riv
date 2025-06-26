@@ -8,6 +8,9 @@ body {
   --riv-text-color-inverse: #eee; /* inverse text, changes with theme */
   --riv-text-color-light: #fff; /* meant for always light text */
   --riv-text-color-dark: #323334; /* meant for always dark text */
+
+  /* fonts */
+  --riv-code-font-family: monospace;
 }
 
 body.riv-dark {

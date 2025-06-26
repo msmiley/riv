@@ -9,6 +9,7 @@ import Slot from '../components/slots/Slot';
 import Button from '../components/buttons/Button';
 import Toggle from '../components/buttons/Toggle';
 import Pill from '../components/buttons/Pill';
+import InlineCode from '../components/text/InlineCode';
 import Icon from '../components/icons/Icon';
 
 // describe the route
@@ -102,14 +103,54 @@ export default function Component() {
             <Slot name="subtitle">Basic</Slot>
             <Slot name="description">The default mode for a pill</Slot>
             <Column>
-              <Pill onClick={() => setClickState(!clickState)}>
-                <Slot name="title">t</Slot>
-                <Slot name="value">value Slot</Slot>
-              </Pill>
-              <Pill size="lg" onClick={() => setClickState(!clickState)}>
-                <Slot name="title">title Slot</Slot>
-                <Slot name="value">value Slot</Slot>
-              </Pill>
+              <Row center>
+                <InlineCode>size="sm"</InlineCode>
+                <Pill size="sm" onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
+              <Row center>
+                <InlineCode>size="md"</InlineCode>
+                <Pill onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
+              <Row center>
+                <InlineCode>size="lg"</InlineCode>
+                <Pill size="lg" onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
+            </Column>
+          </Card>
+          <Card border>
+            <Slot name="subtitle">Color</Slot>
+            <Slot name="description">Use color to make a splash</Slot>
+            <Column>
+              <Row center>
+                <InlineCode>color="red"</InlineCode>
+                <Pill size="sm" color="red" onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
+              <Row center>
+                <InlineCode>color="var(--riv-plum)"</InlineCode>
+                <Pill color="var(--riv-plum)" onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
+              <Row center>
+                <InlineCode>color="#0cb424"</InlineCode>
+                <Pill size="lg" color="#0cb424" onClick={() => setClickState(!clickState)}>
+                  <Slot name="title">title Slot</Slot>
+                  <Slot name="value">value Slot</Slot>
+                </Pill>
+              </Row>
             </Column>
           </Card>
         </Row>

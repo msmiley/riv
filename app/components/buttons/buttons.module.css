@@ -217,12 +217,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* normal mode background, inverted uses transparent */
   background-color: var(--riv-pill-color);
-  /* normal mode foreground, inverted uses value-fg */
+  background-image: var(--riv-pill-geopattern);
   color: var(--riv-text-auto-color);
   border-radius: var(--riv-pill-radius);
-  background-image: var(--riv-pill-geopattern);
   padding-left: 0.6em;
   padding-right: 0.6em;
   gap: var(--riv-control-gap);

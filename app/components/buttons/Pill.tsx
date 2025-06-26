@@ -1,6 +1,6 @@
 import React from 'react';
 import { filter } from 'lodash-es';
-import { cls, parseColor } from '../../utils';
+import { cls, parseColor, getGeoPattern } from '../../utils';
 import useSlot from '../../hooks/useSlot';
 
 import styles from './buttons.module.css';
@@ -9,8 +9,9 @@ interface PillProps extends React.PropsWithChildren {
   name: string;
   size: 'sm' | 'md' | 'lg';
   variant: 'regular' | 'corners' | 'outline';
-  color: string,
-  grow: boolean,
+  color: string;
+  geopattern: string;
+  grow: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -19,6 +20,7 @@ export default function Pill({
   size = 'md',
   variant = 'regular',
   color = 'var(--riv-primary)',
+  geopattern,
   grow,
   onClick,
   children,
@@ -26,7 +28,10 @@ export default function Pill({
 
   return (
     <div className={cls([styles.pill, styles.buttonSize, size, { grow }])}
-         style={{ '--riv-pill-color': parseColor(color) }}
+         style={{
+           '--riv-pill-color': parseColor(color),
+           '--riv-pill-geopattern': getGeoPattern(geopattern),
+         }}
          onClick={onClick}>
       <div className={styles.pillInner}>
         <div className={styles.pillTitle}>
