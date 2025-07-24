@@ -1,9 +1,9 @@
 import crypto from  'node:crypto';
 import { get } from 'lodash-es';
 import utils from './utils.ts';
+import { RivModule } from 'shared/base/riv-module.ts';
 
-export default {
-  name: 'Auth',
+export default class Auth extends RivModule {
   props: {
     ldap: false,       // config prop for ldap auth
     ldapHost: '',      // ldap host

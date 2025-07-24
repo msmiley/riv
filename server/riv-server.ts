@@ -1,3 +1,7 @@
+import type { ViteDevServer, HttpServer } from 'vite';
+import type { CallApiParams } from '../shared/types/shared.d.ts';
+import type { RivRequest } from '../shared/types/server.d.ts';
+
 //
 // entry point for riv server, sets up basically everything on the server side
 // this should be called with a config object
@@ -40,26 +44,38 @@ const DEFAULT_CONFIG = {
   classes: [],
   // default modules
   modules: {
-    analytics: {},
-    'analytics/engines/mongolap': {},
-    'analytics/engines/druid': {},
-    auth: {},
+    console: {},
+    // analytics: {},
+    // 'analytics/engines/mongolap': {},
+    // 'analytics/engines/druid': {},
+    // auth: {},
     info: {},
-    roles: {},
-    users: {},
-    activity: {},
-    store: {},
-    mongo: {},
+    // roles: {},
+    // users: {},
+    // activity: {},
+    // store: {},
+    // mongo: {},
   },
 };
 
+//
+// RivServer class
+//
 export class RivServer extends EventEmitter {
+  server: ViteDevServer | HttpServer; // either the vite dev server or a regular http server
+  parentRoot: string;      // root of parent project, used to resolve config
+  configPath?: string;     // path to config.json file for riv server side
+  io: Server | null;       // handle to socket.io server
+  config: any;             // riv config
+  modules: Record<string, any>; // loaded modules
+  classes: Record<string, any>; // data types 
+
   // constructor also initializes EventEmitter super
   constructor({
     server,     // server object (either from vite or index)
     parentRoot, // root of parent project, used to resolve config
     configPath, // path to config.json file for riv server side
-  }) {
+  }: { server: ViteDevServer, parentRoot: string, configPath?: string }) {
     super();
 
     // up the max listeners for EventEmitter to prevent warnings
@@ -72,8 +88,8 @@ export class RivServer extends EventEmitter {
 
     this.io = null;          // handle to socket.io server
     this.config = {};        // riv config
-    this.modules = {};
-    this.classes = {};         // data types
+    this.modules = {};       // loaded modules
+    this.classes = {};       // data types
     this.init();
   }
   async init() {
@@ -81,12 +97,11 @@ export class RivServer extends EventEmitter {
     await this.loadModules();
     await this.loadClasses();
 
-    // if server not provided, start one after loading config (for port num)
-    // (for dev we use the vite server passed in)
+    // if server not provided, start one after loading config so we have port number
     if (!this.server) {
       this.server = utils.startHttpServer(this.config.port);
     }
-    // socket.io started by us for both modes
+    // start socket.io
     this.connectSocketIo();
 
     // call init for each module, note potential out-of-order implications
@@ -102,34 +117,41 @@ export class RivServer extends EventEmitter {
       // get parent project's root folder
       console.info(`riv> loading config from ${this.configPath} at ${this.parentRoot}`);
       // try to load configPath relative to parent root
-      let configMod = await import(pathToFileURL(path.resolve(this.parentRoot, this.configPath)));
+      let configMod = await import(pathToFileURL(path.resolve(this.parentRoot, this.configPath)).toString());
       // merge down the config recursively, applying defaults last
       defaultsDeep(this.config, configMod.default, DEFAULT_CONFIG);
-      // finally, let env vars override config items if they are prefixed by
-      // volante_config_ and have an underscore-delimited path
+      // finally, let env vars override config values if they are prefixed by
+      // riv_ and have an underscore-delimited path
       for (let [k, v] of Object.entries(process.env)) {
-        // overrides have to start with volante_
+        // overrides have to start with riv_
         if (k.match(/^riv_/i)) {
           // split off path
           let kp = k.split(/riv_/i)[1].split('_').join('.');
           console.info(`riv> env var override: ${kp}=${v}`);
-          utils.deepSet(this.config, kp, v);
+          utils.deepSet(this.config.modules, kp, v);
         }
       }
-      console.info(`riv> done loading config, name = ${this.config.name}`);
+      console.info(`riv> done loading config, name = ${this.config.name}`, this.config);
     }
   }
   // initialize socket.io and wire up the riv api layer
   connectSocketIo() {
     // connect socket.io to http server
     console.info('riv> setting up socket.io');
-    this.io = new Server(this.server.httpServer ?? this.server, {
+    let server;
+    // Check if server is a ViteDevServer by presence of 'httpServer' property
+    if ('httpServer' in this.server) {
+      server = (this.server as any).httpServer;
+    } else {
+      server = this.server;
+    }
+    this.io = new Server(server, {
       path: '/socket.io',
     });
 
     // set up ping broadcast
     setInterval(() => {
-      this.io.of(this.config.ioNs).emit(this.config.ioSend, 'ping', {
+      this.io?.of(this.config.ioNs).emit(this.config.ioSend, 'ping', {
         ts: new Date(),
         hostname: os.hostname(),
       });
@@ -137,7 +159,7 @@ export class RivServer extends EventEmitter {
 
     // set up event listener
     this.io.of(this.config.ioNs).on('connection', (socket) => {
-      let clientIp = socket.request.connection.remoteAddress;
+      let clientIp = socket.request.socket.remoteAddress ?? '';
       let token = socket.handshake.auth.token;
       // the user object for this socket session, will start out null until user
       // is successfully authenticated and connects with a valid token
@@ -148,7 +170,7 @@ export class RivServer extends EventEmitter {
         console.warn(`riv> socket.io connection with no token, only login will be allowed`);
       } else {
         // validate the sent token
-        let tokenValid = this.modules.Auth.validateToken(token);
+        let tokenValid = false;//this.modules.Auth.validateToken(token);
         if (tokenValid) {
           user_id = tokenValid.sub;
           let tokenType = tokenValid.aud;
@@ -156,7 +178,7 @@ export class RivServer extends EventEmitter {
           user = cloneDeep(this.modules.Users.userById(user_id));
           if (user_id && user) {
             // save user_id to socket handle so we can look up this socket by user_id
-            socket.user_id = user_id;
+            socket.data.user_id = user_id;
             // delete fields we don't need to be passing around
             delete user.mustChangePass;
             delete user.password;
@@ -178,13 +200,13 @@ export class RivServer extends EventEmitter {
       }
       console.info(`riv> new connection from ${clientIp}`);
       // process received messages
-      socket.on(this.config.ioRecv, (d) => {
-        // console.info(`riv> api call`, util.inspect(d, { colors: true, depth: null }));
+      socket.on(this.config.ioRecv, (d: CallApiParams) => {
+        console.info(`riv> api call`, d);
         // make sure message is valid api call
-        if (d.id && d.api && d.args) {
+        if (d.id && d.api && d.arg) {
           // if user is not authenticated, only allow call to Auth.login and 2fa
           if (!user) {
-            if (d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
+            if (d.api !== 'Info.getTestProp' && d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
               socket.emit(d.id, 'unauthorized, please login');
               socket.emit(this.config.ioSend, 'riv-logged-out');
               return;
@@ -241,8 +263,8 @@ export class RivServer extends EventEmitter {
     for (let [relPath, propOverrides] of Object.entries(this.config.modules)) {
       // try to find the module using a number of methods
       let { mod, modPath, errors } = await utils.findModule(this.parentRoot, relPath);
-      // only required field is name, if the mod loaded has that, proceed
-      if (mod && mod.default && mod.default.name) {
+      // check to make sure type is understood
+      if (mod && mod.default?.type === 'riv-module') {
         console.log(`riv> found module with relative path ${relPath} at ${modPath}`);
         // initial load
         this.loadModule(mod, propOverrides);
@@ -267,24 +289,11 @@ export class RivServer extends EventEmitter {
     }
   }
   // takes a loaded module and prepares it for use on server side
-  loadModule(mod, propOverrides) {
+  loadModule(mod: any, propOverrides: any) {
     let moduleDef = mod.default;
-    console.log(`riv> loadModule called for ${moduleDef.name}`);
-    let newMod = {
-      name: moduleDef.name,
-      $: this.modules,      // reference for module to call peers e.g. this.$.<peer>.
-      $class: this.classes, // reference to class definitions
-      $parentRoot: this.parentRoot,
-      init: moduleDef.init,
-    };
-    utils.addBuiltins(newMod, moduleDef.name, this);
-    utils.addEvents(newMod, moduleDef.events, this);
-    utils.addProps(newMod, moduleDef.props, propOverrides);
-    utils.addData(newMod, moduleDef.data, this);
-    utils.addApi(newMod, moduleDef.api);
-    utils.addMethods(newMod, moduleDef.methods);
-    // save to modules with name as key
-    this.modules[moduleDef.name] = newMod;
+    let modInst = new moduleDef();
+    modInst.selfRegister(this, propOverrides);
+    console.log(`riv> loadModule called for ${modInst.name}`);
   }
   // loads class definitions from array of directories
   async loadClasses() {
@@ -308,13 +317,8 @@ export class RivServer extends EventEmitter {
     console.log(`riv> loaded classes: ${Object.keys(this.classes).join(',')}`);
   }
   // helper/entry point for riv API calls from client-side
-  callApi(user, // user object
-    ip,         // user ip (obviously not always correct)
-  { id,         // id to use for emitting response
-    api,        // fully resolved api name e.g. Module.Api
-    types,      // arg type names if known, 'generic' if unknown
-    args,       // argument with above type
-  }) {
+  callApi(user: any, ip: string, params: CallApiParams): Promise<any> {
+    let { id, api, type, arg } = params;
     // get the module part of the api call
     let [moduleName, ...apiParts] = api.split('.');
     let apiName = apiParts.join('.');
@@ -322,54 +326,43 @@ export class RivServer extends EventEmitter {
       // find the module
       let module = this.modules[moduleName];
       // see if module has api
-      if (module && module.$apiNames[apiName]) {
-        // get the api
-        let theApi = get(module, apiName);
-        if (theApi) {
-          // provide the api function with some built-in request info
-          let req = {
-            id,
-            ip,
-            user,
-          };
-          for (let i=0; i<args.length; i++) {
-            // try to resolve the type on the arguments
-            switch (types[i]) {
-              // noops for primitives handled automatically
-              case 'Array':
-              case 'Boolean':
-              case 'Number':
-              case 'Object':
-              case 'String':
-              case 'generic':
-                break;
-              case 'Date':
-                args[i] = new Date(args[i]);
-                break;
-              default:
-                // see if there's a class with this name
-                if (this.classes[types[i]]) {
-                  args[i] = new this.classes[types[i]](args[i]);
-                } else {
-                  return Promise.reject(`received unhandled type ${types[i]} from client for api call ${api}`);
-                }
+      if (module && module.hasApiMethod(apiName)) {
+        let req: RivRequest = {
+          id,   // unique id for this request
+          ip,   // user ip (not always reliable)
+          user, // user object, null if not authenticated
+        };
+        // try to resolve the type on the argument
+        switch (type) {
+          // noops for primitives handled automatically
+          case 'Array':
+          case 'Boolean':
+          case 'Number':
+          case 'Object':
+          case 'String':
+          case 'generic':
+            break;
+          case 'Date':
+            arg = new Date(arg);
+            break;
+          default:
+            // see if there's a class with this name
+            if (this.classes[type]) {
+              arg = new this.classes[type](arg);
+            } else {
+              return Promise.reject(`received unhandled type ${type} from client for api call ${api}`);
             }
-          }
-          // check roles, only continue if user has specified roles
-          // TODO
-          // call the api
-          let rslt = theApi(req, ...args);
-          if (rslt && rslt instanceof Promise) {
-            return rslt;
-          } else {
-            // not a promise, return resolved promise directly, no error
-            return Promise.resolve(rslt);
-          }
+        }
+        // call the api method with the RivRequest object and the arguments object
+        let rslt = module.callApiMethod(apiName, req, arg);
+        if (rslt && rslt instanceof Promise) {
+          return rslt;
         } else {
-          return Promise.reject(`can't find api: ${apiName}`);
+          // not a promise, return a resolved promise directly, no error
+          return Promise.resolve(rslt);
         }
       } else {
-        return Promise.reject(`can't find module: ${moduleName} or api: ${apiName}`);
+        return Promise.reject(`can't find api: ${moduleName}.${apiName}`);
       }
     }
     return Promise.reject('invalid api call');
@@ -377,7 +370,7 @@ export class RivServer extends EventEmitter {
   //
   // send socket.io event to a specific user by user_id
   //
-  sendToUserId(user_id, ...args) {
+  sendToUserId(user_id: string, ...args: any[]) {
     console.log(`riv> sending to ${user_id}`, args);
     // coerce _id to string if we were sent an ObjectID
     if (typeof user_id === 'object') {
@@ -389,8 +382,8 @@ export class RivServer extends EventEmitter {
       // loop through all the sockets
       for (let s of this.io.of(this.config.ioNs).sockets.values()) {
         // check token value
-        if (s.user_id) {
-          if (s.user_id === user_id) {
+        if (s.data.user_id) {
+          if (s.data.user_id === user_id) {
             found = true;
             console.log(`riv> found user ${user_id} with active socket.io connection`);
             s.emit(this.config.ioSend, ...args);
@@ -405,7 +398,38 @@ export class RivServer extends EventEmitter {
   //
   // send socket.io event to all users
   //
-  sendToAllUsers(...args) {
-    this.io.of(this.config.ioNs).emit(this.config.ioSend, ...args);
+  sendToAllUsers(...args: any[]) {
+    this.io?.of(this.config.ioNs).emit(this.config.ioSend, ...args);
+  }
+  //
+  // logging methods
+  //
+  $log(...args: any[]) {
+    this.modules.Console.log(...args);
+  }
+  $debug(...args: any[]) {
+    this.modules.Console.debug(...args);
+  }
+  $warn(...args: any[]) {
+    this.modules.Console.warn(...args);
+  }
+  $error(...args: any[]) {
+    this.modules.Console.error(...args);
+  }
+  //
+  // shutdown handler
+  //
+  $shutdown(src = this.config.name) {
+    console.warn(`riv> shutdown requested by ${src}`);
+    this.emit('riv.shutdown');
+    for (let m of Object.values(this.modules)) {
+      m.done && m.done();
+    }
+    this.emit('riv.done');
+    setTimeout(() => {
+      console.warn('riv> done.');
+      process.exit(0);
+    }, 1000);
+    return this;
   }
 }

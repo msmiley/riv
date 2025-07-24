@@ -1,0 +1,107 @@
+/*--------------------------------------*/
+/* TEXT */
+/*--------------------------------------*/
+.inputsText {
+  position: relative;
+  display: flex;
+}
+.inputsText:global(.grow) {
+  flex-grow: 1;
+}
+.inputsText > label {
+  padding-left: var(--riv-inputs-text-inner-gap);
+  padding-right: var(--riv-inputs-text-inner-gap);
+  white-space: nowrap;
+}
+/* JUSTIFICATION */
+.inputsText:global(.right) .inputsTextInputEl {
+  text-align: right;
+}
+.inputsText:global(.center) .inputsTextInputEl {
+  text-align: center;
+}
+/* SIZING */
+.inputsText:global(.sm) {
+  height: var(--riv-control-sm-height);
+}
+.inputsText:global(.md) {
+  height: var(--riv-control-md-height);
+}
+.inputsText:global(.lg) {
+  height: var(--riv-control-lg-height);
+}
+.inputsText:global(.xl) {
+  height: var(--riv-control-xl-height);
+}
+/* INPUT TEXT WRAPPER */
+.inputsTextInner {
+  flex: 1 1 auto;
+  display: flex;
+  transition: all 0.15s;
+  border-radius: var(--riv-control-border-radius);
+  align-items: center;
+  min-width: var(--riv-inputs-min-width);
+  gap: var(--riv-inputs-text-inner-gap);
+}
+/* VARIANTS */
+.inputsTextInner:global(.regular) {
+  border: var(--riv-control-border-width) solid var(--riv-control-border-color);
+}
+.inputsTextInner:global(.shaded) {
+  border-radius: 0;
+  background-color: var(--riv-inputs-text-shaded-bg);
+  border-bottom: var(--riv-control-border-width) solid var(--riv-control-border-color);
+}
+/* FOCUSED LOOK PER VARIANT */
+.inputsTextInner:global(.regular.focused) {
+  border-color: var(--riv-control-focused-border-color);
+  box-shadow: var(--riv-control-focused-box-shadow);
+}
+.inputsTextInner:global(.shaded.focused) {
+  border-color: var(--riv-control-focused-border-color);
+  background: linear-gradient(to bottom, var(--riv-inputs-text-shaded-bg) 90%, var(--riv-control-focused-border-color) 100%);
+}
+
+/* ICON SLOT */
+.inputsTextIconSlot {
+  flex: none;
+}
+
+/* THE INPUT EL */
+.inputsTextInputEl {
+  font-size: inherit;
+  font-weight: var(--riv-inputs-text-font-weight);
+  align-self: center;
+  flex-basis: 100%; /* make it fill the space */
+  width: 0; /* clear built-in input width */
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: var(--riv-inputs-text-fg);
+}
+.inputsTextInputEl::placeholder {
+  color: var(--riv-text-color-placeholder);
+  padding: var(--riv-inputs-placeholder-padding);
+}
+/* ATTEMPT TO THEME BROWSER AUTOCOMPLETE TO MATCH */
+.inputsTextInputEl > :global(input:-webkit-autofill),
+.inputsTextInputEl > :global(input:-webkit-autofill:hover),
+.inputsTextInputEl > :global(input:-webkit-autofill:focus) {
+  content: "\feff"; /* magic value to detect browser autofill */
+  border: var(--riv-control-border-width) solid var(--riv-gray);
+  -webkit-text-fill-color: var(--riv-black);
+  -webkit-box-shadow: 0 0 0px 1000px var(--riv-gray) inset;
+}
+
+/* UNITS SLOT */
+.inputsTextUnitSlot {
+  flex: none;
+  color: var(--riv-text-color-muted);
+}
+
+/* BUTTON (SLOT + CLEARABLE BUILT-IN) */
+.inputsTextButtons {
+  flex: none;
+}
+
+

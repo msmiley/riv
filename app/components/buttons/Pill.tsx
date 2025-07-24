@@ -6,13 +6,13 @@ import useSlot from '../../hooks/useSlot';
 import styles from './buttons.module.css';
 
 interface PillProps extends React.PropsWithChildren {
-  name: string;
-  size: 'sm' | 'md' | 'lg';
-  variant: 'regular' | 'corners' | 'outline';
-  color: string;
-  geopattern: string;
-  grow: boolean;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  name?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'regular' | 'corners' | 'outline';
+  color?: string;
+  geopattern?: string;
+  grow?: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export default function Pill({
@@ -24,14 +24,15 @@ export default function Pill({
   grow,
   onClick,
   children,
-}: ButtonProps) {
+}: PillProps) {
 
   return (
-    <div className={cls([styles.pill, styles.buttonSize, size, { grow, clickable: !!onClick }])}
+    <div role="button"
+         className={cls(styles.pill, styles.buttonSize, size, { grow, clickable: !!onClick })}
          style={{
            '--riv-pill-color': parseColor(color),
-           '--riv-pill-geopattern': getGeoPattern(geopattern),
-         }}
+           '--riv-pill-geopattern': geopattern && getGeoPattern(geopattern),
+         } as React.CSSProperties}
          onClick={onClick}>
       <div className={styles.pillInner}>
         <div className={styles.pillTitle}>

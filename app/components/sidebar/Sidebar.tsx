@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import React from 'react';
 import { useMatches } from "react-router";
 import { cls } from '../../utils';
 import useSlot from '../../hooks/useSlot';
@@ -6,16 +6,16 @@ import styles from './sidebar.module.css';
 
 import SidebarItem from './SidebarItem';
 
-interface SidebarProps extends PropsWithChildren {
-  routes: Array;
+interface SidebarProps extends React.PropsWithChildren {
+  routes: object[];
 }
 
 export default function Sidebar(props: SidebarProps) {
   // mini sidebar state
-  const [mini, setMini] = useState(true);
+  const [mini, setMini] = React.useState<boolean>(true);
 
   return (
-    <div className={cls([styles.sidebar])}>
+    <div className={styles.sidebar}>
       {/* HEADER SLOT */}
       <div className={styles.sidebarHeaderSlot}>
         {useSlot(props.children, 'header')}

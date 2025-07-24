@@ -1,7 +1,11 @@
 // absolutely positioned frame
 //
+import React from 'react';
 
-export default function Absolute(props) {
+interface AbsoluteProps extends React.PropsWithChildren {
+}
+
+export default function Absolute(props: AbsoluteProps) {
   return (
     <div style={{
       position: 'absolute',
@@ -10,7 +14,7 @@ export default function Absolute(props) {
       left: 0,
       right: 0,
     }}>
-      { props.children }
+      {props.children}
     </div>
   )
 }

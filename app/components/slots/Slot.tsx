@@ -2,9 +2,9 @@
 // use in combination with useSlot on the parent
 // useSlot will look for this slot by name
 //
-import { PropsWithChildren } from 'react';
+import React from 'react';
 
-interface SlotProps extends PropsWithChildren {
+interface SlotProps extends React.PropsWithChildren {
   name: string; // slot name
 }
 

@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import React from 'react';
 import { NavLink, useLocation } from 'react-router';
 import { cls } from '../../utils';
 import styles from './sidebar.module.css';
@@ -6,15 +6,15 @@ import Icon from '../icons/Icon';
 
 import SidebarSubRoutes from './SidebarSubRoutes';
 
-interface SidebarItemProps extends PropsWithChildren {
-  item: any;
+interface SidebarItemProps extends React.PropsWithChildren {
+  item: {[key: string]: any};
 }
 
 export default function SidebarItem(props: SidebarItemProps) {
   const loc = useLocation();
 
   // sub-menu  open state
-  const [isOpen, setIsOpen] = useState(() => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(() => {
     // if this item has children, see if one of them is open, if so start with
     // sub-menu open by default
     if (props.item.children) {
@@ -37,10 +37,10 @@ export default function SidebarItem(props: SidebarItemProps) {
     );
   } else if (props.item.children) {
     return (
-      <div className={cls([styles.sidebarItem, { bottom: props.item.sidebarBottom }])}
+      <div className={cls(styles.sidebarItem, { bottom: props.item.sidebarBottom })}
            style={{
              '--riv-sidebar-item-bg': props.item.color,
-           }}>
+           } as React.CSSProperties}>
         <a className={styles.sidebarItemLink} onClick={handleClick}>
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>
@@ -52,7 +52,7 @@ export default function SidebarItem(props: SidebarItemProps) {
     );
   } else {
     return (
-      <div className={cls([styles.sidebarItem, { bottom: props.item.sidebarBottom }])}>
+      <div className={cls(styles.sidebarItem, { bottom: props.item.sidebarBottom })}>
         <NavLink to={props.item.path}
               className={styles.sidebarItemLink}>
           <div className={styles.sidebarItemIcon}>

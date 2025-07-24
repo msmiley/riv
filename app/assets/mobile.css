@@ -1,0 +1,7 @@
+
+/* COMPOSE THIS CLASS TO SET FULL WIDTH FOR MOBILE */
+@media screen and (max-width: 800px) {
+  .riv-mobile-full-width {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,18 @@
+body {
+  --riv-inputs-placeholder-padding: 0 0.1em 0 0.1em;
+
+  --riv-inputs-min-width: 100px;
+  --riv-inputs-text-font-weight: 300;
+  --riv-inputs-text-placeholder-font-weight: 400;
+  --riv-inputs-text-fg: var(--riv-text-color);
+  --riv-inputs-text-padding: 0 0.4em;
+
+  --riv-inputs-text-shaded-bg: var(--riv-dark);
+  --riv-inputs-text-inner-gap: 0.2em;
+
+}
+
+
+body.riv-dark {
+
+}

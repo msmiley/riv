@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   isRouteErrorResponse,
   Links,
@@ -9,6 +10,15 @@ import {
 
 import type { Route } from "./+types/root";
 import "./assets/riv.css";
+
+import { RivProvider } from './contexts/riv';
+
+//
+// shows while loading
+//
+export function HydrateFallback() {
+  return <p>Loading riv...</p>;
+}
 
 //
 // index.html
@@ -31,9 +41,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-// main app entry
+//
+// main app entry, with strict mode set below RivProvider to avoid double
+// triggers on socket.io comms
+//
 export default function App() {
-  return <Outlet/>;
+  return (
+    <RivProvider>
+      <React.StrictMode>
+        <Outlet/>
+      </React.StrictMode>
+    </RivProvider>
+  );
 }
 
 // errors

@@ -93,59 +93,62 @@ export default {
   // module config both dictates which modules to load and is also used to
   // provide/override props for those modules
   modules: {
+    info: {
+      testProp: 'override testProp value',
+      pingInterval: 1000,
+    }
     // example of loading a user-defined module in the same folder as front-end app code
-    auth: {
+    // auth: {
       // enable2fa: true,
-    },
-    activity: {
+    // },
+    // activity: {
       // if set to a log level string ('error', 'warn', 'log', 'ready'),
       // forwards log messages up to the highest provided level
       // if true, records everything but debug
-      preserveLogLevel: 'error',
-    },
+      // preserveLogLevel: 'error',
+    // },
     // example settings for particular engine:
     // 'analytics/engines/druid': {
     //   timeout: 60000,
     // },
-    analytics: {
-      loadExampleData: true,          // load example data into an "example" dataset
-      datasets: {
-        activity: {
-          engine: 'Mongolap',         // name of module which handles Analytics api calls
-          store: 'riv.activity',      // needed to inform mongo about database name
-          timestamp: 'Timestamp',     // name of timestamp field (default is 'Timestamp')
-          measures: [ 'EventCount' ], // call out which fields should be considered measures
-        },
-        kttm1: {
-          engine: 'Druid',
-          url: 'http://localhost:8888', // engine-specific parameter
-          // Druid allows array for store, for a union of the specified dataSources
-          store: ['kttm1', 'wikipedia'],
-        },
-      },
-    },
-    mailer: { // add this to enable email
-      enabled: true,
-      testAccount: true,
+    // analytics: {
+    //   datasets: {
+    //     activity: {
+    //       engine: 'Mongolap',         // name of module which handles Analytics api calls
+    //       store: 'riv.activity',      // needed to inform mongo about database name
+    //       timestamp: 'Timestamp',     // name of timestamp field (default is 'Timestamp')
+    //       measures: [ 'EventCount' ], // call out which fields should be considered measures
+    //     },
+    //     kttm1: {
+    //       engine: 'Druid',
+    //       url: 'http://localhost:8888', // engine-specific parameter
+    //       // Druid allows array for store, for a union of the specified dataSources
+    //       store: ['kttm1', 'wikipedia'],
+    //     },
+    //   },
+    // },
+    // mailer: { // add this to enable email
+      // enabled: true,
+      // testAccount: true,
       // uncomment the following to set your SMTP server settings
       // transport: {
       // }
-    },
-    mongo: { // built-in mongo module
-      enabled: true,
-      host: '127.0.0.1',
-      port: 27017,
+    // },
+    // mongo: { // built-in mongo module
+      // enabled: true,
+      // host: '127.0.0.1',
+      // port: 27017,
       // debug: true,
-      rivDatabase: 'riv', // default is riv but change this to use a different db for built-in collections
-    },
-    roles: { // add this to extend the built-in permissions with your own custom perms
-      permissions: {
-        examplePerm: { // add an entry like this for each of your custom permissions
-          title: 'Example Perm',
-          description: 'Test permission for riv demo',
-          category: 'Example Category',
-        },
-      },
-    },
+      // rivDatabase: 'riv', // default is riv but change this to use a different db for built-in collections
+    // },
+    // roles: { // add this to extend the built-in permissions with your own custom perms
+    //   permissions: {
+    //     examplePerm: { // add an entry like this for each of your custom permissions
+    //       title: 'Example Perm',
+    //       description: 'Test permission for riv demo',
+    //       category: 'Example Category',
+    //     },
+    //   },
+    // },
   },
 };

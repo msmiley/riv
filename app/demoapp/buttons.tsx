@@ -1,6 +1,5 @@
 import type { Route } from "./+types/buttons";
 import { useState } from 'react';
-import type { Route } from "./+types/buttons";
 
 import Column from '../components/containers/Column';
 import Row from '../components/containers/Row';
@@ -22,7 +21,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Component() {
 
-  const [clickState, setClickState] = useState(false);
+  const [clickState, setClickState] = useState<boolean>(false);
 
   // example toggle function
   function toggleClickState() {
@@ -36,7 +35,7 @@ export default function Component() {
         <Row>
           <Card>
             <Slot name="subtitle">Click State</Slot>
-            { clickState ? 'clicked':'not clicked' }
+            { clickState ? 'On':'Off' }
           </Card>
         </Row>
 
@@ -96,7 +95,7 @@ export default function Component() {
             <Slot name="description">The default mode for a toggle</Slot>
             <Row>
               <Toggle active={clickState} onClick={() => setClickState(!clickState)}>
-                <Slot name="title">title Slot</Slot>
+                Default slot
               </Toggle>
             </Row>
           </Card>

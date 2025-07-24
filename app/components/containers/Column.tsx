@@ -1,19 +1,19 @@
-import { PropsWithChildren } from 'react';
+import React from 'react';
 import { cls } from '../../utils';
 
-interface ColumnProps extends PropsWithChildren {
-  center: boolean; // alias for flex align-items: center
-  gap: string;     // flex gap parameter, defaults to --riv-layout-gap
-  grow: boolean;   // set flex grow
-  shrink: boolean; // set flex shrink
-  self: string;    // flex align-self setting
+interface ColumnProps extends React.PropsWithChildren {
+  center?: boolean; // alias for flex align-items: center
+  gap?: string;     // flex gap parameter, defaults to --riv-layout-gap
+  grow?: boolean;   // set flex grow
+  shrink?: boolean; // set flex shrink
+  self?: string;    // flex align-self setting
 }
 
 export default function Column(props: ColumnProps) {
   return (
-    <div className={cls(['riv-column', {
+    <div className={cls('riv-column', {
       center: props.center
-    }])} style={{
+    })} style={{
       gap: props.gap ?? 'var(--riv-layout-gap)',
       flexGrow: props.grow ? 1:0,
       flexShrink: props.shrink ? 1:0,

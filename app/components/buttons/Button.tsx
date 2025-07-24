@@ -6,11 +6,11 @@ import useSlot from '../../hooks/useSlot';
 import styles from './buttons.module.css';
 
 interface ButtonProps extends React.PropsWithChildren {
-  size: 'sm' | 'md' | 'lg';
-  variant: 'regular' | 'corners' | 'outline' | 'icon';
-  color: string;
-  grow: boolean;
-  active: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'regular' | 'corners' | 'outline' | 'icon' | 'link' | 'text' | 'tight';
+  color?: string;
+  grow?: boolean;
+  active?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -25,23 +25,25 @@ export default function Button({
 }: ButtonProps) {
 
   return (
-    <div className={cls([styles.button, { grow }])}
-         style={{ '--riv-button-color': parseColor(color) }}
-         role="button" aria-pressed="false"
-         onClick={onClick}>
-      <div className={cls([styles.buttonInner,
-                           styles.buttonSize,
-                           styles.buttonPadding,
-                           size,
-                           variant,
-                           {
-                             active
-                           }])}>
+    <button className={cls(styles.button, { grow })}
+            style={{
+              '--riv-button-color': parseColor(color)
+            } as React.CSSProperties}
+            role="button" aria-pressed="false"
+            onClick={onClick}>
+      <div className={cls(styles.buttonInner,
+                          styles.buttonSize,
+                          styles.buttonPadding,
+                          size,
+                          variant,
+                          {
+                            active,
+                          })}>
         <div className={styles.buttonContent}>
           {useSlot(children, 'default')}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 

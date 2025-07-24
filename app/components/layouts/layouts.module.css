@@ -1,3 +1,6 @@
+/*--------------------------------------*/
+/* SidebarOnly */
+/*--------------------------------------*/
 .sidebarOnly {
   display: flex;
   width: 100vw;
@@ -9,3 +12,11 @@
   overflow: auto;
 }
 
+/*--------------------------------------*/
+/* CenteredColumn */
+/*--------------------------------------*/
+
+.centeredColumn {
+  align-self: center;
+  composes: global(riv-mobile-full-width);
+}

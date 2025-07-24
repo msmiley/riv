@@ -10,12 +10,18 @@ import RivVitePlugin from './server/riv-vite-plugin';
 
 export default defineConfig({
   root: 'app', // root for index.html, etc.
+  esbuild: { // these flags are necessary to enable viv class sharing/syncing
+    target: 'es2022',
+    minifyIdentifiers: false,
+    keepNames: true,
+  },
   plugins: [
-    RivVitePlugin({
+    // COMMENTED FOR NOW, UNTIL DECORATORS ARE WIDELY SUPPORTED
+    // RivVitePlugin({
       // don't copy the demoMode field to your project! this enables this project to demo itself
-      demoMode: true,
-      configPath: './riv.config.js',
-    }),
+      // demoMode: true,
+      // configPath: './riv.config.js',
+    // }),
     tailwindcss(),
     reactRouter(),
     tsconfigPaths(),

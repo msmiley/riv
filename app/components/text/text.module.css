@@ -1,5 +1,5 @@
 /*--------------------------------------*/
-/* INLINECODE */
+/* InlineCode */
 /*--------------------------------------*/
 .inlineCode {
   font-family: var(--riv-code-font-family);
@@ -7,4 +7,18 @@
   padding: 0 0.2em;
   border-radius: var(--riv-selection-border-radius);
   box-shadow: inset 0px 0px 0.4em var(--riv-black);
+}
+
+
+/*--------------------------------------*/
+/* Title */
+/*--------------------------------------*/
+.title {
+  composes: global(riv-text-emboss);
+}
+.title:global(.hr) {
+  border-bottom: 1px solid var(--riv-outline);
+}
+.title:global(.margins) {
+  margin: 0.5em 0;
 }

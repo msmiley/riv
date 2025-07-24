@@ -49,6 +49,21 @@ body.riv-dark {
   font-style: normal;
 }
 
+/* SEMANTIC HEADER CLASSES */
+.riv-text-h1 {
+  font-size: 1.3em;
+}
+.riv-text-h2 {
+  font-size: 1.2em;
+}
+.riv-text-h3 {
+  font-size: 1.1em;
+}
+.riv-text-h4 {
+  font-size: 1em;
+}
+
+
 /* UTILITY CLASSES */
 .riv-text-center {
   text-align: center;
@@ -111,4 +126,7 @@ body.riv-dark {
 }
 .riv-text-nowrap {
   white-space: nowrap;
+}
+.riv-text-emboss {
+  text-shadow: 0px 0px 1px rgba(0,0,0,.1);
 }

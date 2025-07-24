@@ -17,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Component() {
   const colorVars = [
-    '--riv-indigo',
+    '--riv-super-dark-purple',
     '--riv-purple',
     '--riv-plum',
     '--riv-lavender',
@@ -97,7 +97,7 @@ export default function Component() {
       <Card>
         <Slot name="title">Geopattern</Slot>
         <Slot name="description">riv also provides a component: GeoPattern which will set its background to a generated geometric pattern based on the content or a seed given through a property.</Slot>
-        <GeoPattern seed="test">
+        <GeoPattern style={{ height: '100px' }} seed="testtttt">
           Test
         </GeoPattern>
       </Card>
@@ -105,10 +105,10 @@ export default function Component() {
       <Card>
         <Slot name="title">CSS Colors</Slot>
         <Slot name="description"><span>riv provides many pre-defined CSS vars for a rainbow of colors. Any of these may be redefined in your app.</span></Slot>
-        <Row gap>
+        <Row gap="0">
           {colorVars.map((item, i) =>
-            <Card cols="3" key="i.toString()">
-              <div class="riv-color-chip" style={{
+            <Card cols={3} key={i.toString()}>
+              <div className="riv-color-chip" style={{
                 backgroundColor: `var(${item})`
               }}>
                 {item}
@@ -120,10 +120,10 @@ export default function Component() {
 
       <Card>
         <Slot name="subtitle">And the grayscale</Slot>
-        <Row gap>
+        <Row gap="">
           {grayScale.map((item, i) =>
-            <Card cols="3" key={i.toString()}>
-              <div class="riv-color-chip" style={{
+            <Card cols={3} key={i.toString()}>
+              <div className="riv-color-chip" style={{
                 backgroundColor: `var(${item})`
               }}>
                 {item }
@@ -135,10 +135,10 @@ export default function Component() {
 
       <Card>
         <Slot name="subtitle">Some of the above are aliased using semantic variant names</Slot>
-        <Row gap>
+        <Row gap="">
           {semanticColors.map((item, i) =>
-            <Card cols="3" key="i.toString()">
-              <div class="riv-color-chip" style={{
+            <Card cols={3} key={i.toString()}>
+              <div className="riv-color-chip" style={{
                 backgroundColor: `var(${item})`
               }}>
                 {item }
@@ -150,10 +150,10 @@ export default function Component() {
 
       <Card>
         <Slot name="subtitle">...and text colors</Slot>
-        <Row gap>
+        <Row gap="">
           {textColors.map((item, i) =>
-            <Card cols="3" key="i.toString()">
-              <div class="riv-color-chip" style={{
+            <Card cols={3} key={i.toString()}>
+              <div className="riv-color-chip" style={{
                 color: 'white',
                 backgroundColor: `var(${item})`
               }}>
@@ -166,10 +166,10 @@ export default function Component() {
 
       <Card>
         <Slot name="subtitle"><span>riv also provides <em>chartColorGenerator()</em> a color palette generator for chart colors that works with either numbers or strings as a seed.</span></Slot>
-        <Row gap>
+        <Row gap="">
           {Array.from(Array(10), (e, i) =>
-            <Card cols="3" key="i.toString()">
-              <div class="riv-color-chip" style={{
+            <Card cols={3} key={i.toString()}>
+              <div className="riv-color-chip" style={{
                 color: 'white',
                 backgroundColor: chartColorGenerator(i),
               }}>

@@ -6,12 +6,12 @@ import useSlot from '../../hooks/useSlot';
 import styles from './buttons.module.css';
 
 interface ChipProps extends React.PropsWithChildren {
-  name: string;
-  size: 'sm' | 'md' | 'lg';
-  variant: 'regular' | 'corners' | 'outline';
-  color: string,
-  grow: boolean,
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  name?: string;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'regular' | 'corners' | 'outline';
+  color?: string,
+  grow?: boolean,
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export default function Chip({
@@ -22,11 +22,14 @@ export default function Chip({
   grow,
   onClick,
   children,
-}: ButtonProps) {
+}: ChipProps) {
 
   return (
-    <div className={cls([styles.chip, { grow }])}
-         style={{ '--riv-chip-color': parseColor(color) }}
+    <div role="button"
+         className={cls(styles.chip, { grow })}
+         style={{
+           '--riv-chip-color': parseColor(color)
+         } as React.CSSProperties}
          onClick={onClick}>
           {useSlot(children, 'default')}
     </div>

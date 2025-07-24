@@ -1,11 +1,11 @@
+import React from 'react';
 import { Outlet } from 'react-router';
-import { PropsWithChildren } from 'react';
 import styles from './layouts.module.css';
 
 import Sidebar from '../sidebar/Sidebar';
 
-interface SidebarOnlyProps extends PropsWithChildren {
-  routes: Array; // routes array
+interface SidebarOnlyProps extends React.PropsWithChildren {
+  routes: object[]; // routes array
 }
 
 export default function SidebarOnly(props: SidebarOnlyProps) {

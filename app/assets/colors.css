@@ -7,7 +7,7 @@ body {
   --riv-accent-5: #1b98e0;
 
   /* named colors */
-  --riv-indigo: #682fa1;
+  --riv-super-dark-purple: #682fa1;
   --riv-purple: #551A8B;
   --riv-plum: #601A3E;
   --riv-lavender: #b481e0;
@@ -96,3 +96,4 @@ body.riv-dark {
   color: white;
   text-shadow: 0 0 5px black;
 }
+

@@ -5,49 +5,77 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import utils from './utils.ts';
+import type { RivServer } from './riv-server.ts';
 import { RivError } from '../shared/base/riv-error.ts';
+import { RivModule, ApiMethod, Property, EventHandler } from '../shared/base/riv-module.ts';
+import type { RivRequest } from 'shared/types/server';
 
-export default {
-  name: 'Info',
-  props: {
-    // finds riv version
-    version: JSON.parse(fs.readFileSync(path.join(utils.findRoot(), 'package.json'))).version,
-  },
+export default class Info extends RivModule {
+  version: string = ''; // riv version
+
+  @Property('this is a test prop')
+  testProp: string = 'testProp default value';
+  @Property('sets the pint interval')
+  pingInterval: number = 10000; // ping interval in ms, default 10 seconds
+
   init() {
-    setInterval(this.sendTime, 1000);
-  },
-  data() {
-    return {
-    };
-  },
-  api: {
-    getRivVersion() {
-      return this.version;
-    },
-    getName() {
-      return this.name;
-    },
-    getDate() {
-      return new Date();
-    },
-    // test harnesses
-    'throwConsoleError:dev'(req, msg) {
-      this.$error(msg);
-    },
-    'throwRivError:dev'(req, msg) {
-      return new RivError(msg);
-    },
-    'consoleLog:dev'(req, msg, msg2) {
-      console.log('Info.consoleLog----------------------------------------------');
-      console.log('types: ', typeof(msg), typeof(msg2));
-      console.log(msg, msg2);
-      console.log('-------------------------------------------------------------');
-    },
-  },
-  methods: {
-    sendTime() {
-      this.$emit('sendToAllUsers', 'ServerTime', new Date().getTime());
-      // this.$emit('sendToUserId', '667b2561c943a65d9f932e1a', 'sdjfkls');
-    },
-  },
-};
+    this.$log('Info init()');
+    
+    this.version = JSON.parse(fs.readFileSync(path.join(utils.findRoot(), 'package.json'), 'utf-8')).version;
+    setInterval(this.sendTime, this.pingInterval);
+  }
+  /////////////////////
+  // API METHODS
+  /////////////////////
+  @ApiMethod('Get the current Riv version')
+  getRivVersion() {
+    return this.version;
+  }
+  @ApiMethod('Get the server name')
+  getName() {
+    return this.name;
+  }
+  @ApiMethod('Get the current date and time')
+  getDate() {
+    return new Date();
+  }
+  @ApiMethod('Get the testProp')
+  getTestProp() {
+    return this.testProp;
+  }
+  // test harnesses
+  @ApiMethod('Manually throw a console error on the server', 'dev')
+  throwConsoleError(req: RivRequest, msg: string) {
+    this.$error(msg);
+  }
+  @ApiMethod('Manually throw a RivError on the server', 'dev')
+  throwRivError(req: RivRequest, msg: string) {
+    return new RivError(msg);
+  }
+  @ApiMethod('Test log to console', 'dev')
+  consoleLog(req: RivRequest, msg: string, msg2: string) {
+    console.log('Info.consoleLog----------------------------------------------');
+    console.log('types: ', typeof(msg), typeof(msg2));
+    console.log(msg, msg2);
+    console.log('-------------------------------------------------------------');
+  }
+
+  //
+  // EVENT HANDLERS
+  //
+  @EventHandler('riv.test,riv.test2', 'Test event handler')
+  testEventHandler(...args: any[]) {
+    this.$log('Info.testEventHandler called with args:', args);
+  }
+
+  //
+  // METHODS
+  //
+  sendTime() {
+    console.log('sending time to all users');
+    // this.$emit('sendToAllUsers', 'ServerTime', new Date().getTime());
+    // this.$emit('sendToUserId', '667b2561c943a65d9f932e1a', 'sdjfkls');
+  }
+}
+
+

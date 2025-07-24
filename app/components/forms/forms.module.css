@@ -1,0 +1,115 @@
+
+/*--------------------------------------*/
+/* Form */
+/*--------------------------------------*/
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.formHeader {
+  width: var(--riv-form-width);
+  padding: var(--riv-form-header-padding, 1rem 1rem 0.5rem 0.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--riv-form-gap);
+}
+.formTitle {
+  font-size: var(--riv-form-title-font-size, 1.2em);
+  font-weight: var(--riv-form-title-font-weight, 600);
+  color: var(--riv-form-title-color, var(--riv-text-color));
+}
+.formDescription {
+  margin: 0; /* reset <p> margin */
+  font-size: var(--riv-form-description-font-size, 1em);
+  color: var(--riv-form-description-color, var(--riv-text-color-muted));
+}
+.formContent {
+  display: flex;
+  flex-direction: column;
+}
+.formButtons {
+  display: flex;
+  justify-content: end;
+  margin: calc(var(--riv-form-gap) * 2.0);
+  gap: var(--riv-form-gap);
+}
+
+/*--------------------------------------*/
+/* FormItem */
+/*--------------------------------------*/
+.formItem {
+  border: var(--riv-form-item-border);
+  border-radius: var(--riv-form-item-border-radius);
+
+  display: flex;
+  flex-direction: column;
+  padding: var(--riv-form-item-padding);
+}
+.formItem:global(.clean) {
+  border: none;
+}
+
+/* ROUND TOP CORNERS OF FIRST TRAY */
+.formItem:global(.joinable):first-of-type:not(:only-of-type) {
+  border-bottom: var(--viv-control-border-width) solid var(--viv-outline);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: none;
+}
+/* MIDDLE TRAYS */
+.formItem:global(.joinable):not(:first-of-type):not(:last-of-type) {
+  border-bottom: none;
+  border-radius: 0;
+}
+/* ROUND BOTTOM CORNERS OF LAST TRAY */
+.formItem:global(.joinable):last-of-type:not(:only-of-type) {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.formItemHeader {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--riv-control-gap);
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formItemLabel:empty {
+  display: none;
+}
+.formItemRequired {
+  font-style: italic;
+  color: var(--riv-danger);
+  padding-left: var(--riv-toolbar-gap);
+}
+.formItemControl {
+  flex-grow: 1; /* let control take all the space in case label not used */
+  display: flex;
+  justify-content: end;
+}
+.formItemDescription {
+  font-size: var(--riv-form-item-description-font-size);
+  color: var(--riv-text-color-muted);
+}
+
+/*--------------------------------------*/
+/* FormInputText */
+/*--------------------------------------*/
+.formInputText {
+  flex-grow: 1;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: inherit;
+  font-weight: var(--riv-inputs-text-font-weight);
+  color: var(--riv-inputs-text-fg);
+  text-align: right;
+  caret-color: var(--riv-selection);
+  margin-left: 1em;
+}
+.formInputText::placeholder {
+  color: var(--riv-text-color-placeholder);
+  padding: var(--riv-inputs-placeholder-padding);
+}

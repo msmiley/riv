@@ -36,26 +36,8 @@ export default {
       engine: 'Mongolap',
       store: 'riv.activity',
     });
-    // add example dataset
-    if (this.loadExampleData) {
-      this.datasets.example = {
-        title: 'Example',
-        engine: 'Mongolap',
-        store: this.exampleCollection,
-      };
-    }
   },
   events: {
-    async 'Mongo.ready'() {
-      // if mongo is ready and loadExampleData is true, load example data if
-      // the collection is  empty
-      let count = await this.$.Mongo.count(this.exampleCollection);
-      if (count === 0 && this.loadExampleData) {
-        this.$warn('loading example data into mongo');
-        let mod = await import('./example/load-example-data.ts');
-        mod.default.loadData(this.insert);
-      }
-    },
     // event proxy to local insert method
     'Analytics.insert'(dataset, doc) {
       this.insert(dataset, doc);

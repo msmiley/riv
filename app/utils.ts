@@ -2,12 +2,13 @@ import * as d3 from 'd3';
 let colors = d3.scaleOrdinal([...Array(10).keys()], d3.schemeDark2);
 
 import * as GP from '@victr/geopattern';
-
-// helper to process classNames in Vue form
 //
-export function cls(classnames) {
+// helper to process classNames in Vue form
+// e.g. cls(styles.button, `variant_${props.variant}`, { disabled, color: getColor(props) })
+//
+export function cls(...classnames: (string | object)[]) {
   // recursive function to crawl
-  let recur = function(o, ary) {
+  let recur = function(o: (string | object), ary: string[]) {
     // loop through object entries
     for (let [k, v] of Object.entries(o)) {
 
@@ -28,7 +29,7 @@ export function cls(classnames) {
       }
     }
   };
-  let ret = [];
+  let ret: string[] = [];
   recur(classnames, ret)
   return ret.join(' ');
 };
@@ -37,9 +38,9 @@ export function cls(classnames) {
 // util to interpret bootstrap variant (succes, warning, critical) color names,
 // also wraps naked CSS vars in var()
 //
-export function parseColor(color) {
+export function parseColor(color: string) {
   // if CSS var name was provided, wrap it and exit
-  if (typeof(color) === 'string' && color.startsWith('--')) {
+  if (color.startsWith('--')) {
     return `var(${color})`;
   }
   // interpret semantic color variants, otherwise return original
@@ -65,12 +66,21 @@ export function parseColor(color) {
   }
 };
 
-export function chartColorGenerator(color) {
+export function chartColorGenerator(color: number) {
   return colors(color);
 };
 
-export function getGeoPattern(str) {
+export function getGeoPattern(str: string) {
   if (str) {
     return GP.generate(str).toDataUrl()
   }
+};
+
+export function generateId(length = 8) {
+  function dec2hex (dec: number) {
+    return dec < 10 ? '0' + String(dec):dec.toString(16);
+  }
+  var arr = new Uint8Array((length) / 2);
+  crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('');
 };

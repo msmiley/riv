@@ -19,8 +19,8 @@ export default function Icon(props: IconProps) {
   if (!props.name) {
     return <></>;
   }
-  // get the icon from our store
-  const IconComponent = iconComponents[props.name];
+  // get the icon from our store, fallback to question mark for invalid name
+  const IconComponent = iconComponents[props.name] ?? iconComponents.question;
   return (
     <div className={styles.icon}>
       <IconComponent/>

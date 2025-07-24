@@ -1,14 +1,14 @@
-import { PropsWithChildren } from 'react';
+import React from 'react';
 import styles from './text.module.css';
 
-interface InlineCodeProps extends PropsWithChildren {
+interface InlineCodeProps extends React.PropsWithChildren {
 
 }
 
 export default function InlineCode(props: InlineCodeProps) {
   return (
-    <div className={styles.inlineCode}>
+    <span className={styles.inlineCode}>
       {props.children}
-    </div>
+    </span>
   );
 }

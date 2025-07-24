@@ -1,9 +1,9 @@
-import { PropsWithChildren } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router';
 import styles from './sidebar.module.css';
 
-interface SidebarSubRoutesProps extends PropsWithChildren {
-  routes: array;    // children routes
+interface SidebarSubRoutesProps extends React.PropsWithChildren {
+  routes:  {[key: string]: any}[];    // children routes
   isShown: boolean; // whether this should render
 }
 
