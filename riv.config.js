@@ -96,7 +96,7 @@ export default {
     info: {
       testProp: 'override testProp value',
       pingInterval: 1000,
-    }
+    },
     // example of loading a user-defined module in the same folder as front-end app code
     // auth: {
       // enable2fa: true,
@@ -134,13 +134,13 @@ export default {
       // transport: {
       // }
     // },
-    // mongo: { // built-in mongo module
-      // enabled: true,
-      // host: '127.0.0.1',
-      // port: 27017,
-      // debug: true,
-      // rivDatabase: 'riv', // default is riv but change this to use a different db for built-in collections
-    // },
+    mongo: { // built-in mongo module
+      enabled: true,
+      host: '127.0.0.1',
+      port: 27017,
+      debug: true,
+      rivDatabase: 'riv', // default is riv but change this to use a different db for built-in collections
+    },
     // roles: { // add this to extend the built-in permissions with your own custom perms
     //   permissions: {
     //     examplePerm: { // add an entry like this for each of your custom permissions

@@ -28,6 +28,7 @@ export class RivModule {
   $debug: ConsoleLogMethod = () => {};
   $warn: ConsoleLogMethod = () => {};
   $error: ConsoleLogMethod = () => {};
+  $ready: ConsoleLogMethod = () => {};
   // alias for emitting events, can be used by modules to communicate
   $emit: (eventType: string, ...args: any[]) => void = () => {};
   $shutdown: () => void = () => {}; // shutdown method to be called by server
@@ -64,16 +65,15 @@ export class RivModule {
     // Assign the server's modules to this instance for easy access
     this.$ = server.modules;
     // Assign logging methods from the server
-    this.$log = server.$log.bind(server);
-    this.$debug = server.$debug.bind(server);
-    this.$warn = server.$warn.bind(server);
-    this.$error = server.$error.bind(server);
+    this.$log = (...args) => { server.$log.apply(server, [ this.name, ...args ]) };
+    this.$debug = (...args) => { server.$debug.apply(server, [ this.name, ...args ]) };
+    this.$warn = (...args) => { server.$warn.apply(server, [ this.name, ...args ]) };
+    this.$error = (...args) => { server.$error.apply(server, [ this.name, ...args ]) };
+    this.$ready = (...args) => { server.$ready.apply(server, [ this.name, ...args ]) };
     // Assign the emit method for event communication
     this.$emit = server.emit.bind(server);
     // Assign the shutdown method for server shutdown
-    this.$shutdown = () => {
-      server.$shutdown.apply(server, [ this.name ]);
-    }
+    this.$shutdown = () => { server.$shutdown.apply(server, [ this.name ]) };
     // register event handlers
     for (const handler of this.#eventHandlers) {
       console.log(`riv> event handler registered: ${this.name}.${handler.name} listening for ${handler.event}`);
@@ -85,15 +85,13 @@ export class RivModule {
           eventData[e] = null; // initial value
           // register for this event
           server.once(e, (...args: any[]) => {
-            // save arguments
+            // collect arguments for later
             eventData[e] = args;
-
             // see if we have a value for all requested events
             let itsgotime = Object.keys(eventData).reduce((acc, key) => {
               return acc && !!eventData[key];
             }, true);
-
-            // if it's go time, call the handler with event args
+            // if it's go time, call the handler with all the event args
             if (itsgotime) {
               (this as any)[handler.name].bind(this)(eventData);
             }

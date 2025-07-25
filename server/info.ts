@@ -24,6 +24,9 @@ export default class Info extends RivModule {
     this.version = JSON.parse(fs.readFileSync(path.join(utils.findRoot(), 'package.json'), 'utf-8')).version;
     setInterval(this.sendTime, this.pingInterval);
   }
+  done() {
+    this.$log('Info done()');
+  }
   /////////////////////
   // API METHODS
   /////////////////////
@@ -41,7 +44,8 @@ export default class Info extends RivModule {
   }
   @ApiMethod('Get the testProp')
   getTestProp() {
-    return this.testProp;
+    let d = this.$.Mongo.find('rivRoles', { name: 'Administrator' });
+    return d;
   }
   // test harnesses
   @ApiMethod('Manually throw a console error on the server', 'dev')

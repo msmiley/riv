@@ -21,3 +21,6 @@ export interface RivRequest {
 }
 
 export type ConsoleLogMethod = (...args: any[]) => void;
+
+// type for API method arguments, should allow a generic object or a rehydrated class
+export type ApiMethodArg = { [key: string]: any };

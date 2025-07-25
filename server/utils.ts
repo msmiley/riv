@@ -25,7 +25,7 @@ export default {
       } else if (req.url === '/logo.png') {
         contentType = 'image/png';
         filePath = req.url;
-      } else if (req.url.startsWith('/assets')) {
+      } else if (req.url?.startsWith('/assets')) {
         filePath = `.${req.url}`;
         let ext = path.extname(filePath);
         contentType = 'text/html';
@@ -173,7 +173,10 @@ export default {
   __dirname() {
     return path.dirname(fileURLToPath(import.meta.url));
   },
-  findRoot(p = this.__dirname()): string {
+  findRoot(p: string = ''): string {
+    if (p.length === 0) {
+      p = this.__dirname();
+    }
     // console.log(`riv> findRoot starting in ${p}`);
     var rpath = path.resolve(p);
     if (fs.existsSync(path.join(rpath, 'package.json'))) {
@@ -191,9 +194,10 @@ export default {
     }
   },
   findFiles(p: string, ext = '.ts') {
+    //@ts-ignore
     return fs.globSync(`${p}/**/*${ext}`);
   },
-  async findClasses(p) {
+  async findClasses(p: string) {
     let ret = {};
     let files = this.findFiles(p);
     for (let f of files) {

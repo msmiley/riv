@@ -48,13 +48,13 @@ const DEFAULT_CONFIG = {
     // analytics: {},
     // 'analytics/engines/mongolap': {},
     // 'analytics/engines/druid': {},
-    // auth: {},
+    auth: {},
+    mongo: {},
     info: {},
     // roles: {},
     // users: {},
     // activity: {},
     // store: {},
-    // mongo: {},
   },
 };
 
@@ -170,7 +170,7 @@ export class RivServer extends EventEmitter {
         console.warn(`riv> socket.io connection with no token, only login will be allowed`);
       } else {
         // validate the sent token
-        let tokenValid = false;//this.modules.Auth.validateToken(token);
+        let tokenValid = this.modules.Auth.validateToken(token);
         if (tokenValid) {
           user_id = tokenValid.sub;
           let tokenType = tokenValid.aud;
@@ -415,6 +415,10 @@ export class RivServer extends EventEmitter {
   }
   $error(...args: any[]) {
     this.modules.Console.error(...args);
+  }
+  $ready(name: string, ...args: any[]) {
+    this.emit(`${name}.ready`, ...args); // emit a ready event for this module
+    this.modules.Console.ready(name, ...args);
   }
   //
   // shutdown handler
