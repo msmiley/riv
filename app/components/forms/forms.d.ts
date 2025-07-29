@@ -1,4 +1,3 @@
-import React from 'react';
 
 // Shared props for form components, encapsulates the props passed to FormItem
 interface FormSharedProps extends React.PropsWithChildren {

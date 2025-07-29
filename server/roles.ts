@@ -4,7 +4,7 @@
 //
 import mongo from 'mongodb';
 import { find, findIndex, flatMap } from 'lodash-es';
-import { ApiMethod, EventHandler, Property, RivModule } from 'shared/base/riv-module';
+import { ApiMethod, EventHandler, Method, Property, RivModule } from 'shared/base/riv-module';
 import type { CategorizedPermissions, DefaultRoleDescriptor, Permission } from 'shared/types/shared';
 import type { RivRequest } from 'shared/types/server';
 
@@ -186,7 +186,7 @@ export default class Roles extends RivModule {
     return this.$.Mongo.deleteOne('rivRoles', _id);
   }
 
-  // refresh local role cache from mongo
+  @Method('Refresh local role cache from mongo')
   refresh() {
     this.$.Mongo.find('rivRoles', {}).then((docs: any[]) => {
       this.$debug(`fetched ${docs.length} roles for cache`);
@@ -195,6 +195,7 @@ export default class Roles extends RivModule {
       this.$error('error loading roles from mongo', err);
     });
   }
+  @Method('Ensure that the db has indexes')
   ensureIndex() {
     this.$.Mongo.createIndexes('rivRoles', [
       {
@@ -211,6 +212,7 @@ export default class Roles extends RivModule {
   //
   // Ensure the database contains the admin role
   //
+  @Method('Ensure that a default role exists')
   async ensureDefaultRoles() {
     // flatten permissions into permissions.<key>
     // so we can update the default role permissions non-destructively to enable
@@ -254,6 +256,7 @@ export default class Roles extends RivModule {
   //
   // get all role info for the given array of role_ids
   //
+  @Method('Get all role info for the specified role ids')
   getAllRoleInfo(role_ids: string[] | mongo.ObjectId[]) {
     let roleInfo = [];
     let perms = [];

@@ -138,7 +138,6 @@ export default {
       enabled: true,
       host: '127.0.0.1',
       port: 27017,
-      debug: true,
       rivDatabase: 'riv', // default is riv but change this to use a different db for built-in collections
     },
     // roles: { // add this to extend the built-in permissions with your own custom perms

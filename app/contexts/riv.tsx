@@ -4,32 +4,11 @@
 // - user session
 // -
 import React from 'react';
-import { filter } from 'lodash-es';
-import { io } from 'socket.io-client';
 import { generateId } from '../utils';
+import RivActions from './riv-actions';
+import type { RivState, RivAction } from '../types';
+import { RivSocketDirection } from '../enums';
 
-const SOCKET_RECONNECT_INTERVAL = 1000; // 1 second
-
-// enum for direction of socket messages
-enum RivSocketDirection {
-  Send = 'client>server',
-  Recv = 'server>client',
-}
-
-// format for actions
-interface RivAction {
-  type: string;
-  data?: {[key: string]: any};
-}
-// state object
-interface RivState {
-  username: string;
-  count: number;
-
-  ioSocket: any;
-  ioConnected: boolean;
-  ioListeners: { eventType: string, callback: Function }[];
-}
 // context type
 interface RivContextT {
   state: RivState;
@@ -41,109 +20,29 @@ export const RivContext = React.createContext<RivContextT>({} as RivContextT);
 
 export function RivProvider({ children }: React.PropsWithChildren) {
   let token = '<token>';
+
+  // proxy for dispatching an action
+  const dispatchProxy = (action: RivAction) => dispatch(action);
   //
   // riv context reducer, all actions are handled here
   //
-  const reducer = (state: RivState, action: RivAction) => {
-    const { type, data } = action;
-    switch (type) {
-      // riv initialization
-      case 'init': {
-        // meta.env is set by vite, so we can use it to determine the URL
-        let url = import.meta.env ? 'http://localhost:5500/riv' : '/riv';
-        const ioSocket = io(url, {
-          path: `/socket.io`,
-          transports: ['websocket', 'polling'],
-          auth: {
-            token: 'token', // send the token for auth
-          },
-        });
-        // called when the socket connects
-        ioSocket.on('connect', () => {
-          dispatch({ type: 'connected' });
-        });
-        // called on disconnect
-        ioSocket.on('disconnect', () => {
-          dispatch({ type: 'disconnected' });
-          ioSocket.auth = { token: 'token' }; // set token for reconnect attempt
-          setTimeout(() => { // use timeout to avoid immediate reconnect loop
-            ioSocket.connect();
-          }, SOCKET_RECONNECT_INTERVAL);
-        });
-        // receive handler
-        ioSocket.on(RivSocketDirection.Recv, (eventType, ...args) => {
-          // process built-in riv messages
-          switch (eventType) {
-            case 'ping':
-              console.debug('riv> ping received', args); 
-              break;
-            case 'riv-invalid-token':
-              console.log('riv> invalid token, logging out');
-              dispatch({ type: 'logout' });
-              break;
-            case 'riv-update-user':
-              console.log('riv> received user profile', args);
-              break;
-          }
-          // provide the event to any listeners
-          let listeners = filter(state.ioListeners, { eventType });
-          for (let l of listeners) {
-            l.callback && l.callback(...args);
-          }
-        });
-        return {
-          ...state,
-          ioSocket
-        };
-      }
-      case 'connected':
-        console.debug('riv> socket.io connected');
-        return {
-          ...state,
-          ioConnected: true,
-        };
-      case 'disconnected':
-        console.debug('riv> socket.io disconnected, reconnecting...');
-        return {
-          ...state,
-          ioConnected: false,
-        };
-      // add socket listener
-      case 'addListener':
-        if (data?.eventType && data?.callback) {
-          let newListener = {
-            id: generateId(),
-            eventType: data.eventType,
-            callback: data.callback,
-          };
-          return {
-            ...state,
-            ioListeners: [...state.ioListeners, newListener],
-          };
-        }
-        return state;
-      case 'increment':
-        return {
-          ...state,
-          count: state.count + 1,
-        };
-      default:
-        return state;
+  const reducer = (state: RivState, action: RivAction): RivState => {
+    if (action.type in RivActions) {
+      return RivActions[action.type as keyof typeof RivActions](state, action, dispatchProxy);
     }
+    return state;
   };
   //
   // initialize reducer
   //
   const [state, dispatch] = React.useReducer(reducer, {
     username: '',
-    count: 0,
-
     ioSocket: null,
     ioConnected: false,
     ioListeners: [], // socket listeners
   });
   //
-  // dispatch init
+  // dispatch initial init
   //
   React.useEffect(() => {
     dispatch({

@@ -1,10 +1,12 @@
 //
 // The UserModule handles all aspects of user accounting except authentication.
 //
-import { ApiMethod, EventHandler, Property, RivModule } from 'shared/base/riv-module';
+import mongo from 'mongodb';
+import { ApiMethod, EventHandler, Method, Property, RivModule } from 'shared/base/riv-module';
 import utils from './auth/utils';
 import { find, isObject, pick } from 'lodash-es';
 import type { RivRequest } from 'shared/types/server';
+import type { Role, User } from 'shared/types/shared';
 
 export default class Users extends RivModule {
   userCache: any[] = []; // local cache of users, updated through mongo.watch
@@ -12,7 +14,7 @@ export default class Users extends RivModule {
   @Property('Whether to ensure at least one admin user exists on startup')
   ensureAdmin: boolean = true;
   @Property('Interval in ms to refresh the user cache')
-  cacheInterval: number = 60000;
+  cacheInterval: number = 6000;
 
   //
   // When Roles gets an _id for a newly created role _id,
@@ -21,7 +23,7 @@ export default class Users extends RivModule {
   // the ensureAdmin prop to false
   //
   @EventHandler('Roles.ensureDefaultRoles', 'Ensures default roles are created and admin user exists')
-  async rolesReady(roles) {
+  async rolesReady(roles: Role[]) {
     for (let r of roles) {
       if (r.name === 'Administrator') {
         await this.ensureAdminUser(r._id);
@@ -40,13 +42,16 @@ export default class Users extends RivModule {
     // also start a timer as a fail-safe in case watching fails
     setInterval(this.refresh, this.cacheInterval);
   }
-
+  // 
   // get own user info
+  //
   @ApiMethod('Get own user info')
   me(req: RivRequest) {
     return this.$.Mongo.findOne('rivUsers', { _id: req.user._id });
-  },
+  }
+  //
   // kvp settings service for user
+  //
   @ApiMethod('Save user setting')
   saveSetting(req: RivRequest, setting: any) {
     // prepend settings keys with 'settings.' so that the mongo update
@@ -58,7 +63,7 @@ export default class Users extends RivModule {
     return this.$.Mongo.updateOne('rivUsers', req.user._id, {
       $set: setSettings,
     });
-  },
+  }
   //
   // user profile (subset of user record)
   //
@@ -66,7 +71,7 @@ export default class Users extends RivModule {
   profileById(req: RivRequest, user_id: string) {
     let user = this.userById(user_id);
     return pick(user, ['fullname', 'username', 'avatar']);
-  },
+  }
   //
   // user avatar only
   //
@@ -92,36 +97,35 @@ export default class Users extends RivModule {
   createUser(req: RivRequest, { fullname, username, email, password, enabled, role_ids = [] }: any) {
     let hashedPassword = utils.generatePasswordHash(password);
     let obj = {
-      fullname,
+      role_ids: [],
       username,
+      fullname,
       email,
       password: hashedPassword,
       enabled,
       mustChangePass: true,
-      role_ids: [],
-      settings: {},
-    };
-    // process role_ids, make sure we only have ids not objects
-    for (let r of role_ids) {
-      if (isObject(r) && r._id) {
-        obj.role_ids.push(r._id);
-      } else {
-        obj.role_ids.push(r);
-      }
-    }
+      token: '',
+      created: new Date(),
+      updated: null,
+      firstLogin: null,
+      lastLogin: null,
+      settings: {}, // TODO: remove this, use kvp settings instead
+    } as User;
+
     let st = Date.now();
-    return this.$.Mongo.insertOne('rivUsers', obj).then((rslt) => {
+
+    return this.$.Mongo.insertOne('rivUsers', obj).then((rslt: any) => {
       // send entry to activity log
-      this.$.Activity.addEntry({
-        source: this.name,
-        event: 'user created',
-        eventValue: username,
-        data: obj,
-        req,
-        elapsed: Date.now() - st,
-      });
+      // this.$.Activity.addEntry({
+      //   source: this.name,
+      //   event: 'user created',
+      //   eventValue: username,
+      //   data: obj,
+      //   req,
+      //   elapsed: Date.now() - st,
+      // });
       return rslt;
-    }).catch((e) => { // catch common errors and provide sane explanation
+    }).catch((e: Error) => { // catch common errors and provide sane explanation
       if (e.code) {
         switch (e.code) {
           case 11000:
@@ -194,23 +198,27 @@ export default class Users extends RivModule {
   
   // private methods
   // refresh local user cache from mongo
+  @Method('Refresh')
   refresh() {
-    return this.$.Mongo.find('rivUsers', {}).then((docs) => {
+    return this.$.Mongo.find('rivUsers', {}).then((docs: any) => {
       this.$debug(`fetched ${docs.length} users for cache`);
       this.userCache = docs;
-    }).catch((err) => {
+    }).catch((err: Error) => {
       this.$error('error loading users from mongo', err);
     });
   }
-  userById(_id) {
+  @Method('Get user by id')
+  userById(_id: string | mongo.ObjectId) {
     if (typeof(_id) === 'string') {
-      _id = new this.$.Mongo.mongo.ObjectId(_id);
+      _id = new mongo.ObjectId(_id);
     }
     return find(this.userCache, { _id });
   }
-  userByUsername(username) {
+  @Method('Get user by username')
+  userByUsername(username: string) {
     return find(this.userCache, { username });
   }
+  @Method('Ensure that db has index')
   ensureIndex() {
     this.$.Mongo.createIndexes('rivUsers', [
       {
@@ -220,12 +228,13 @@ export default class Users extends RivModule {
       },
     ]).then(() => {
       this.$log('user index ready to go');
-    }).catch((err) => {
+    }).catch((err: Error) => {
       this.$error('mongo.createIndexes call failed', err);
     });
   }
   // remove given role _id from all users role_ids array
-  purgeRole(_id) {
+  @Method('Remove a role from all users')
+  purgeRole(_id: string) {
     return this.$.Mongo.updateMany('rivUsers', {}, {
       $pull: { role_ids: _id },
     });
@@ -235,9 +244,10 @@ export default class Users extends RivModule {
   // security by setting ensureAdmin prop false, or add ENV var at run-time:
   // volante_Users_ensureAdmin=false
   //
-  ensureAdminUser(adminRole_id) {
+  @Method('Ensure that an admin user exists')
+  ensureAdminUser(adminRole_id: string) {
     if (this.ensureAdmin) {
-      return this.$.Mongo.count('rivUsers', {}).then((count) => {
+      return this.$.Mongo.count('rivUsers', {}).then((count: number) => {
         if (count === 0) {
           this.$.Mongo.insertOne('rivUsers', {
             enabled: true,
@@ -251,50 +261,15 @@ export default class Users extends RivModule {
             settings: {},
           }).then(() => {
             this.$warn('ensureAdminUser successful; created admin/admin user');
-          }).catch((err) => {
+          }).catch((err: Error) => {
             this.$error('error running ensureAdminRole against mongo', err);
           });
         } else {
           this.$log('ensureAdminUser successful; user exists');
         }
-      }).catch((err) => {
+      }).catch((err: Error) => {
         this.$error('couldnt get initial user count', err);
       });
     }
-  }
-  // used for syncing local users with external user auth systems
-  updateExternalUser({ fullname, username, roles }) {
-    let obj = {
-      fullname,
-      username,
-      enabled: true,
-      role_ids: [],
-    };
-    return new Promise((resolve, reject) => {
-      this.$.Roles.findExternalRoles().then((result) => {
-        for (let r of result) {
-          if (isObject(r) && (roles.indexOf(r.name) > -1) && r._id) {
-            obj.role_ids.push(r._id);
-          }
-        }
-        this.$.Mongo.updateOne('rivUsers', {
-          username: username
-        }, {
-          $set: obj
-        }, {
-          upsert: true
-        }).then(() => {
-          this.refresh().then(() => { return resolve(); });
-        }).catch((e) => {
-          if (e.code) {
-            switch (e.code) {
-              case 11000:
-                return reject('Error: Duplicate username');
-            }
-          }
-          return reject(e); // failsafe return entire error
-        });
-      });
-    });
   }
  }

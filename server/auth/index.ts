@@ -1,8 +1,9 @@
 import crypto from  'node:crypto';
 import { get } from 'lodash-es';
-import utils from './utils.ts';
-import { ApiMethod, Property, RivModule } from 'shared/base/riv-module.ts';
+import utils from './utils';
+import { ApiMethod, Method, Property, RivModule } from 'shared/base/riv-module';
 import type { RivRequest, ApiMethodArg } from 'shared/types/server';
+import type { User } from 'shared/types/shared';
 
 export default class Auth extends RivModule {
   @Property('Set AuthHook method name for authentication hook')
@@ -109,10 +110,10 @@ export default class Auth extends RivModule {
   @ApiMethod('Check two factor authentication code for user')
   checkTwoFa(req: RivRequest, { username, twoFactor }: ApiMethodArg) {
     let user = this.$.Users.userByUsername(username);
-    return this.$.Mongo.findOne('rivUsers', user._id).then((d) => {
+    return this.$.Mongo.findOne('rivUsers', user._id).then((d: any) => {
       // TODO: make sure OTP hasn't expired
       if (d.twoFa == twoFactor) {
-        return this.userAuthenticated(user).then((result) => {
+        return this.userAuthenticated(user).then((result: any) => {
           // add to activity log
           // this.$.Activity.addEntry({
           //   source: this.name,
@@ -185,9 +186,7 @@ export default class Auth extends RivModule {
     });
   }
 
-  //
-  // Authenticate a user either against mongo, or call hook if specified
-  //
+  @Method('Authenticate a user either against mongo, or call hook if specified')
   authenticateUser({ username, password }: any) {
     return new Promise(async (resolve, reject) => { // obj needs to have user and pass fields
       // if authHook is specified, call it as a method with the input,
@@ -264,7 +263,7 @@ export default class Auth extends RivModule {
         this.$warn('could not find password for user:', user);
         reject('uh-oh, theres something wrong with riv-server user cache');
       }
-    }).then((User) => { // next stage, all user info available
+    }).then((User: any) => { // next stage, all user info available
       // delete the password field for privacy
       if (User.password) {
         delete User.password;
@@ -276,7 +275,8 @@ export default class Auth extends RivModule {
       }
     });
   }
-  twoFactorChallenge(user) {
+  @Method('Generate a two-factor code for the specified user')
+  twoFactorChallenge(user: User) {
     return new Promise((resolve, reject) => {
       let now = new Date().getTime();
       let ccode = utils.generate2FaCode();
@@ -307,7 +307,7 @@ export default class Auth extends RivModule {
         //   user_id: user._id,
         // });
         resolve(user);
-      }).catch((err) => {
+      }).catch((err: Error) => {
         this.$warn(`error updating user for 2fa`, err);
         reject('Database error');
       });
@@ -317,14 +317,15 @@ export default class Auth extends RivModule {
   // Process for successful authentication; currently this includes
   // updating mongo with token and lastLogin
   //
-  userAuthenticated(obj) {
+  @Method('Signal successful authentication')
+  userAuthenticated(obj: User) {
     return new Promise((resolve, reject) => {
       if (!obj.username) {
         return reject('No username!');
       }
       this.$log(`user authenticated, building token for: ${obj.username}`);
       obj.token = this.buildToken(obj);
-      let updateOp = {
+      let updateOp: any = {
         $set: {
           token: obj.token,
           lastLogin: new Date(),
@@ -336,7 +337,7 @@ export default class Auth extends RivModule {
       // update mongo
       this.$.Mongo.updateOne('rivUsers', obj._id, updateOp).then(() => {
         resolve(obj);
-      }).catch((err) => {
+      }).catch((err: Error) => {
         this.$warn(`userAuthenticated database error`, err);
         reject('Database error');
       });
@@ -347,7 +348,8 @@ export default class Auth extends RivModule {
   // additional options to build a token for 2fa (will put code in token)
   // or changing password (only valid for pw change and limited time)
   //
-  buildToken(userObj, { twoFa = false, changePassword = false } = {}) {
+  @Method('Build a session JWT token for the specified user')
+  buildToken(userObj: User, { twoFa = false, changePassword = false } = {}) {
     let duration = this.tokenMs;
     // limit token lifespan for 2fa or change password
     if (twoFa || changePassword) {
@@ -383,7 +385,8 @@ export default class Auth extends RivModule {
   //
   // cryptographically validate a JWT
   //
-  validateToken(token) {
+  @Method('Validate the given token')
+  validateToken(token: string) {
     let splitToken = token.split('.');
     let signature = crypto.createHmac('sha256', this.jwtSecret).update(splitToken.slice(0, 2).join('.')).digest('hex');
     // see if computed signature matches what was provided

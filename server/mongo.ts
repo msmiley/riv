@@ -145,7 +145,10 @@ export default class Mongo extends RivModule {
   //
   // Use mongodb node.js driver insertOne()
   //
-  insertOne(ns: string, doc: any, options: mongo.InsertOneOptions = {}) {
+  insertOne(ns: string, 
+            doc: mongo.OptionalId<mongo.BSON.Document>, 
+            options: mongo.InsertOneOptions = {})
+  : Promise<mongo.InsertOneResult<mongo.BSON.Document>> {
     if (this.client) {
       this.numInserts++;
       this.debug && this.$debug('insertOne', ns, doc);

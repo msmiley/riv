@@ -3,20 +3,21 @@
 import type { RivServer } from '../../server/riv-server.ts';
 import type { RivRequest, ConsoleLogMethod } from '../types/server.d.ts';
 
-export interface ApiMethodDescriptor {
+export interface MethodDescriptor {
   name: string;               // Name of the API method
-  roles: string[];            // Roles required to access this method, open access if empty
   description?: string;       // Optional description of the method
 }
 
-export interface EventHandlerDescriptor {
-  name: string;               // Name of the event handler
-  event: string;              // Event type this handler listens to, can be comma-separated for multiple events
-  description?: string;       // Optional description of the event handler
+export interface ApiMethodDescriptor extends MethodDescriptor {
+  roles: string[];            // Roles required to access this method, open access if empty
 }
 
-// base for Riv modules
-export class RivModule {
+export interface EventHandlerDescriptor extends MethodDescriptor {
+  event: string;              // Event type this handler listens to, can be comma-separated for multiple events
+}
+
+// abstract base class for Riv modules
+export abstract class RivModule {
   static type = 'riv-module';  // Type of the module, for future use in identifying different module types
   name: string;                // Name of the module
   
@@ -38,6 +39,7 @@ export class RivModule {
   #apiMethods: ApiMethodDescriptor[] = [];  // Array to hold API method names registered in the module
   #props: string[] = [];       // Array to hold configurable property names registered in the module
   #eventHandlers: EventHandlerDescriptor[] = []; // Array to hold event handler names registered in the module
+  #methods: MethodDescriptor[] = [];
 
   // Constructor initializes the module name based on the class name
   constructor() {
@@ -150,6 +152,12 @@ export class RivModule {
   hasEventHandler(name: string): boolean {
     return this.#eventHandlers.some(handler => handler.name === name);
   }
+  registerMethod(name: string, description: string): void {
+    this.#methods.push({
+      name,
+      description,
+    } as MethodDescriptor);
+  }
 }
 
 ////////////////////////////
@@ -187,7 +195,7 @@ export function ApiMethod(description: string, ...roles: string[]) {
     return originalMethod;
   }
 }
-// EVENT
+// EVENT HANDLER
 export function EventHandler(event: string, description: string) {
   return function (
     originalMethod: (this: any, ...args: any[]) => any,
@@ -201,6 +209,24 @@ export function EventHandler(event: string, description: string) {
       (this as any)[name] = (this as any)[name].bind(this);
       // add to eventHandlers array
       this.registerEventHandler(name, event, description);
+    });
+    return originalMethod;
+  }
+}
+// METHOD
+export function Method(description: string) {
+  return function (
+    originalMethod: (this: any, ...args: any[]) => any,
+    context: ClassMethodDecoratorContext<RivModule, (this: RivModule, ...args: any[]) => any>
+  ): void | ((this: RivModule, ...args: any[]) => any) {
+    const name = String(context.name);
+    context.addInitializer(function () {
+      // this.name is class name
+      console.log(`riv> Regular method registered: ${this.name}.${name}`);
+      // bind the method to the instance so we can call it easily from callApiMethod
+      (this as any)[name] = (this as any)[name].bind(this);
+      // add to apiMethods array
+      this.registerMethod(name, description);
     });
     return originalMethod;
   }
