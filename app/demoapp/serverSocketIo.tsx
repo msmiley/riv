@@ -14,6 +14,8 @@ import FormItem from '../components/forms/FormItem';
 import Button from '../components/buttons/Button';
 
 import useRiv from '../hooks/useRiv';
+import FormInputList from '~/components/forms/FormInputList';
+import FormInputEditor from '~/components/forms/FormInputEditor';
 
 
 // describe the route
@@ -27,10 +29,16 @@ export function meta({}: Route.MetaArgs) {
 export default function Component() {
   const riv = useRiv();
 
-  const [api, setApi] = React.useState('');
+  const [api, setApi] = React.useState<string>('');
+  const [arg, setArg] = React.useState<string>('');
   // send
   const onSend = (e: React.FormEvent<HTMLFormElement>) => {
-    riv.apiCall(api).then((d) => {
+    // try to parse as JSON
+    let sarg = arg;
+    try {
+      sarg = JSON.parse(arg);
+    } catch (e) {}
+    riv.apiCall(api, sarg).then((d) => {
       console.log('date', d)
     });
   };
@@ -38,7 +46,6 @@ export default function Component() {
   const onToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
   };
-
 
   return (
     <Column>
@@ -57,6 +64,11 @@ export default function Component() {
             <Slot name="description">The API method to call on the server</Slot>
             Content in default slot
           </FormInputText>
+
+          <FormInputEditor value={arg} onUpdate={(value) => setArg(value)}>
+            <Slot name="label">Argument</Slot>
+            <Slot name="description">Provide an argument in JSON format</Slot>
+          </FormInputEditor>
 
           <FormItem joinable>
             <Slot name="label">Generic</Slot>

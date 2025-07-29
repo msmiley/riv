@@ -57,10 +57,10 @@ export default class Info extends RivModule {
     return new RivError(msg);
   }
   @ApiMethod('Test log to console', 'dev')
-  consoleLog(req: RivRequest, msg: string, msg2: string) {
+  consoleLog(req: RivRequest, arg: any) {
     console.log('Info.consoleLog----------------------------------------------');
-    console.log('types: ', typeof(msg), typeof(msg2));
-    console.log(msg, msg2);
+    console.log('typeof: ', typeof(arg));
+    console.log(arg);
     console.log('-------------------------------------------------------------');
   }
 

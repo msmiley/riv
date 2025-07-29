@@ -3,11 +3,12 @@ import React from 'react';
 import useSlot from '../../hooks/useSlot';
 import Slot from '../slots/Slot';
 import FormItem from './FormItem';
+import type { FormSharedProps } from './forms';
 import InputText from '../inputs/InputText';
 
 import styles from './forms.module.css';
 
-interface FormInputTextProps extends React.PropsWithChildren {
+interface FormInputTextProps extends FormSharedProps {
   // form item props
   variant?: string;
   joinable?: boolean;

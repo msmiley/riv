@@ -117,16 +117,17 @@ export class RivModule {
     return this.#apiMethods.some(method => method.name === name);
   }
   // Method to call an API method dynamically
-  callApiMethod(name: string, req: RivRequest, args: any): any {
+  callApiMethod(name: string, req: RivRequest, arg: any): any {
     if (!this.hasApiMethod(name)) {
       throw new Error(`API method ${name} not found in module ${this.name}`);
     }
-    // Call the method dynamically
+    // find the method in the module
     const method = (this as any)[name];
     if (typeof method !== 'function') {
       throw new Error(`Method ${name} is not a function in module ${this.name}`);
     }
-    return method(args);
+    // Call the method dynamically with the RivRequest as the first argument always
+    return method(req, arg);
   }
   // Method to register a property, used by decorators
   registerProp(name: string): void {

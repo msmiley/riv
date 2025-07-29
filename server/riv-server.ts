@@ -36,7 +36,7 @@ const DEFAULT_CONFIG = {
   ioNs: '/riv',            // socket.io namespace
   ioSend: 'server>client', // socket.io inbound event name
   ioRecv: 'client>server', // socket.io outbound event name
-  ioPing: 1000,            // ping interval over socket.io
+  ioPing: 10000,            // ping interval over socket.io
   app: {},                 // app config, mostly for user stuff in riv.config.js
   // list of paths to user classes, built-in classes will be
   // automatically loaded from riv/shared/data, so anything in here will be
@@ -51,8 +51,8 @@ const DEFAULT_CONFIG = {
     auth: {},
     mongo: {},
     info: {},
-    // roles: {},
-    // users: {},
+    roles: {},
+    users: {},
     // activity: {},
     // store: {},
   },
@@ -206,7 +206,7 @@ export class RivServer extends EventEmitter {
         if (d.id && d.api && d.arg) {
           // if user is not authenticated, only allow call to Auth.login and 2fa
           if (!user) {
-            if (d.api !== 'Info.getTestProp' && d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
+            if (d.api !== 'Info.consoleLog' && d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
               socket.emit(d.id, 'unauthorized, please login');
               socket.emit(this.config.ioSend, 'riv-logged-out');
               return;

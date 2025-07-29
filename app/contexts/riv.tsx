@@ -62,14 +62,11 @@ export function RivProvider({ children }: React.PropsWithChildren) {
         ioSocket.on('connect', () => {
           dispatch({ type: 'connected' });
         });
-        ioSocket.on("reconnect_attempt", (attempt) => {
-          console.log('riv> socket.io reconnect attempt', attempt);
-        });
         // called on disconnect
         ioSocket.on('disconnect', () => {
           dispatch({ type: 'disconnected' });
           ioSocket.auth = { token: 'token' }; // set token for reconnect attempt
-          setTimeout(() => {
+          setTimeout(() => { // use timeout to avoid immediate reconnect loop
             ioSocket.connect();
           }, SOCKET_RECONNECT_INTERVAL);
         });
@@ -77,6 +74,9 @@ export function RivProvider({ children }: React.PropsWithChildren) {
         ioSocket.on(RivSocketDirection.Recv, (eventType, ...args) => {
           // process built-in riv messages
           switch (eventType) {
+            case 'ping':
+              console.debug('riv> ping received', args); 
+              break;
             case 'riv-invalid-token':
               console.log('riv> invalid token, logging out');
               dispatch({ type: 'logout' });

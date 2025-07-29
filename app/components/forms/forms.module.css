@@ -113,3 +113,26 @@
   color: var(--riv-text-color-placeholder);
   padding: var(--riv-inputs-placeholder-padding);
 }
+
+/*--------------------------------------*/
+/* FormInputList */
+/*--------------------------------------*/
+.formInputList {
+  list-style: none;
+}
+.formInputListItem {
+  display: flex;
+  align-items: center;
+  gap: var(--riv-control-gap);
+}
+
+.formInputEditor {
+  width: 100%;
+  font-size: 1em;
+  background-color: transparent;
+  color: var(--viv-text-color);
+  border: 1px solid var(--viv-outline);
+  border-radius: var(--viv-control-border-radius);
+  padding: 0.4em;
+  resize: none; 
+}
