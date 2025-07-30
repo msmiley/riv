@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import type { RivJwtPayload } from 'shared/types/jwt';
 
 export default {
   generate2FaCode() {
@@ -27,37 +28,37 @@ export default {
   //
   // parse the JWT payload and return as an Object
   //
-  parseTokenPayload(token) {
+  parseTokenPayload(token: string): RivJwtPayload {
     return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
   },
   //
   // parse the JWT payload and return only the username ('aud') part
   //
-  getUserFromTokenString(token) {
+  getUserFromTokenString(token: string) {
     return this.getUserFromTokenObject(this.parseTokenPayload(token));
   },
   //
   // parse the JWT payload and return only the _id ('sub') part
   //
-  getUserIdFromTokenString(token) {
+  getUserIdFromTokenString(token: string) {
     return this.getUserIdFromTokenObject(this.parseTokenPayload(token));
   },
   //
   // Return the username field of the given token object
   //
-  getUserFromTokenObject(tokenObj) {
+  getUserFromTokenObject(tokenObj: RivJwtPayload) {
     return tokenObj.aud;
   },
   //
   // Return the user _id field of the given token object
   //
-  getUserIdFromTokenObject(tokenObj) {
+  getUserIdFromTokenObject(tokenObj: RivJwtPayload) {
     return tokenObj.sub;
   },
   //
   // utility for creating a password hash using node.js crypto library
   //
-  generatePasswordHash(password) {
+  generatePasswordHash(password: string) {
     const salt = crypto.randomBytes(16).toString("hex");
     const hash = crypto.scryptSync(password, salt, 32).toString("hex");
     return `${salt}${hash}`;

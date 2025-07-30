@@ -4,6 +4,7 @@ import utils from './utils';
 import { ApiMethod, Method, Property, RivModule } from 'shared/base/riv-module';
 import type { RivRequest, ApiMethodArg } from 'shared/types/server';
 import type { User } from 'shared/types/shared';
+import type { RivJwtPayload } from 'shared/types/jwt';
 
 export default class Auth extends RivModule {
   @Property('Set AuthHook method name for authentication hook')
@@ -375,7 +376,7 @@ export default class Auth extends RivModule {
       nbf: Math.floor(now / 1000),
       iat: Math.floor(now / 1000),
       jti: crypto.randomBytes(16).toString('hex'),
-    };
+    } as RivJwtPayload;
     let hp = Buffer.from(JSON.stringify(header)).toString('base64') + '.' + Buffer.from(JSON.stringify(payload)).toString('base64');
     let signature = crypto.createHmac('sha256', this.jwtSecret).update(hp).digest('hex');
     let token = `${hp}.${signature}`;
