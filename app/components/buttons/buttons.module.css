@@ -18,6 +18,11 @@
 .button:global(.grow) {
   flex-grow: 1;
 }
+.button:focus-visible {
+  outline: var(--riv-control-focus-outline);
+  outline-offset: var(--riv-control-focus-offset);
+  border-radius: var(--riv-control-border-radius);
+}
 /* JOINABLE BUTTON CSS LOGIC */
 .button:global(.joinable):first-child {
   margin-right: 0;

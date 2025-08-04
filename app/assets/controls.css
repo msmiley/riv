@@ -3,6 +3,8 @@ body {
   --riv-control-bg: #d1d1d1;
   --riv-control-border-color: #555;
   --riv-control-focused-border-color: var(--riv-primary);
+  --riv-control-focus-outline: 3px solid var(--riv-control-focused-border-color);
+  --riv-control-focus-offset: 0px;
   --riv-control-focused-box-shadow: 0px 0px 3px var(--riv-primary);
   --riv-control-border-width: 1px;
   --riv-control-border-radius: 5px;

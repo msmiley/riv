@@ -92,6 +92,9 @@ export default function Component() {
 
           <Slot name="buttons">
             <Button onClick={() => {}}>Send</Button>
+            <Button variant="outline" color="red" onClick={() => { setApi(''); setArg(''); }}>
+              Clear
+            </Button>
           </Slot>
 
         </Form>

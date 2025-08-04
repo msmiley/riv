@@ -11,7 +11,8 @@ import Icon from '../icons/Icon';
 import InputText from '../inputs/InputText';
 
 interface FormInputEditorProps extends FormSharedProps {
-  value: string; // the text buffer
+  value: string;                      // the text buffer
+  placeholder?: string;               // placeholder text
   onUpdate?: (value: string) => void; // update value
 }
 
@@ -35,7 +36,7 @@ export default function FormInputEditor(props: FormInputEditorProps) {
                 onChange={(e) => {
                   props.onUpdate && props.onUpdate(e.target.value);
                 }}
-                placeholder="Type your code here..."
+                placeholder={props.placeholder || 'Enter text...'}
                 aria-required={props.required}
       />
       {/* passthrough slots */}

@@ -15,10 +15,12 @@ export default function SidebarItem(props: SidebarItemProps) {
 
   // sub-menu  open state
   const [isOpen, setIsOpen] = React.useState<boolean>(() => {
-    // if this item has children, see if one of them is open, if so start with
-    // sub-menu open by default
-    if (props.item.children) {
-      return `${loc.pathname}`.startsWith(props.item.path);
+    // if this item has children, expand if current route matches a child path
+    if (props.item.children && Array.isArray(props.item.children)) {
+      const current = loc.pathname;
+      return props.item.children.some((child: any) =>
+        typeof child.path === 'string' && current.startsWith(child.path)
+      );
     }
     return false;
   });

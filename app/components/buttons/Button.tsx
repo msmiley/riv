@@ -1,5 +1,4 @@
 import React from 'react';
-import { filter } from 'lodash-es';
 import { cls, parseColor } from '../../utils';
 import useSlot from '../../hooks/useSlot';
 
@@ -11,6 +10,7 @@ interface ButtonProps extends React.PropsWithChildren {
   color?: string;
   grow?: boolean;
   active?: boolean;
+  disabled?: boolean; // disables the button
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -20,16 +20,18 @@ export default function Button({
   color = 'var(--riv-secondary)',
   grow,
   active,
+  disabled,
   onClick,
   children,
 }: ButtonProps) {
-
   return (
     <button className={cls(styles.button, { grow })}
             style={{
               '--riv-button-color': parseColor(color)
             } as React.CSSProperties}
-            role="button" aria-pressed="false"
+            {...(active ? { 'aria-pressed': active } : {})}
+            type="button"
+            disabled={disabled}
             onClick={onClick}>
       <div className={cls(styles.buttonInner,
                           styles.buttonSize,

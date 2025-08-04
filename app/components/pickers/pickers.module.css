@@ -1,0 +1,28 @@
+/* pickers.module.css */
+
+.colorPicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.colorPickerLabel {
+  font-size: 1rem;
+  color: var(--riv-text-color);
+}
+
+.colorPickerInput {
+  width: var(--riv-control-md-height);
+  height: var(--riv-control-md-height);
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* optional description styling */
+.colorPickerDescription {
+  font-size: 0.875rem;
+  color: var(--riv-text-color-muted);
+  margin-top: 0.25em;
+}

@@ -21,6 +21,10 @@ export default [
     ...prefix("inputs", [
       route('text', 'demoapp/inputsText.tsx'),
       route('date', 'demoapp/inputsDate.tsx'),
+      // route('color', 'demoapp/inputsColor.tsx'), moved to pickers
+    ]),
+    // pickers sub-menu
+    ...prefix("pickers", [
       route('color', 'demoapp/inputsColor.tsx'),
     ]),
     route('profile', 'demoapp/profile.tsx'),
