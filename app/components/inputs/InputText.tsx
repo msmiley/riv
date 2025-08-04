@@ -76,6 +76,7 @@ export default function InputsText({
                value={value}
                placeholder={placeholder}
                aria-required={required}
+               aria-disabled={disabled}
                onChange={onChangeProxy}
                onKeyUp={onKeyUp}
                onFocus={() => setFocus(true)}

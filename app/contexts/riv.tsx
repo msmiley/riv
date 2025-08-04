@@ -6,12 +6,32 @@
 import React from 'react';
 import { generateId } from '../utils';
 import RivActions from './riv-actions';
-import type { RivState, RivAction } from '../types';
+import RivGetters from './riv-getters';
+import type { RivState, RivAction, RivGetter, RivGetterProxy } from '../types';
 import { RivSocketDirection } from '../enums';
+
+const rivInitialState: RivState = {
+  // AUTH
+  authState: 'loggedOut',
+  authToken: '',
+
+  // USER
+  username: '',
+  fullname: '',
+  email: '',
+  avatar: '',
+  permissions: [],
+
+  // SOCKET
+  ioSocket: null,
+  ioConnected: false,
+  ioListeners: [], // socket listeners
+};
 
 // context type
 interface RivContextT {
   state: RivState;
+  getters: Record<string, RivGetterProxy>;
   dispatch: React.Dispatch<RivAction>;
   apiCall: (api: string, ...args: any[]) => Promise<any>;
 }
@@ -24,22 +44,28 @@ export function RivProvider({ children }: React.PropsWithChildren) {
   // proxy for dispatching an action
   const dispatchProxy = (action: RivAction) => dispatch(action);
   //
-  // riv context reducer, all actions are handled here
+  // riv context reducer, all actions are forwarded to RivActions
   //
   const reducer = (state: RivState, action: RivAction): RivState => {
     if (action.type in RivActions) {
-      return RivActions[action.type as keyof typeof RivActions](state, action, dispatchProxy);
+      return RivActions[action.type as keyof typeof RivActions](state, action.data ?? {}, dispatchProxy);
     }
     return state;
   };
   //
   // initialize reducer
   //
-  const [state, dispatch] = React.useReducer(reducer, {
-    username: '',
-    ioSocket: null,
-    ioConnected: false,
-    ioListeners: [], // socket listeners
+  const [state, dispatch] = React.useReducer(reducer, rivInitialState);
+  //
+  // initialize getters
+  //
+  const getters: Record<string, RivGetterProxy> = {};
+  // build getter proxies that include state in call
+  (Object.keys(RivGetters) as Array<keyof typeof RivGetters>).forEach((key) => {
+    getters[key] = (arg?: any): any => {
+      // @ts-ignore so optional arg doesn't flag error
+      return RivGetters[key](state, arg);
+    };
   });
   //
   // dispatch initial init
@@ -54,6 +80,7 @@ export function RivProvider({ children }: React.PropsWithChildren) {
   //
   const apiCall = (api: string, arg: any = {}) => {
     return new Promise((resolve, reject) => {
+      console.log(state)
       if (!state.ioSocket) {
         console.error('tried apiCall before socket initialized');
         return;
@@ -107,6 +134,7 @@ export function RivProvider({ children }: React.PropsWithChildren) {
   return (
     <RivContext value={{
         state,
+        getters,
         dispatch,
         apiCall,
       }}>

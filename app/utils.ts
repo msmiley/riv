@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 let colors = d3.scaleOrdinal([...Array(10).keys()], d3.schemeDark2);
 
 import * as GP from '@victr/geopattern';
+import type { RivJwtPayload } from 'shared/types/jwt';
 //
 // helper to process classNames in Vue form
 // e.g. cls(styles.button, `variant_${props.variant}`, { disabled, color: getColor(props) })
@@ -84,3 +85,38 @@ export function generateId(length = 8) {
   crypto.getRandomValues(arr);
   return Array.from(arr, dec2hex).join('');
 };
+
+export function jwtParsePayload(jwt: string, field?: keyof RivJwtPayload) {
+  if (jwt) {
+    let parsedPayload = JSON.parse(atob(jwt.split('.')[1]));
+    if (field) { // return field if specified
+      return parsedPayload[field];
+    }
+    return parsedPayload;
+  }
+  return null;
+};
+
+export function jwtValid(jwt: string) {
+  console.log('jwtValid', jwt);
+  let tokenValid = false;
+  if (jwt) {
+    let payload = jwtParsePayload(jwt);
+    if (payload) {
+      tokenValid = payload.exp > new Date().getTime() / 1000;
+    }
+  }
+  return tokenValid;
+};
+
+export function jwtParsePayloadField(jwt: string, field: keyof RivJwtPayload) {
+  if (jwt) {
+    let parsedPayload = JSON.parse(atob(jwt.split('.')[1]));
+    if (field) { // return field if specified
+      return parsedPayload[field];
+    }
+    return parsedPayload;
+  }
+  return null;
+};
+

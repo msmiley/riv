@@ -1,42 +1,62 @@
 import { filter } from 'lodash-es';
 import { io } from 'socket.io-client';
 import { generateId } from '../utils';
-import type { RivState, RivAction } from '../types';
+import type { RivState, RivAction, RivActionData } from '../types';
 import { RivSocketDirection } from '../enums';
+import { jwtValid } from '../utils';
+import useRiv from '~/hooks/useRiv';
 
 const SOCKET_RECONNECT_INTERVAL = 1000; // 1 second
 
 export default {
   init(state: RivState, 
-       action: RivAction, 
+       data: RivActionData, 
        dispatch: React.ActionDispatch<[action: RivAction]>): RivState {
-    // meta.env is set by vite, so we can use it to determine the URL
+    let ret: RivState = { // prepare return state
+      ...state
+    };
+    //////////////////////////////////////////////////////////////////////////
+    // check stored token
+    let storedToken = localStorage.getItem('rivToken');
+    let validToken = null;
+    if (storedToken && jwtValid(storedToken)) {
+      ret.authToken = storedToken;
+    } else {
+      localStorage.clear();
+    }
+    // setup socket
+    if (ret.authToken) {
+      ret.authState = 'checkingToken';
+      console.log('riv> setting up socket.io with token', ret.authToken);
+    } else {
+      console.log('riv> setting up socket.io without token');
+    }
+    // meta.env is set by vite, so we can use it to determine the URL when running in vite
     let url = import.meta.env ? 'http://localhost:5500/riv' : '/riv';
-    const ioSocket = io(url, {
+    ret.ioSocket = io(url, {
       path: `/socket.io`,
       transports: ['websocket', 'polling'],
       auth: {
-        token: 'token', // send the token for auth
+        token: ret.authToken, // send the token for auth
       },
     });
     // called when the socket connects
-    ioSocket.on('connect', () => {
+    ret.ioSocket.on('connect', () => {
       dispatch({ type: 'connected' });
     });
     // called on disconnect
-    ioSocket.on('disconnect', () => {
+    ret.ioSocket.on('disconnect', () => {
       dispatch({ type: 'disconnected' });
-      ioSocket.auth = { token: 'token' }; // set token for reconnect attempt
+      ret.ioSocket.auth = { token: state.authToken }; // set token for reconnect attempt
       setTimeout(() => { // use timeout to avoid immediate reconnect loop
-        ioSocket.connect();
+        ret.ioSocket.connect();
       }, SOCKET_RECONNECT_INTERVAL);
     });
     // receive handler
-    ioSocket.on(RivSocketDirection.Recv, (eventType, ...args) => {
+    ret.ioSocket.on(RivSocketDirection.Recv, (eventType: string, ...args: any[]) => {
       // process built-in riv messages
       switch (eventType) {
         case 'ping':
-          console.debug('riv> ping received', args); 
           break;
         case 'riv-invalid-token':
           console.log('riv> invalid token, logging out');
@@ -52,10 +72,30 @@ export default {
         l.callback && l.callback(...args);
       }
     });
-    return {
-      ...state,
-      ioSocket
-    };
+    return ret;
+  },
+  login(state: RivState, data: RivActionData): RivState {
+    console.log('riv> login action received', data);
+    if (data.token && jwtValid(data.token)) {
+      localStorage.setItem('rivToken', data.token);
+      console.log('riv> login successful, token set');
+      return {
+        ...state,
+        authState: 'loggedIn',
+        authToken: data.token,
+        username: data.username || state.username,
+        fullname: data.fullname || state.fullname,
+        email: data.email || state.email,
+        avatar: data.avatar || state.avatar,
+        permissions: data.permissions || state.permissions,
+      };
+    } else {
+      console.warn('riv> login failed, invalid token');
+      return {
+        ...state,
+        authState: 'loggedOut',
+      };
+    }
   },
   connected(state: RivState): RivState {
     console.debug('riv> socket.io connected');
@@ -71,8 +111,7 @@ export default {
       ioConnected: false,
     };
   },
-  addListener(state: RivState, action: RivAction): RivState {
-    const { type, data } = action;
+  addListener(state: RivState, data: RivActionData): RivState {
     if (data?.eventType && data?.callback) {
       let newListener = {
         id: generateId(),

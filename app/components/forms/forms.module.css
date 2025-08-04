@@ -52,7 +52,7 @@
 
 /* ROUND TOP CORNERS OF FIRST TRAY */
 .formItem:global(.joinable):first-of-type:not(:only-of-type) {
-  border-bottom: var(--viv-control-border-width) solid var(--viv-outline);
+  border-bottom: var(--riv-control-border-width) solid var(--riv-outline);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom: none;
@@ -130,9 +130,9 @@
   width: 100%;
   font-size: 1em;
   background-color: transparent;
-  color: var(--viv-text-color);
-  border: 1px solid var(--viv-outline);
-  border-radius: var(--viv-control-border-radius);
+  color: var(--riv-text-color);
+  border: 1px solid var(--riv-outline);
+  border-radius: var(--riv-control-border-radius);
   padding: 0.4em;
   resize: none; 
 }

@@ -1,6 +1,6 @@
 
 // Shared props for form components, encapsulates the props passed to FormItem
-interface FormSharedProps extends React.PropsWithChildren {
+export interface FormSharedProps extends React.PropsWithChildren {
   // common form item props
   variant?: string;
   joinable?: boolean;

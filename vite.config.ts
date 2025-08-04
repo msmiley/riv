@@ -10,7 +10,7 @@ import RivVitePlugin from './server/riv-vite-plugin';
 
 export default defineConfig({
   root: 'app', // root for index.html, etc.
-  esbuild: { // these flags are necessary to enable viv class sharing/syncing
+  esbuild: { // these flags are necessary to enable riv class sharing/syncing
     target: 'es2022',
     minifyIdentifiers: false,
     keepNames: true,

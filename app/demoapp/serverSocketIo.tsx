@@ -47,11 +47,23 @@ export default function Component() {
     e.preventDefault();
   };
 
+  const testLogin = () => {
+    riv.apiCall('Auth.login', {
+      username: 'admin',
+      password: 'admin',
+    }).then((data) => {
+      console.log('login data', data);
+      riv.dispatch({ type: 'login', data });
+    });
+  }
+  
+  console.log(riv.getters.isLoggedIn());
+
   return (
     <Column>
       <Card color="var(--riv-indigo)">
         <Slot name="title">Socket.io</Slot>
-        {riv.state.count}
+        { riv.getters.isLoggedIn() ? 'Logged in' : 'Not logged in' }
       </Card>
 
       <CenteredColumn>
@@ -65,7 +77,7 @@ export default function Component() {
             Content in default slot
           </FormInputText>
 
-          <FormInputEditor value={arg} onUpdate={(value) => setArg(value)}>
+          <FormInputEditor joinable value={arg} onUpdate={(value) => setArg(value)}>
             <Slot name="label">Argument</Slot>
             <Slot name="description">Provide an argument in JSON format</Slot>
           </FormInputEditor>
@@ -73,7 +85,7 @@ export default function Component() {
           <FormItem joinable>
             <Slot name="label">Generic</Slot>
             <Slot name="input">
-              <Button onClick={onToggle}>test</Button>
+              <Button onClick={testLogin}>test</Button>
             </Slot>
             <Slot name="description">This is a description for a FormItem</Slot>
           </FormItem>
