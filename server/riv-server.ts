@@ -6,7 +6,7 @@ import type { RivRequest } from '../shared/types/server.d.ts';
 // entry point for riv server, sets up basically everything on the server side
 // this should be called with a config object
 //
-import utils from './utils.ts';
+import utils from './utils';
 
 import os from 'node:os';
 import path from 'node:path';
@@ -204,9 +204,9 @@ export class RivServer extends EventEmitter {
         console.info(`riv> api call`, d);
         // make sure message is valid api call
         if (d.id && d.api && d.arg) {
-          // if user is not authenticated, only allow call to Auth.login and 2fa
+          // if user is not authenticated, only allow calls to Auth.login and 2fa
           if (!user) {
-            if (d.api !== 'Info.consoleLog' && d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
+            if (d.api !== 'Auth.login' && d.api !== 'Auth.checkTwoFa') {
               socket.emit(d.id, 'unauthorized, please login');
               socket.emit(this.config.ioSend, 'riv-logged-out');
               return;

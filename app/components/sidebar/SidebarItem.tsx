@@ -32,12 +32,14 @@ export default function SidebarItem(props: SidebarItemProps) {
 
   // render sidebar item differently based on whether it has children or not
   if (props.item.category) {
+    // CATEGORY
     return (
       <div className={styles.sidebarItemCategory}>
         {props.item.title}
       </div>
     );
   } else if (props.item.children) {
+    // ITEM WITH CHILDREN
     return (
       <div className={cls(styles.sidebarItem, { bottom: props.item.sidebarBottom })}
            style={{
@@ -53,6 +55,7 @@ export default function SidebarItem(props: SidebarItemProps) {
       </div>
     );
   } else {
+    // REGULAR ITEM
     return (
       <div className={cls(styles.sidebarItem, { bottom: props.item.sidebarBottom })}>
         <NavLink to={props.item.path}

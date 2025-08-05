@@ -4,3 +4,9 @@
 .dropdown {
 
 }
+/* content wrapper inside portal */
+ .dropdownContent {
+  border: var(--riv-control-border-width) solid var(--riv-control-border-color);
+  border-radius: var(--riv-control-border-radius, 4px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}

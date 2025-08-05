@@ -27,6 +27,10 @@ export default [
     ...prefix("pickers", [
       route('color', 'demoapp/inputsColor.tsx'),
     ]),
+    // popups sub-menu
+    ...prefix("popups", [
+      route('dropdown', 'demoapp/popupsDropdown.tsx'),
+    ]),
     route('profile', 'demoapp/profile.tsx'),
     route('socketio', 'demoapp/serverSocketIo.tsx'),
     route('settings', 'demoapp/settings.tsx'),

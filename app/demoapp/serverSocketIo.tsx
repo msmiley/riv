@@ -77,7 +77,8 @@ export default function Component() {
             Content in default slot
           </FormInputText>
 
-          <FormInputEditor joinable value={arg} onUpdate={(value) => setArg(value)}>
+          <FormInputEditor joinable value={arg} placeholder="JSON argument"
+                           onUpdate={(value) => setArg(value)}>
             <Slot name="label">Argument</Slot>
             <Slot name="description">Provide an argument in JSON format</Slot>
           </FormInputEditor>

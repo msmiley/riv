@@ -48,14 +48,3 @@ export default function Button({
     </button>
   );
 }
-
-
-//backup
-//
-//         {
-//   ({ closeDropdown }) => <>
-//     <Button size="lg" onClick={closeDropdown}>
-//       button
-//     </Button>
-//   </>
-// }

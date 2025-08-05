@@ -1,4 +1,5 @@
 
+import React from 'react';
 export type RivActionData = { [key: string]: any };
   
 // format for actions
@@ -30,4 +31,10 @@ export interface RivState {
 // uses a single argument
 export type RivGetterProxy = (arg?: any) => any;
 export type RivGetter = (state: RivState, arg?: any) => any;
+
+// slot props for popup button slots (e.g. Dropdown and Modal)
+export type DropdownButtonSlotProps = {
+  ref: React.Ref<HTMLDivElement>;
+  onClick: () => void;
+};
 

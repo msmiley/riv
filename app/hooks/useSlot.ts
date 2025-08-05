@@ -14,8 +14,9 @@ export default function useSlot(parentSlots: React.ReactNode, slotName: string, 
     if (React.isValidElement(child) &&    // make sure it's a react element
         typeof child.type !== 'string' && // make sure it's not just a string el
         child.type.name === 'Slot' &&     // make sure it's a riv Slot
-        React.isValidElement<{ name: string }>(child)) {
-        return child.props.name === slotName;
+        React.isValidElement<{ name: string }>(child) // make sure it has a name prop
+    ) {
+      return child.props.name === slotName;
     } else if (slotName === 'default') { // handle default slot(s)
       return true;
     }
@@ -23,8 +24,8 @@ export default function useSlot(parentSlots: React.ReactNode, slotName: string, 
 
   // if a function was provided to the slot, call it with the slotProps as a
   // way to provide functionality back up the tree
-  if (React.isValidElement<{ children: React.ReactNode }>(slot) && isFunction(slot.props.children)) {
-    return slot.props.children(slotProps);
+  if (React.isValidElement<{ children: React.ReactNode }>(slot[0]) && isFunction(slot[0].props.children)) {
+    return slot[0].props.children(slotProps);
   }
   // default slot
   return slot;

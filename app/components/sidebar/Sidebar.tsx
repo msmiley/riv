@@ -1,6 +1,4 @@
 import React from 'react';
-import { useMatches } from "react-router";
-import { cls } from '../../utils';
 import useSlot from '../../hooks/useSlot';
 import styles from './sidebar.module.css';
 

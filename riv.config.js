@@ -69,6 +69,13 @@ export default {
         ]
       },
       {
+        title: 'Popups',
+        icon: 'dropdown',  // placeholder icon for dropdown
+        children: [
+          { title: 'Dropdown', path: '/popups/dropdown' },
+        ]
+      },
+      {
         title: 'Server',
         category: true,
       },

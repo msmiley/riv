@@ -6,9 +6,11 @@ import { RivSocketDirection } from '../enums';
 import { jwtValid } from '../utils';
 import useRiv from '~/hooks/useRiv';
 
+
 const SOCKET_RECONNECT_INTERVAL = 1000; // 1 second
 
 export default {
+  // special action to initialize the riv context
   init(state: RivState, 
        data: RivActionData, 
        dispatch: React.ActionDispatch<[action: RivAction]>): RivState {
@@ -53,7 +55,7 @@ export default {
       }, SOCKET_RECONNECT_INTERVAL);
     });
     // receive handler
-    ret.ioSocket.on(RivSocketDirection.Recv, (eventType: string, ...args: any[]) => {
+    ret.ioSocket.on(RivSocketDirection.Recv, (eventType: string, arg: any) => {
       // process built-in riv messages
       switch (eventType) {
         case 'ping':
@@ -63,13 +65,14 @@ export default {
           dispatch({ type: 'logout' });
           break;
         case 'riv-update-user':
-          console.log('riv> received user profile', args);
+          console.log('riv> received user profile', arg);
+          dispatch({ type: 'login', data: arg });
           break;
       }
       // provide the event to any listeners
       let listeners = filter(state.ioListeners, { eventType });
       for (let l of listeners) {
-        l.callback && l.callback(...args);
+        l.callback && l.callback(arg);
       }
     });
     return ret;

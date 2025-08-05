@@ -14,7 +14,7 @@ export default function SidebarOnly(props: SidebarOnlyProps) {
       {/* SIDEBAR (RECEIVES ALL SLOTS) */}
       <Sidebar routes={props.routes} children={props.children}/>
 
-      {/* CONTENT OUTLET */}
+      {/* CONTENT OUTLET (RENDERS CHILD ROUTES) */}
       <div className={styles.sidebarOnlyContent}>
         <Outlet/>
       </div>

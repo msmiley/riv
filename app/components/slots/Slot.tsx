@@ -4,8 +4,12 @@
 //
 import React from 'react';
 
-interface SlotProps extends React.PropsWithChildren {
-  name: string; // slot name
+/**
+ * SlotProps allows named slots and accepts any children including render functions
+ */
+interface SlotProps {
+  name: string;
+  children: any;
 }
 
 export default function Slot(props: SlotProps) {

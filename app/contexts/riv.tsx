@@ -1,8 +1,10 @@
-// RIV context
+// RIV CONTEXT
 // serves as the store for centralized built-in RIV state
 // this includes:
 // - user session
-// -
+// - user profile
+// - socket.io connection state
+//
 import React from 'react';
 import { generateId } from '../utils';
 import RivActions from './riv-actions';
@@ -28,7 +30,7 @@ const rivInitialState: RivState = {
   ioListeners: [], // socket listeners
 };
 
-// context type
+// context type used only to create context
 interface RivContextT {
   state: RivState;
   getters: Record<string, RivGetterProxy>;
@@ -39,9 +41,7 @@ interface RivContextT {
 export const RivContext = React.createContext<RivContextT>({} as RivContextT);
 
 export function RivProvider({ children }: React.PropsWithChildren) {
-  let token = '<token>';
-
-  // proxy for dispatching an action
+  // proxy for dispatching an action from other actions, should probably make this a queue
   const dispatchProxy = (action: RivAction) => dispatch(action);
   //
   // riv context reducer, all actions are forwarded to RivActions
@@ -68,7 +68,7 @@ export function RivProvider({ children }: React.PropsWithChildren) {
     };
   });
   //
-  // dispatch initial init
+  // dispatch initial init action
   //
   React.useEffect(() => {
     dispatch({
@@ -131,6 +131,7 @@ export function RivProvider({ children }: React.PropsWithChildren) {
     });
   };
 
+  // our RIV context provides overarching facilities to the app 
   return (
     <RivContext value={{
         state,
