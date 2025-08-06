@@ -18,11 +18,11 @@ import { defaultsDeep, get, cloneDeep, isArray } from 'lodash-es';
 
 // uncaught promise error guards
 process.on('unhandledRejection', (reason, p) => {
-  console.error('riv> Unhandled Rejection at Promise', reason, p);
+  console.error('RIV | Unhandled Rejection at Promise', reason, p);
 });
 // uncaught exception, exit for now, may want to log it and keep going
 process.on('uncaughtException', (err) => {
-  console.error('riv> Uncaught Exception thrown', err);
+  console.error('RIV | Uncaught Exception thrown', err);
   process.exit(1);
 });
 
@@ -53,8 +53,8 @@ const DEFAULT_CONFIG = {
     info: {},
     roles: {},
     users: {},
-    // activity: {},
-    // store: {},
+    activity: {},
+    store: {},
   },
 };
 
@@ -115,7 +115,7 @@ export class RivServer extends EventEmitter {
   async loadConfig() {
     if (this.configPath) {
       // get parent project's root folder
-      console.info(`riv> loading config from ${this.configPath} at ${this.parentRoot}`);
+      console.info(`RIV | loading config from ${this.configPath} at ${this.parentRoot}`);
       // try to load configPath relative to parent root
       let configMod = await import(pathToFileURL(path.resolve(this.parentRoot, this.configPath)).toString());
       // merge down the config recursively, applying defaults last
@@ -127,17 +127,17 @@ export class RivServer extends EventEmitter {
         if (k.match(/^riv_/i)) {
           // split off path
           let kp = k.split(/riv_/i)[1].split('_').join('.');
-          console.info(`riv> env var override: ${kp}=${v}`);
+          console.info(`RIV | env var override: ${kp}=${v}`);
           utils.deepSet(this.config.modules, kp, v);
         }
       }
-      console.info(`riv> done loading config, name = ${this.config.name}`, this.config);
+      console.info(`RIV | done loading config, name = ${this.config.name}`);
     }
   }
   // initialize socket.io and wire up the riv api layer
   connectSocketIo() {
     // connect socket.io to http server
-    console.info('riv> setting up socket.io');
+    console.info('RIV | setting up socket.io');
     let server;
     // Check if server is a ViteDevServer by presence of 'httpServer' property
     if ('httpServer' in this.server) {
@@ -167,7 +167,7 @@ export class RivServer extends EventEmitter {
       let user = null;
 
       if (!token) {
-        console.warn(`riv> socket.io connection with no token, only login will be allowed`);
+        console.warn(`RIV | socket.io connection with no token, only login will be allowed`);
       } else {
         // validate the sent token
         let tokenValid = this.modules.Auth.validateToken(token);
@@ -190,18 +190,18 @@ export class RivServer extends EventEmitter {
             socket.emit(this.config.ioSend, 'riv-update-user', user);
             // give client the app config object
             socket.emit(this.config.ioSend, 'riv-app-config', this.config.app);
-            console.log('riv> user authenticated', user_id, user.username);
+            console.log('RIV | user authenticated', user_id, user.username);
           } else {
             // tell client token is invalid so it will delete and stop using it
             socket.emit(this.config.ioSend, 'riv-invalid-token');
-            console.warn(`riv> socket.io connection with invalid token`, token);
+            console.warn(`RIV | socket.io connection with invalid token`, token);
           }
         }
       }
-      console.info(`riv> new connection from ${clientIp}`);
+      console.info(`RIV | new connection from ${clientIp}`);
       // process received messages
       socket.on(this.config.ioRecv, (d: CallApiParams) => {
-        console.info(`riv> api call`, d);
+        console.info(`RIV | api call`, d);
         // make sure message is valid api call
         if (d.id && d.api && d.arg) {
           // if user is not authenticated, only allow calls to Auth.login and 2fa
@@ -231,20 +231,20 @@ export class RivServer extends EventEmitter {
                 // if this was an Auth.login, disconnect the client so it can reconnect
                 // with the token
                 if (d.api === 'Auth.login' || d.api === 'Auth.checkTwoFa') {
-                  console.log(`riv> disconnecting user without token`);
+                  console.log(`RIV | disconnecting user without token`);
                   return socket.disconnect(true);
                 }
               }).catch((err) => { // this catches errors thrown by api call
-                console.log(`riv> error in callApi`, err);
+                console.log(`RIV | error in callApi`, err);
                 socket.emit(d.id, `${err}`);
               });
             } catch (e) { // this catches errors related to api (e.g. destructuring errors)
               socket.emit(d.id, `couldn't call api: ${e}`);
-              console.warn(`riv> couldn't call api: ${d.api}, error: ${e}`);
+              console.warn(`RIV | couldn't call api: ${d.api}, error: ${e}`);
             }
           // }, 1000);
         } else {
-          console.warn(`riv> client tried to send incomplete api call`);
+          console.warn(`RIV | client tried to send incomplete api call`);
         }
       });
     });
@@ -265,14 +265,14 @@ export class RivServer extends EventEmitter {
       let { mod, modPath, errors } = await utils.findModule(this.parentRoot, relPath);
       // check to make sure type is understood
       if (mod && mod.default?.type === 'riv-module') {
-        console.log(`riv> found module with relative path ${relPath} at ${modPath}`);
+        console.log(`RIV | found module with relative path ${relPath} at ${modPath}`);
         // initial load
         this.loadModule(mod, propOverrides);
         // file watcher to reload module if it changes (ONLY IN DEBUG MODE)
         if (this.config.debug) {
-          console.log('riv> in debug mode; watching module files for changes');
+          console.log('RIV | in debug mode; watching module files for changes');
           fs.watchFile(modPath, async () => {
-            console.log(`riv> module ${modPath} changed on disk; reloading`);
+            console.log(`RIV | module ${modPath} changed on disk; reloading`);
             // re-import using cache-busting query param (only way to make it work)
             // note that ESM modules are not currently garbage collected so this could cause
             // memory leak if for some reason module files are being touched repeatedly
@@ -281,9 +281,9 @@ export class RivServer extends EventEmitter {
           });
         }
       } else {
-        console.error(`riv> module ${relPath} not found relative to riv or in ${this.parentRoot}`);
+        console.error(`RIV | module ${relPath} not found relative to riv or in ${this.parentRoot}`);
         if (errors.length > 0) {
-          console.error('riv> possible errors:', errors);
+          console.error('RIV | possible errors:', errors);
         }
       }
     }
@@ -293,7 +293,7 @@ export class RivServer extends EventEmitter {
     let moduleDef = mod.default;
     let modInst = new moduleDef();
     modInst.selfRegister(this, propOverrides);
-    console.log(`riv> loadModule called for ${modInst.name}`);
+    console.log(`RIV | loadModule called for ${modInst.name}`);
   }
   // loads class definitions from array of directories
   async loadClasses() {
@@ -303,7 +303,7 @@ export class RivServer extends EventEmitter {
     // load classes from array of user paths (config.classes)
     if (isArray(this.config.classes)) {
       for (let classPath of this.config.classes) {
-        console.log(`riv> loading user data classes from ${classPath}`);
+        console.log(`RIV | loading user data classes from ${classPath}`);
         let classes = await utils.findClasses(classPath);
         Object.assign(this.classes, classes);
       }
@@ -314,7 +314,7 @@ export class RivServer extends EventEmitter {
         c.serverInit();
       }
     }
-    console.log(`riv> loaded classes: ${Object.keys(this.classes).join(',')}`);
+    console.log(`RIV | loaded classes: ${Object.keys(this.classes).join(',')}`);
   }
   // helper/entry point for riv API calls from client-side
   callApi(user: any, ip: string, params: CallApiParams): Promise<any> {
@@ -371,7 +371,7 @@ export class RivServer extends EventEmitter {
   // send socket.io event to a specific user by user_id
   //
   sendToUserId(user_id: string, ...args: any[]) {
-    console.log(`riv> sending to ${user_id}`, args);
+    console.log(`RIV | sending to ${user_id}`, args);
     // coerce _id to string if we were sent an ObjectID
     if (typeof user_id === 'object') {
       user_id = `${user_id}`;
@@ -385,14 +385,14 @@ export class RivServer extends EventEmitter {
         if (s.data.user_id) {
           if (s.data.user_id === user_id) {
             found = true;
-            console.log(`riv> found user ${user_id} with active socket.io connection`);
+            console.log(`RIV | found user ${user_id} with active socket.io connection`);
             s.emit(this.config.ioSend, ...args);
           }
         }
       }
     }
     if (!found) {
-      console.warn(`riv> could not find user ${user_id} in socket.io`);
+      console.warn(`RIV | could not find user ${user_id} in socket.io`);
     }
   }
   //
@@ -424,14 +424,14 @@ export class RivServer extends EventEmitter {
   // shutdown handler
   //
   $shutdown(src = this.config.name) {
-    console.warn(`riv> shutdown requested by ${src}`);
+    console.warn(`RIV | shutdown requested by ${src}`);
     this.emit('riv.shutdown');
     for (let m of Object.values(this.modules)) {
       m.done && m.done();
     }
     this.emit('riv.done');
     setTimeout(() => {
-      console.warn('riv> done.');
+      console.warn('RIV | done.');
       process.exit(0);
     }, 1000);
     return this;

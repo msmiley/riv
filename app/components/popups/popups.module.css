@@ -7,9 +7,12 @@
 }
 /* content wrapper inside portal */
  .dropdownContent {
+  background-color: var(--riv-dropdown-bg);
+  color: var(--riv-dropdown-fg);
   border: var(--riv-control-border-width) solid var(--riv-control-border-color);
   border-radius: var(--riv-control-border-radius, 4px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 /* Modal styles */

@@ -1,4 +1,4 @@
-import { Property, RivModule } from "shared/base/riv-module";
+import { Method, Property, RivModule } from "shared/base/riv-module";
 import util from 'node:util';
 import readline from 'node:readline';
 
@@ -14,22 +14,22 @@ export default class Console extends RivModule {
   @Property('Filter for console logs')
   filter: RegExp | null = null; // regex filter for console logs, null means no filter
 
-  // general props
-  pauseOutput: boolean = false; // pause output
-  waitForInput: boolean = false; // waiting for input from user
+  // private props
+  private pauseOutput: boolean = false; // pause output
+  private waitForInput: boolean = false; // waiting for input from user
 
   init() {
     this.$log('Console module initialized');
     // print header
-    console.log(this.colorz('  ____    ____  ', 'bg.blue') + this.colorz(` Powered by Riv`, 'bold.blue'));
-    console.log(this.colorz('  \\\\\\\\\\  /////  ', 'bg.blue') + this.colorz(` started on ${(new Date).toISOString()}`, 'bold.blue'));
-    console.log(this.colorz('   \\\\\\\\\\/////   ', 'bg.blue') + this.colorz(' press q to shutdown', 'bold.blue'));
-    console.log(this.colorz('    \\\\\\\\////    ', 'bg.blue') + this.colorz(' press f to filter', 'bold.blue'));
-    console.log(this.colorz('     \\\\\\///     ', 'bg.blue') + this.colorz(' press t to toggle timestamps', 'bold.blue'));
-    console.log(this.colorz('      \\\\//      ', 'bg.blue') + this.colorz(' press c to toggle compact inspect', 'bold.blue'));
-    console.log(this.colorz('       \\/       ', 'bg.blue') + this.colorz(' press s to print status for the wheel', 'bold.blue'));
-    console.log(this.colorz('                ', 'bg.blue') + this.colorz(' press p to pause output', 'bold.blue'));
-    console.log(this.colorz('                ', 'bg.blue') + this.colorz(' press e to evaluate statement', 'bold.blue'));
+    console.log(this.colorz('  _____   ', 'bg.blue') + this.colorz(' Powered by Riv', 'bold.blue'));
+    console.log(this.colorz(' |  __ \\  ', 'bg.blue') + this.colorz(` started on ${(new Date).toISOString()}`, 'bold.blue'));
+    console.log(this.colorz(' | |__) | ', 'bg.blue') + this.colorz(' press q to shutdown', 'bold.blue'));
+    console.log(this.colorz(' |  _  /  ', 'bg.blue') + this.colorz(' press f to filter', 'bold.blue'));
+    console.log(this.colorz(' | | \\ \\  ', 'bg.blue') + this.colorz(' press t to toggle timestamps', 'bold.blue'));
+    console.log(this.colorz(' |_|  \\_\\ ', 'bg.blue') + this.colorz(' press c to toggle compact inspect', 'bold.blue'));
+    console.log(this.colorz('          ', 'bg.blue') + this.colorz(' press s to print status for the wheel', 'bold.blue'));
+    console.log(this.colorz('          ', 'bg.blue') + this.colorz(' press p to pause output', 'bold.blue'));
+    console.log(this.colorz('          ', 'bg.blue') + this.colorz(' press e to evaluate statement', 'bold.blue'));
 
     // add keypress handler if there is tty
     if (Boolean(process.stdout.isTTY) && process.stdin.setRawMode) {
@@ -46,8 +46,10 @@ export default class Console extends RivModule {
             this.$shutdown();
           } else if (key.name === 't') {
             this.timestamp = !this.timestamp;
+            this.$log('Toggling timestamp', this.timestamp);
           } else if (key.name === 'c') {
             this.compact = !this.compact;
+            this.$log('Toggling compact inspect', this.compact);
           } else if (key.name === 's') {
             this.renderServerStatus();
           } else if (key.name === 'p') {
@@ -57,7 +59,7 @@ export default class Console extends RivModule {
             this.pauseOutput = !this.pauseOutput;
           } else if (key.name === 'e' && this.allowEval) {
             this.waitForInput = true;
-            rl.clearLine();
+            readline.clearLine(process.stdout, 0);
             rl.question(this.colorz('Enter statement:', 'bg.magenta'), (ans) => {
               if (ans.length > 0) {
                 try {
@@ -69,15 +71,15 @@ export default class Console extends RivModule {
                       compact: false,
                     }));
                   }).call(this);
-                } catch (e) {
-                  console.log(this.colorz(e, 'red'));
+                } catch (e: any) {
+                  console.log(this.colorz(e.message, 'red'));
                 }
               }
               this.waitForInput = false;
             });
           } else if (key.name === 'f') {
             this.waitForInput = true;
-            rl.clearLine();
+            readline.clearLine(process.stdout, 0);
             rl.question(this.colorz('Enter new filter:', 'bg.magenta'), (ans: string) => {
               if (ans.length > 0) {
                 this.filter = new RegExp(ans, 'i');
@@ -97,21 +99,39 @@ export default class Console extends RivModule {
   //
   // CONSOLE LOGGING METHODS
   //
+  @Method('Log a message to the console')
   log(name: string, ...args: any[]) {
-    console.log(`LOG | ${name} |`, this.renderConsoleArgs(args));
+    const label = `${this.renderTimestamp()}LOG | ${name} |`;
+    console.log(this.colorz(label, 'blue'), this.renderConsoleArgs(args));
   }
+  @Method('Log a debug message to the console')
   debug(name: string, ...args: any[]) {
-    console.debug(`DBG | ${name} |`, this.renderConsoleArgs(args));
+    const label = `${this.renderTimestamp()}DBG | ${name} |`;
+    console.debug(this.colorz(label, 'cyan'), this.renderConsoleArgs(args));
   }
+  @Method('Log a warning message to the console')
   warn(name: string, ...args: any[]) {
-    console.warn(`WRN | ${name} |`, this.renderConsoleArgs(args));
+    const label = `${this.renderTimestamp()}WRN | ${name} |`;
+    console.warn(this.colorz(label, 'yellow'), this.renderConsoleArgs(args));
   }
+  @Method('Log an error message to the console')
   error(name: string, ...args: any[]) {
-    console.error(`ERR | ${name} |`, this.renderConsoleArgs(args));
+    const label = `${this.renderTimestamp()}ERR | ${name} |`;
+    console.error(this.colorz(label, 'red'), this.renderConsoleArgs(args));
   }
+  @Method('Signal that a module is ready')
   ready(name: string, ...args: any[]) {
-    console.info(`RDY | ${name} |`, this.renderConsoleArgs(args));
+    const label = `${this.renderTimestamp()}RDY | ${name} |`;
+    console.info(this.colorz(label, 'green'), this.renderConsoleArgs(args));
   }
+  //
+  // RENDERING METHODS
+  //
+  @Method('Render the current timestamp if enabled')
+  renderTimestamp() {
+    return this.timestamp ? `${new Date().toISOString()} | ` : '';
+  }
+  @Method('Render args array to a string')
   renderConsoleArgs(args: any[]) {
     if (args.length > 0) {
       // aggregate rendered content items
@@ -132,6 +152,7 @@ export default class Console extends RivModule {
     }
     return '';
   }
+  @Method('Colorize a string with ANSI codes')
   colorz(str: string, color: string) {
     if (this.monochrome) {
       return str;
@@ -151,6 +172,8 @@ export default class Console extends RivModule {
         return `\x1b[31m${str}\x1b[0m`;
       case 'green':
         return `\x1b[32m${str}\x1b[0m`;
+      case 'blue':
+        return `\x1b[34m${str}\x1b[0m`;
       case 'yellow':
         return `\x1b[33m${str}\x1b[0m`;
       case 'magenta':
@@ -162,7 +185,8 @@ export default class Console extends RivModule {
         return str;
     }
   }
-    renderServerStatus() {
+  @Method('Render server status')
+  renderServerStatus() {
 
-    }
+  }
 }

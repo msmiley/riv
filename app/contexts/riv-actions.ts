@@ -29,9 +29,9 @@ export default {
     // setup socket
     if (ret.authToken) {
       ret.authState = 'checkingToken';
-      console.log('riv> setting up socket.io with token', ret.authToken);
+      console.log('RIV | setting up socket.io with token', ret.authToken);
     } else {
-      console.log('riv> setting up socket.io without token');
+      console.log('RIV | setting up socket.io without token');
     }
     // meta.env is set by vite, so we can use it to determine the URL when running in vite
     let url = import.meta.env ? 'http://localhost:5500/riv' : '/riv';
@@ -61,11 +61,11 @@ export default {
         case 'ping':
           break;
         case 'riv-invalid-token':
-          console.log('riv> invalid token, logging out');
+          console.log('RIV | invalid token, logging out');
           dispatch({ type: 'logout' });
           break;
         case 'riv-update-user':
-          console.log('riv> received user profile', arg);
+          console.log('RIV | received user profile', arg);
           dispatch({ type: 'login', data: arg });
           break;
       }
@@ -78,10 +78,10 @@ export default {
     return ret;
   },
   login(state: RivState, data: RivActionData): RivState {
-    console.log('riv> login action received', data);
+    console.log('RIV | login action received', data);
     if (data.token && jwtValid(data.token)) {
       localStorage.setItem('rivToken', data.token);
-      console.log('riv> login successful, token set');
+      console.log('RIV | login successful, token set');
       return {
         ...state,
         authState: 'loggedIn',
@@ -93,7 +93,7 @@ export default {
         permissions: data.permissions || state.permissions,
       };
     } else {
-      console.warn('riv> login failed, invalid token');
+      console.warn('RIV | login failed, invalid token');
       return {
         ...state,
         authState: 'loggedOut',
@@ -101,14 +101,14 @@ export default {
     }
   },
   connected(state: RivState): RivState {
-    console.debug('riv> socket.io connected');
+    console.debug('RIV | socket.io connected');
     return {
       ...state,
       ioConnected: true,
     };
   },
   disconnected(state: RivState): RivState {
-    console.debug('riv> socket.io disconnected, reconnecting...');
+    console.debug('RIV | socket.io disconnected, reconnecting...');
     return {
       ...state,
       ioConnected: false,

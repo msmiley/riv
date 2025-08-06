@@ -70,7 +70,7 @@ export default {
       },
       {
         title: 'Popups',
-        icon: 'kebab',
+        icon: 'meatballplatter',
         children: [
           { title: 'Dropdown', path: '/popups/dropdown' },
           { title: 'Modal', path: '/popups/modal' },

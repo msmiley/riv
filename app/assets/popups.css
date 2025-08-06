@@ -1,0 +1,9 @@
+body {
+  --riv-dropdown-bg: #fff;
+  --riv-dropdown-fg: var(--riv-text-color);
+}
+
+body.riv-dark {
+  --riv-dropdown-bg: #333;
+  --riv-dropdown-fg: var(--riv-text-color);
+}

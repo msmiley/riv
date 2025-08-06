@@ -1,0 +1,44 @@
+
+/*--------------------------------------*/
+/* KvpList */
+/*--------------------------------------*/
+.kvpList {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  column-gap: var(--riv-kvp-list-column-gap, 0.8em);
+  row-gap: var(--riv-kvp-list-row-gap, 0.2em);
+  align-items: center;
+}
+.kvpListKey {
+  justify-self: end;
+  font-weight: var(--riv-kvp-list-font-weight, 700);
+}
+.kvpListValue {
+  justify-self: start;
+}
+/*--------------------------------------*/
+/* ListButton */
+/*--------------------------------------*/
+.listButton {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0.5em 1em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.listButton:hover,
+.listButton:focus {
+  background-color: var(--riv-hover-bg);
+  outline: none;
+}
+.listButton:focus-visible {
+  outline: 2px solid var(--riv-focus-outline, #007acc);
+}
+.listButtonContent {
+  display: flex;
+  align-items: center;
+  gap: var(--riv-control-gap, 0.5em);
+}

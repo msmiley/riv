@@ -48,15 +48,15 @@ export abstract class RivModule {
   // helper method to register the module with the server
   // this method is called by the server when the module is loaded
   selfRegister(server: RivServer, propOverrides: Record<string, any> = {}) {
-    console.info(`riv> Module self-register called for ${this.name}`);
+    console.info(`RIV | Module self-register called for ${this.name}`);
     // override properties if provided
     if (propOverrides) {
       for (const [key, value] of Object.entries(propOverrides)) {
         if (this.hasProp(key)) {
           (this as any)[key] = value; // set the property to the provided value
-          console.info(`riv> Property ${key} overridden to ${value}`);
+          console.info(`RIV | Property ${key} overridden to ${value}`);
         } else {
-          console.warn(`riv> Property ${key} not found in module ${this.name}, skipping override`);
+          console.warn(`RIV | Property ${key} not found in module ${this.name}, skipping override`);
         }
       }
     }
@@ -78,10 +78,10 @@ export abstract class RivModule {
     this.$shutdown = () => { server.$shutdown.apply(server, [ this.name ]) };
     // register event handlers
     for (const handler of this.#eventHandlers) {
-      console.log(`riv> event handler registered: ${this.name}.${handler.name} listening for ${handler.event}`);
+      console.log(`RIV | event handler registered: ${this.name}.${handler.name} listening for ${handler.event}`);
       if (handler.event.includes(',')) {
         // multi-event handler, won't execute until all events have fired BUT only happens ONCE
-        console.log(`riv> registering multi-event handler for ${handler.event}`);
+        console.log(`RIV | registering multi-event handler for ${handler.event}`);
         let eventData: Record<string,any> = {};
         for (let e of handler.event.split(',')) {
           eventData[e] = null; // initial value
@@ -141,7 +141,7 @@ export abstract class RivModule {
   }
   // Method to register an event handler, used by decorators
   registerEventHandler(name: string, event: string, description: string): void {
-    console.log(`riv> event handler registered: ${this.name}.${name}`);
+    console.log(`RIV | event handler registered: ${this.name}.${name}`);
     this.#eventHandlers.push({
       name,
       event,
@@ -171,7 +171,7 @@ export function Property(description: string) {
   ) {
     const name = String(context.name);
     context.addInitializer(function () {
-      console.log(`riv> Prop registered: ${this.name}.${name}`);
+      console.log(`RIV | Prop registered: ${this.name}.${name}`);
       // this.name is class name
       this.registerProp(name);
     });
@@ -186,7 +186,7 @@ export function ApiMethod(description: string, ...roles: string[]) {
     const name = String(context.name);
     context.addInitializer(function () {
       // this.name is class name
-      console.log(`riv> API method registered: ${this.name}.${name}`);
+      console.log(`RIV | API method registered: ${this.name}.${name}`);
       // bind the method to the instance so we can call it easily from callApiMethod
       (this as any)[name] = (this as any)[name].bind(this);
       // add to apiMethods array
@@ -204,7 +204,7 @@ export function EventHandler(event: string, description: string) {
     const name = String(context.name);
     context.addInitializer(function () {
       // this.name is class name
-      console.log(`riv> event handler registered: ${this.name}.${name}`);
+      console.log(`RIV | event handler registered: ${this.name}.${name}`);
       // bind the method to the instance so we can call it easily from handleEvent
       (this as any)[name] = (this as any)[name].bind(this);
       // add to eventHandlers array
@@ -222,7 +222,7 @@ export function Method(description: string) {
     const name = String(context.name);
     context.addInitializer(function () {
       // this.name is class name
-      console.log(`riv> Regular method registered: ${this.name}.${name}`);
+      console.log(`RIV | Regular method registered: ${this.name}.${name}`);
       // bind the method to the instance so we can call it easily from callApiMethod
       (this as any)[name] = (this as any)[name].bind(this);
       // add to apiMethods array

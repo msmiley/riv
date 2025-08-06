@@ -6,6 +6,7 @@
 @import './inputs.css';
 @import './layout.css';
 @import './mobile.css';
+@import './popups.css';
 @import './sidebar.css';
 @import './text.css';
 @import './trays.css';
@@ -71,7 +72,7 @@ body {
   --riv-outline: #ccc;
   --riv-outline-dark: #777;
   --riv-active: #cfdaee;
-  --riv-hover: #c4c7c9;
+  --riv-hover-bg: #c4c7c9;
   --riv-hover-fg: var(--riv-text-color);
 
 }
@@ -92,7 +93,7 @@ body.riv-dark {
   --riv-outline-dark: #444;
   --riv-layout-border-color: #444546;
   --riv-active: #37383a;
-  --riv-hover: #535456;
+  --riv-hover-bg: #535456;
   --riv-hover-fg: var(--riv-text-color);
 
   --riv-popup-bg: #303436;

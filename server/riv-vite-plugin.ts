@@ -4,7 +4,7 @@ import type { ViteDevServer } from "vite";
 //
 //
 export default function({ configPath, demoMode }: { configPath?: string, demoMode?: boolean }) {
-  console.log(`riv> installing riv-vite-plugin with config at ${configPath}`);
+  console.log(`RIV | installing riv-vite-plugin with config at ${configPath}`);
   return {
     name: 'riv-vite-plugin',
     // main entry point called by vite plugin API, it is provided with

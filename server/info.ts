@@ -4,14 +4,14 @@
 //
 import fs from 'node:fs';
 import path from 'node:path';
-import utils from './utils.ts';
+import utils from './utils';
 import type { RivServer } from './riv-server.ts';
-import { RivError } from '../shared/base/riv-error.ts';
-import { RivModule, ApiMethod, Property, EventHandler } from '../shared/base/riv-module.ts';
+import { RivError } from '../shared/base/riv-error';
+import { RivModule, ApiMethod, Property, EventHandler } from '../shared/base/riv-module';
 import type { RivRequest } from 'shared/types/server';
 
 export default class Info extends RivModule {
-  version: string = ''; // riv version
+  private version: string = ''; // should represent riv version
 
   @Property('this is a test prop')
   testProp: string = 'testProp default value';
@@ -76,7 +76,6 @@ export default class Info extends RivModule {
   // METHODS
   //
   sendTime() {
-    console.log('sending time to all users');
     // this.$emit('sendToAllUsers', 'ServerTime', new Date().getTime());
     // this.$emit('sendToUserId', '667b2561c943a65d9f932e1a', 'sdjfkls');
   }

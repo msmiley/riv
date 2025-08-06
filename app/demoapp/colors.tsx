@@ -79,7 +79,7 @@ export default function Component() {
     '--riv-selection',
     '--riv-outline',
     '--riv-active',
-    '--riv-hover',
+    '--riv-hover-bg',
   ];
   const textColors = [
     '--riv-text-color',

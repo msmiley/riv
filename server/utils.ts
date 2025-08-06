@@ -7,9 +7,9 @@ import { defaultsDeep, pick } from 'lodash-es';
 export default {
   // start http server for RELEASE mode (vite provides server for dev)
   startHttpServer(port = 5000) {
-    console.info('riv> starting http server in RELEASE mode');
+    console.info('RIV | starting http server in RELEASE mode');
     let server = http.createServer().listen(port, () => {
-      console.log(`riv> http listening on port ${port}`);
+      console.log(`RIV | http listening on port ${port}`);
     });
     // set up handler to serve app files
     server.on('request', (req, res) => {
@@ -54,7 +54,7 @@ export default {
         if (error) {
           if (error.code == 'ENOENT'){
             res.writeHead(404);
-            res.end('riv> file not found');
+            res.end('RIV | file not found');
           } else {
             res.writeHead(500);
             res.end('Sorry, check with the site admin for error: '+error.code+' ..\n');
@@ -76,7 +76,7 @@ export default {
     while (a.length - 1) {
       let n = a.shift();
       if (n === undefined) {
-        throw new Error(`riv> deepSet: invalid path ${path}`);
+        throw new Error(`RIV | deepSet: invalid path ${path}`);
       }
       // if the object doesn't have this property, create it
       if (!(n in o)) {
@@ -177,14 +177,14 @@ export default {
     if (p.length === 0) {
       p = this.__dirname();
     }
-    // console.log(`riv> findRoot starting in ${p}`);
+    // console.log(`RIV | findRoot starting in ${p}`);
     var rpath = path.resolve(p);
     if (fs.existsSync(path.join(rpath, 'package.json'))) {
-      // console.log(`riv> findRoot found package.json in ${p}`);
+      // console.log(`RIV | findRoot found package.json in ${p}`);
       return rpath;
     } else {
       var parent = path.dirname(rpath);
-      // console.log(`riv> findRoot traversing up to ${parent}`);
+      // console.log(`RIV | findRoot traversing up to ${parent}`);
       if (parent !== rpath) {
         return this.findRoot(parent);
       } else { // failsafe - means we got all the way to root
