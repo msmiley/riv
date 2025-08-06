@@ -63,16 +63,17 @@ export default {
       },
       {
         title: 'Pickers',
-        icon: 'pickers',  // use the new pickers.svg icon
+        icon: 'pickers', 
         children: [
           { title: 'Color', path: '/pickers/color' },
         ]
       },
       {
         title: 'Popups',
-        icon: 'dropdown',  // placeholder icon for dropdown
+        icon: 'kebab',
         children: [
           { title: 'Dropdown', path: '/popups/dropdown' },
+          { title: 'Modal', path: '/popups/modal' },
         ]
       },
       {

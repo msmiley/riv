@@ -33,8 +33,11 @@ export type RivGetterProxy = (arg?: any) => any;
 export type RivGetter = (state: RivState, arg?: any) => any;
 
 // slot props for popup button slots (e.g. Dropdown and Modal)
-export type DropdownButtonSlotProps = {
-  ref: React.Ref<HTMLDivElement>;
+export type PopupTriggerSlotProps = {
+  ref: React.Ref<HTMLElement>;
   onClick: () => void;
 };
-
+// slot prop for closing popups
+export type PopupCloseSlotProps = {
+  onClose: () => void;
+};

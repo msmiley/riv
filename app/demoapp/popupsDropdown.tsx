@@ -1,15 +1,14 @@
-// import type { Route } from "./+types/popupsDropdown"; // removed missing type import
-import React from 'react';
+import type { Route } from "./+types/popupsDropdown";
 import Column from '../components/containers/Column';
 import Row from '../components/containers/Row';
 import Card from '../components/containers/Card';
 import Slot from '../components/slots/Slot';
 import Button from '../components/buttons/Button';
 import Dropdown from '../components/popups/Dropdown';
-import type { DropdownButtonSlotProps } from '~/types';
+import type { PopupTriggerSlotProps } from '~/types';
 
 // describe the route
-export function meta() {
+export function meta({}: Route.MetaArgs) {
   return [
     { title: "Dropdown" },
     { name: "description", content: "Demo of Dropdown popup component" },
@@ -28,13 +27,11 @@ export default function Component() {
         <Card border>
           <Slot name="subtitle">Basic Dropdown</Slot>
           <Slot name="description">Click the button to toggle dropdown</Slot>
-          <div style={{ position: 'relative' }}>
+          <Row>
             <Dropdown>
-              <Slot name="button">
-                {({ ref, onClick }: DropdownButtonSlotProps) => (
-                  <div ref={ref} style={{ display: 'inline-block' }}>
-                    <Button onClick={onClick}>Toggle</Button>
-                  </div>
+              <Slot name="trigger">
+                {({ onClick }: PopupTriggerSlotProps) => (
+                  <Button onClick={onClick}>Toggle</Button>
                 )}
               </Slot>
               <Slot name="default">
@@ -45,7 +42,7 @@ export default function Component() {
                 </Card>
               </Slot>
             </Dropdown>
-          </div>
+          </Row>
         </Card>
       </Row>
     </Column>

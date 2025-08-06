@@ -30,6 +30,7 @@ export default [
     // popups sub-menu
     ...prefix("popups", [
       route('dropdown', 'demoapp/popupsDropdown.tsx'),
+      route('modal', 'demoapp/popupsModal.tsx'),
     ]),
     route('profile', 'demoapp/profile.tsx'),
     route('socketio', 'demoapp/serverSocketIo.tsx'),

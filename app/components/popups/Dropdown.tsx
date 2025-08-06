@@ -2,6 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import useSlot from '../../hooks/useSlot';
 import styles from './popups.module.css';
+import type { PopupCloseSlotProps, PopupTriggerSlotProps } from '~/types';
 
 interface DropdownProps extends React.PropsWithChildren<unknown> {}
 
@@ -19,7 +20,7 @@ export default function Dropdown({ children }: DropdownProps) {
 
   // internal open state and anchor for trigger
   const [isOpen, setIsOpen] = React.useState(false);
-  const anchorRef = React.useRef<HTMLElement>(null);
+  const anchorRef = React.useRef<HTMLDivElement>(null);
 
   // auto-position container when open and anchorRef provided
   React.useLayoutEffect(() => {
@@ -58,20 +59,21 @@ export default function Dropdown({ children }: DropdownProps) {
     };
   }, [isOpen, container]);
 
-  // Render trigger button slot
-  const trigger = useSlot(children, 'button', {
-    ref: anchorRef,
+  // Render trigger slot
+  const trigger = useSlot(children, 'trigger', {
     onClick: () => setIsOpen(open => !open),
-  });
+  } as PopupTriggerSlotProps);
 
   return (
-    <>
-      {trigger}
+    <div className={styles.dropdown}>
+      <div ref={anchorRef} className={styles.dropdownTrigger}>
+        {trigger}
+      </div>
       {isOpen &&
         createPortal(
-          <div className={styles.dropdownContent}>{useSlot(children, 'default')}</div>,
+          <div className={styles.dropdownContent}>{useSlot(children, 'default', { onClose: () => setIsOpen(false) } as PopupCloseSlotProps)}</div>,
           container
         )}
-    </>
+    </div>
   );
 }

@@ -1,12 +1,52 @@
-/*--------------------------------------*/
-/* Dropdown */
-/*--------------------------------------*/
+/* Dropdown styles */
 .dropdown {
-
+  position: relative;
+}
+.dropdownTrigger {
+  display: inline-block;
 }
 /* content wrapper inside portal */
  .dropdownContent {
   border: var(--riv-control-border-width) solid var(--riv-control-border-color);
   border-radius: var(--riv-control-border-radius, 4px);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Modal styles */
+.modal {
+  position: relative;
+}
+.modalTrigger {
+  display: inline-block;
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modalContent {
+  background-color: var(--riv-bg, #fff);
+  border-radius: var(--riv-control-border-radius, 4px);
+  padding: var(--riv-control-padding, 1em);
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}
+.modalTitle {
+  font-size: 1.25em;
+  margin-bottom: 0.5em;
+}
+.modalBody {
+  margin-bottom: 1em;
+}
+.modalButtons {
+  text-align: right;
 }
