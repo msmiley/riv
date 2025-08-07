@@ -12,7 +12,7 @@ interface DropdownProps extends React.PropsWithChildren {
 export default function Dropdown({ right, children }: DropdownProps) {
   // Create a container for the portal
   const [container] = React.useState(() => document.createElement('div'));
-
+  
   // append container to body once
   React.useEffect(() => {
     document.body.appendChild(container);
@@ -20,33 +20,36 @@ export default function Dropdown({ right, children }: DropdownProps) {
       document.body.removeChild(container);
     };
   }, [container]);
-
+  
   // internal open state and anchor for trigger
   const [isOpen, setIsOpen] = React.useState(false);
   const anchorRef = React.useRef<HTMLDivElement>(null);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+  // state for popup style
+  const [popupStyle, setPopupStyle] = React.useState<React.CSSProperties>({ position: 'absolute', top: '0px', left: '0px', visibility: 'hidden' });
 
-  // auto-position container when open and anchorRef provided
+  // position dropdown on mount/update
   React.useLayoutEffect(() => {
-    if (isOpen && anchorRef.current) {
-      const rect = anchorRef.current.getBoundingClientRect();
-      const scrollY = window.scrollY;
-      const scrollX = window.scrollX;
-      const top = rect.bottom + scrollY + 1;
-      let left: number;
-      if (right) {
-        // align right edge of dropdown to right edge of trigger
-        const width = container.offsetWidth;
-        left = rect.right + scrollX - width;
-      } else {
-        left = rect.left + scrollX;
-      }
-      Object.assign(container.style, {
-        position: 'absolute',
-        top: `${top}px`,
-        left: `${left}px`,
-      });
+    if (!isOpen || !anchorRef.current || !dropdownRef.current) return;
+    const triggerRect = anchorRef.current.getBoundingClientRect();
+    const dropdownRect = dropdownRef.current.getBoundingClientRect();
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+    // vertical: default below, flip above if overflowing
+    let top = triggerRect.bottom + scrollY + 1;
+    if (top + dropdownRect.height > scrollY + window.innerHeight) {
+      top = triggerRect.top + scrollY - dropdownRect.height - 1;
     }
-  }, [isOpen, anchorRef, container]);
+    // horizontal: default align left, align right or adjust if overflowing
+    let left = triggerRect.left + scrollX;
+    if (right) {
+      left = triggerRect.right + scrollX - dropdownRect.width;
+    } else if (left + dropdownRect.width > scrollX + window.innerWidth) {
+      left = triggerRect.right + scrollX - dropdownRect.width;
+    }
+    // apply position and show
+    setPopupStyle({ position: 'absolute', top: `${top}px`, left: `${left}px`, visibility: 'visible' });
+  }, [isOpen, right, container]);
 
   // handle click-outside and Escape key
   React.useEffect(() => {
@@ -82,13 +85,13 @@ export default function Dropdown({ right, children }: DropdownProps) {
       <div ref={anchorRef} className={styles.dropdownTrigger}>
         {trigger}
       </div>
-      {isOpen &&
-        createPortal(
-          <div className={cls(styles.dropdownContent, { right })}>
-            {useSlot(children, 'default', { onClose: () => setIsOpen(false) } as PopupCloseSlotProps)}
-          </div>,
-          container
-        )}
+      {isOpen && createPortal(
+        // content rendered in portal container
+        <div ref={dropdownRef} className={cls(styles.dropdownContent, { right })} style={popupStyle}>
+          {useSlot(children, 'default', { onClose: () => setIsOpen(false) } as PopupCloseSlotProps)}
+        </div>,
+        container
+      )}
     </div>
   );
 }

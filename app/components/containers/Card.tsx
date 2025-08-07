@@ -13,16 +13,18 @@ interface CardProps extends React.PropsWithChildren {
   border?: boolean;     // true for a border around card
   color?: string;       // background color
   cols?: number;        // bootstrap-style column width (1-12)
+  grow?: boolean;       // flex grow
 }
 
 export default function Card({
   border = false,
-  cols = 0,
   color,
+  cols = 0,
+  grow = false,
   children,
 }: CardProps) {
   return (
-    <div className={cls(styles.rivCard, `riv-basis-${cols}`, { border })}
+    <div className={cls(styles.rivCard, `riv-basis-${cols}`, { border, grow })}
          style={{
            '--riv-card-bg': color,
          } as React.CSSProperties}>

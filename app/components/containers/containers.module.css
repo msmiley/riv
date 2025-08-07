@@ -4,7 +4,7 @@
 .rivCard {
   display: flex;
   border-radius: var(--riv-layout-border-radius);
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   flex-direction: column;
   min-width: 0;
   background-color: var(--riv-card-bg);

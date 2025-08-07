@@ -16,6 +16,7 @@ export default [
     ...prefix("containers", [
       route('column', 'demoapp/column.tsx'),
       route('row', 'demoapp/row.tsx'),
+      route('grid', 'demoapp/grid.tsx'),
     ]),
     // inputs sub-menu
     ...prefix("inputs", [

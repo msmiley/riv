@@ -10,6 +10,8 @@
   flex-grow: 1;
   padding: 0.5em;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /*--------------------------------------*/

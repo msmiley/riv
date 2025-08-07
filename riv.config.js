@@ -51,6 +51,10 @@ export default {
             title: 'Row',
             path: '/containers/row',
           },
+          {
+            title: 'Grid',
+            path: '/containers/grid',
+          },
         ]
       },
       {

@@ -1,8 +1,11 @@
 import React from 'react';
 import { cls } from '../../utils';
+import type { FlexAlign, FlexJustify } from './containers';
 
 interface RowProps extends React.PropsWithChildren {
   center?: boolean;            // alias for flex align-items: center
+  justify?: FlexJustify;       // flex justify-content
+  align?: FlexAlign;           // flex align-items
   gap?: string;                // flex gap parameter, defaults to --riv-layout-gap
   grow?: boolean;              // set flex grow
   shrink?: boolean;            // set flex shrink
@@ -22,6 +25,8 @@ export default function Row(props: RowProps) {
         flexShrink: props.shrink ? 1 : 0,
         alignSelf: props.self,
         flexWrap: props.nowrap ? 'nowrap' : 'wrap',
+        justifyContent: props.justify,
+        alignItems: props.align,
       }}
     >
       {props.children}
