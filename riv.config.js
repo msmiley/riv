@@ -71,6 +71,7 @@ export default {
         icon: 'pickers', 
         children: [
           { title: 'Color', path: '/pickers/color' },
+          { title: 'Date', path: '/pickers/date' },
         ]
       },
       {
@@ -79,6 +80,7 @@ export default {
         children: [
           { title: 'Dropdown', path: '/popups/dropdown' },
           { title: 'Modal', path: '/popups/modal' },
+          { title: 'Tooltip', path: '/popups/tooltip' },
         ]
       },
       {

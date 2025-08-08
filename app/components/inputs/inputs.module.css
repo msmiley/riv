@@ -130,6 +130,18 @@
   font-weight: 600;
 }
 
+.inputEditorLabelGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.inputEditorDescription {
+  font-size: 0.875em;
+  color: var(--riv-text-color-muted);
+  font-style: italic;
+}
+
 .inputEditorContainer {
   display: flex;
   position: relative;
@@ -146,6 +158,11 @@
   color: var(--riv-text-color-muted);
   user-select: none;
   flex-shrink: 0;
+  overflow: hidden; /* we'll translate inner content */
+}
+
+.inputEditorGutterContent {
+  will-change: transform;
 }
 
 .inputEditorLineNumber {
@@ -154,14 +171,72 @@
 }
 
 .inputEditorTextarea {
-  background-color: var(--riv-inputs-editor-bg);
   font-family: inherit;
   line-height: 1.4;
-  padding-left: 0.5em !important;
-  border: none !important;
-  outline: none !important;
+  margin: 0;
+  padding: 0.5em;
+  border: none;
+  outline: none;
   resize: vertical;
   min-height: 200px;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  color: transparent;
+  caret-color: var(--riv-text-color);
+  white-space: pre-wrap;
+  tab-size: 2;
+  overflow: auto;
+  box-sizing: border-box;
 }
+.inputEditorTextarea:disabled {
+  resize: none;
+  min-height: auto;
+  overflow: hidden;
+}
+.inputEditorTextarea::placeholder {
+  color: var(--riv-text-color-placeholder);
+}
+
+.inputEditorCodeArea {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 200px;
+}
+
+.inputEditorHighlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* must scroll to sync with textarea */
+  pointer-events: none;
+  font-family: inherit;
+  line-height: 1.4;
+  z-index: 0;
+}
+.inputEditorHighlight pre,
+.inputEditorHighlight pre[class*="language-"],
+.inputEditorHighlight code[class*="language-"] {
+  margin: 0;
+  padding: 0.5em;
+  background: transparent !important;
+  font-family: inherit;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  tab-size: 2;
+  overflow: visible;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+}
+.inputEditorHighlight code { white-space: inherit; }
 
 

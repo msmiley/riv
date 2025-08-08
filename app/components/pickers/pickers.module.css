@@ -26,3 +26,91 @@
   color: var(--riv-text-color-muted);
   margin-top: 0.25em;
 }
+
+/*-------------------*/
+/* DatePicker styles */
+/*-------------------*/
+.dpContainer {
+  width: var(--riv-pickers-date-width);
+  padding: 0.5em;
+}
+
+.dpHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+.dpTitle {
+  display: flex;
+  gap: 0.5em;
+  font-weight: 600;
+}
+.dpLink {
+  background: none;
+  border: none;
+  color: var(--riv-text-color);
+  cursor: pointer;
+}
+.dpNav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  line-height: 1;
+  color: var(--riv-text-color);
+}
+
+.dpWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.25em;
+}
+.dpWeekday { 
+  text-align: center; 
+  font-size: 0.8em; 
+  color: var(--riv-text-color-muted); 
+}
+
+.dpBody {
+  /* container for calendar content */
+  position: relative;
+}
+.dpGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25em;
+}
+.dpGridMonths { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 0.25em; 
+}
+
+.dpCell {
+  padding: 0.35em 0.1em;
+  text-align: center;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--riv-text-color);
+}
+.dpCell:hover { 
+  background: var(--riv-hover-bg); 
+}
+.dpCell:global(.selected) { 
+  background: var(--riv-selection); 
+  color: #fff; 
+}
+.dpCell:global(.inRange) { 
+  background: var(--riv-selection); 
+}
+.dpCell:global(.rangeStart), .dpCell:global(.rangeEnd) { 
+  background: var(--riv-selection); 
+  color: #fff; 
+}
+.dpCell:disabled { 
+  opacity: 0.4; 
+  cursor: default; 
+}
