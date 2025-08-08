@@ -3,7 +3,7 @@
 /*--------------------------------------*/
 .rivCard {
   display: flex;
-  border-radius: var(--riv-layout-border-radius);
+  border-radius: var(--riv-card-border-radius);
   flex: 0 1 auto;
   flex-direction: column;
   min-width: 0;

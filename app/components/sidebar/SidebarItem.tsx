@@ -30,12 +30,19 @@ export default function SidebarItem(props: SidebarItemProps) {
     setIsOpen(!isOpen);
   }
 
+  // render title or titleComponent
+  const itemTitle = props.item.titleComponent ? (
+    <props.item.titleComponent />
+  ) : (
+    props.item.title
+  );
+
   // render sidebar item differently based on whether it has children or not
   if (props.item.category) {
     // CATEGORY
     return (
       <div className={styles.sidebarItemCategory}>
-        {props.item.title}
+        {itemTitle}
       </div>
     );
   } else if (props.item.children) {
@@ -49,7 +56,7 @@ export default function SidebarItem(props: SidebarItemProps) {
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>
           </div>
-          {props.item.title}
+          {itemTitle}
         </a>
         <SidebarSubRoutes isShown={isOpen} routes={props.item.children}/>
       </div>
@@ -63,7 +70,7 @@ export default function SidebarItem(props: SidebarItemProps) {
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>
           </div>
-          {props.item.title}
+          {itemTitle}
         </NavLink>
       </div>
     );

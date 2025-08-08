@@ -15,7 +15,7 @@ export default {
     // in app/routes.ts
     routes: [
       {
-        title: '<username>',
+        titleComponent: 'UsernameText',
         iconComponent: '',
         color: 'var(--riv-sidebar-user-menu-bg)',
         children: [

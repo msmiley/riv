@@ -32,10 +32,8 @@ export default function Modal({ children }: ModalProps) {
       const triggerEl = triggerRef.current;
       const contentEl = contentRef.current;
       // ignore clicks inside content or on trigger
-      if (
-        (contentEl && contentEl.contains(target)) ||
-        (triggerEl && triggerEl.contains(target))
-      ) {
+      if ((contentEl && contentEl.contains(target)) ||
+          (triggerEl && triggerEl.contains(target))) {
         return;
       }
       setIsOpen(false);

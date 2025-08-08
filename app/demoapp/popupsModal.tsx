@@ -23,7 +23,7 @@ export default function Component() {
       </Card>
 
       <Row>
-        <Card border>
+        <Card border grow>
           <Slot name="subtitle">Basic Modal</Slot>
           <Slot name="description">
             Click the button to open the modal. Click outside or press Escape to close.

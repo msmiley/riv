@@ -16,7 +16,7 @@ interface ColumnProps extends React.PropsWithChildren {
 export default function Column(props: ColumnProps) {
   return (
     <div
-      className={cls('riv-column', { center: props.center })}
+      className="riv-column"
       style={{
         ...(props.style || {}),
         gap: props.gap ?? 'var(--riv-layout-gap)',
@@ -24,7 +24,7 @@ export default function Column(props: ColumnProps) {
         flexShrink: props.shrink ? 1 : 0,
         alignSelf: props.self,
         justifyContent: props.justify,
-        alignItems: props.align,
+        alignItems: props.center ? 'center' : props.align,
       }}
     >
       {props.children}

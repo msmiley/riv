@@ -10,6 +10,7 @@ body {
   --riv-card-bg: #242425;
   --riv-card-padding: 1em;
   --riv-card-border: 1px solid var(--riv-outline);
+  --riv-card-border-radius: 10px;
 }
 
 body.riv-dark {

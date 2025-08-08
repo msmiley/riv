@@ -33,17 +33,18 @@ export default function Component() {
 
       <Card border>
         <Slot name="subtitle">Centered</Slot>
-        <Slot name="description">Align children center on cross axis</Slot>
-        <Row style={{ height: '100px', background: '#f5f5f5' }}>
-          <Column center>
+        <Slot name="description">Align children on axis by adding <InlineCode>center</InlineCode> prop</Slot>
+        <Row style={{ height: '100px', border: '1px solid green' }}>
+          <Column center grow>
             <div>Centered Item</div>
+            <div>Another Centered Item</div>
           </Column>
         </Row>
       </Card>
 
       <Card border>
         <Slot name="subtitle">Custom Gap</Slot>
-        <Slot name="description">Use <InlineCode>gap</InlineCode> prop to adjust spacing</Slot>
+        <Slot name="description">Use <InlineCode>gap</InlineCode> prop to adjust spacing between items</Slot>
         <Column gap="1.5em" style={{ border: '1px solid var(--riv-control-border-color)', padding: '1em' }}>
           <div>Gap A</div>
           <div>Gap B</div>
@@ -54,10 +55,10 @@ export default function Component() {
         <Slot name="subtitle">Flex Grow</Slot>
         <Slot name="description">Demonstrate <InlineCode>grow</InlineCode> prop</Slot>
         <Row style={{ height: '100px' }}>
-          <Column grow style={{ background: '#ddeeff' }}>
+          <Column grow style={{ border: '1px solid green' }}>
             <div>Grow = 1</div>
           </Column>
-          <Column style={{ background: '#ffddee' }}>
+          <Column style={{ border: '1px solid blue' }}>
             <div>Grow = 0</div>
           </Column>
         </Row>
