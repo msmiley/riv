@@ -105,4 +105,63 @@
   flex: none;
 }
 
+/* InputEditor specific styles */
+.inputEditor {
+  font-family: var(--riv-font-mono, 'Monaco', 'Menlo', 'Ubuntu Mono', monospace);
+}
+
+.inputEditorWrapper {
+  width: 100%;
+  border: var(--riv-control-border-width) solid var(--riv-inputs-editor-border-color);
+  border-radius: var(--riv-inputs-editor-border-radius);
+  overflow: hidden;
+  background: var(--riv-inputs-editor-toolbar-bg);
+}
+
+.inputEditorToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4em 0.6em;
+  border-bottom: var(--riv-control-border-width) solid var(--riv-inputs-editor-border-color);
+}
+
+.inputEditorLabel {
+  font-weight: 600;
+}
+
+.inputEditorContainer {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.inputEditorGutter {
+  background-color: var(--riv-inputs-editor-gutter-bg);
+  border-right: 1px solid var(--riv-inputs-editor-border-color);
+  padding: 0.5em 0.25em;
+  min-width: 3em;
+  text-align: right;
+  font-size: 0.9em;
+  color: var(--riv-text-color-muted);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.inputEditorLineNumber {
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.inputEditorTextarea {
+  background-color: var(--riv-inputs-editor-bg);
+  font-family: inherit;
+  line-height: 1.4;
+  padding-left: 0.5em !important;
+  border: none !important;
+  outline: none !important;
+  resize: vertical;
+  min-height: 200px;
+}
+
 

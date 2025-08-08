@@ -62,6 +62,7 @@ export default {
         icon: 'textfield',
         children: [
           { title: 'Text', path: '/inputs/text' },
+          { title: 'Editor', path: '/inputs/editor' },
           { title: 'Date', path: '/inputs/date' },
         ]
       },

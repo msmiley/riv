@@ -10,9 +10,14 @@ body {
   --riv-inputs-text-shaded-bg: var(--riv-dark);
   --riv-inputs-text-inner-gap: 0.2em;
 
+  --riv-inputs-editor-border-radius: 10px;
 }
 
 
 body.riv-dark {
 
+  --riv-inputs-editor-bg: var(--riv-darker);
+  --riv-inputs-editor-border-color: var(--riv-outline);
+  --riv-inputs-editor-toolbar-bg: var(--riv-dark);
+  --riv-inputs-editor-gutter-bg: var(--riv-dark);
 }

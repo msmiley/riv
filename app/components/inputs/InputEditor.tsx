@@ -12,6 +12,7 @@ interface InputEditorProps extends React.PropsWithChildren {
   required?: boolean;
   disabled?: boolean;
   grow?: boolean;
+  showLineNumbers?: boolean;
   onUpdate?: (value: string) => void;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
 }
@@ -22,6 +23,7 @@ export default function InputEditor({
   required,
   disabled,
   grow,
+  showLineNumbers = true,
   onUpdate,
   onChange,
   children,
@@ -40,34 +42,49 @@ export default function InputEditor({
     onChange && onChange(e);
   };
 
+  // Calculate line numbers based on textarea content
+  const lineCount = value.split('\n').length;
+  const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1);
+
   return (
-    <div className={cls(styles.inputsText, { grow })}>
-      <label
-        htmlFor={id}
-        className={cls(styles.inputsTextInner, { focused })}
-      >
-        {useSlot(children, 'label')}
-        <textarea
-          id={id}
-          ref={textareaRef}
-          className={styles.inputsTextInputEl}
-          value={value}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-          onChange={handleChange}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-        />
-        <div className={styles.inputsTextButtons}>
-          {useSlot(children, 'buttons')}
-          {value.length > 0 && (
+    <div className={cls(styles.inputsText, styles.inputEditor, { grow })}>
+      <div className={styles.inputEditorWrapper}>
+        <div className={styles.inputEditorToolbar}>
+          <label htmlFor={id} className={styles.inputEditorLabel}>
+            {useSlot(children, 'label')}
+          </label>
+          <div className={styles.inputsTextButtons}>
+            {useSlot(children, 'buttons', { clearInput })}
             <Button variant="tight" onClick={clearInput} aria-label="Clear text">
-              <Icon name="times" />
+              <Icon name="trash" />
             </Button>
-          )}
+          </div>
         </div>
-      </label>
+
+        <div className={styles.inputEditorContainer}>
+          {showLineNumbers && (
+            <div className={styles.inputEditorGutter}>
+              {lineNumbers.map((lineNum) => (
+                <div key={lineNum} className={styles.inputEditorLineNumber}>
+                  {lineNum}
+                </div>
+              ))}
+            </div>
+          )}
+          <textarea
+            id={id}
+            ref={textareaRef}
+            className={cls(styles.inputsTextInputEl, styles.inputEditorTextarea)}
+            value={value}
+            placeholder={placeholder}
+            required={required}
+            disabled={disabled}
+            onChange={handleChange}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+          />
+        </div>
+      </div>
       {useSlot(children, 'description')}
     </div>
   );
