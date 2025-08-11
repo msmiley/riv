@@ -148,26 +148,77 @@
   width: 100%;
 }
 
+.inputEditorScrollContainer {
+  display: flex;
+  width: 100%;
+  min-height: 200px;
+  overflow: hidden; /* disable container scroll, textarea handles it */
+  position: relative;
+}
+
 .inputEditorGutter {
   background-color: var(--riv-inputs-editor-gutter-bg);
   border-right: 1px solid var(--riv-inputs-editor-border-color);
-  padding: 0.5em 0.25em;
+  padding: 0.5em 0.25em 0.5em 0.5em;
   min-width: 3em;
   text-align: right;
   font-size: 0.9em;
   color: var(--riv-text-color-muted);
   user-select: none;
   flex-shrink: 0;
-  overflow: hidden; /* we'll translate inner content */
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
 }
 
-.inputEditorGutterContent {
+.inputEditorGutter > div {
   will-change: transform;
 }
 
 .inputEditorLineNumber {
   line-height: 1.4;
   white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  height: 1.4em;
+}
+
+.inputEditorContent {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.inputEditorHighlightLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  font-family: inherit;
+  line-height: 1.4;
+  padding: 0.5em;
+  margin: 0;
+  box-sizing: border-box;
+  z-index: 0;
+  overflow: hidden;
+  white-space: pre-wrap;
+  tab-size: 2;
+}
+
+.inputEditorHighlightInner {
+  will-change: transform;
+}
+
+.inputEditorLine {
+  line-height: 1.4;
+  white-space: pre-wrap;
+  tab-size: 2;
+  margin: 0;
+  padding: 0;
+  min-height: 1.4em;
 }
 
 .inputEditorTextarea {
@@ -189,8 +240,8 @@
   color: transparent;
   caret-color: var(--riv-text-color);
   white-space: pre-wrap;
-  tab-size: 2;
-  overflow: auto;
+  tab-size: 2; /* ensures \t visually aligns to two spaces */
+  overflow: auto; /* textarea handles all scrolling */
   box-sizing: border-box;
 }
 .inputEditorTextarea:disabled {
@@ -201,42 +252,5 @@
 .inputEditorTextarea::placeholder {
   color: var(--riv-text-color-placeholder);
 }
-
-.inputEditorCodeArea {
-  position: relative;
-  flex: 1 1 auto;
-  min-height: 200px;
-}
-
-.inputEditorHighlight {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* must scroll to sync with textarea */
-  pointer-events: none;
-  font-family: inherit;
-  line-height: 1.4;
-  z-index: 0;
-}
-.inputEditorHighlight pre,
-.inputEditorHighlight pre[class*="language-"],
-.inputEditorHighlight code[class*="language-"] {
-  margin: 0;
-  padding: 0.5em;
-  background: transparent !important;
-  font-family: inherit;
-  line-height: 1.4;
-  white-space: pre-wrap;
-  tab-size: 2;
-  overflow: visible;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-  border: none;
-  outline: none;
-}
-.inputEditorHighlight code { white-space: inherit; }
 
 

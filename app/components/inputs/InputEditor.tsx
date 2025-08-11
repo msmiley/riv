@@ -38,9 +38,10 @@ export default function InputEditor({
   onChange,
   children,
 }: InputEditorProps) {
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-  const highlightRef = React.useRef<HTMLDivElement>(null);
-  const gutterContentRef = React.useRef<HTMLDivElement>(null);
+  const highlightInnerRef = React.useRef<HTMLDivElement>(null);
+  const gutterRef = React.useRef<HTMLDivElement>(null);
   const [focused, setFocused] = React.useState<boolean>(false);
   const id = React.useId();
 
@@ -54,20 +55,26 @@ export default function InputEditor({
     onChange && onChange(e);
   };
 
-  // keep highlight scrolled with textarea
-  const handleScroll: React.UIEventHandler<HTMLTextAreaElement> = (e) => {
-    if (highlightRef.current) {
-      highlightRef.current.scrollTop = (e.target as HTMLTextAreaElement).scrollTop;
-      highlightRef.current.scrollLeft = (e.target as HTMLTextAreaElement).scrollLeft;
-    }
-    if (gutterContentRef.current) {
-      const top = (e.target as HTMLTextAreaElement).scrollTop;
-      gutterContentRef.current.style.transform = `translateY(-${top}px)`;
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const textarea = e.currentTarget;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newValue = value.substring(0, start) + '\t' + value.substring(end); // insert real tab character
+      
+      onUpdate && onUpdate(newValue);
+      
+      // Restore cursor position after the inserted tab
+      setTimeout(() => {
+        textarea.selectionStart = textarea.selectionEnd = start + 1;
+      }, 0);
     }
   };
 
   // Calculate line numbers based on textarea content
-  const lineCount = value.split('\n').length;
+  const lines = value.split('\n');
+  const lineCount = lines.length;
   const lineNumbers = Array.from({ length: lineCount }, (_, i) => i + 1);
 
   // Calculate dynamic height for disabled state
@@ -91,26 +98,30 @@ export default function InputEditor({
       default: return 'javascript';
     }
   }, [language]);
-  const highlighted = React.useMemo(() => {
+
+  // Split content into lines and highlight each line individually
+  const highlightedLines = React.useMemo(() => {
     const grammar = Prism.languages[prismLangKey as keyof typeof Prism.languages] || Prism.languages.javascript;
-    return Prism.highlight(value, grammar, prismLangKey);
-  }, [value, prismLangKey]);
+    return lines.map((line, index) => {
+      // Add newline back except for last line to maintain proper highlighting
+      const lineWithNewline = index < lines.length - 1 ? line + '\n' : line;
+      const highlighted = Prism.highlight(lineWithNewline, grammar, prismLangKey);
+      return highlighted;
+    });
+  }, [lines, prismLangKey]);
 
-  // keep highlight scroll position synced on content change
-  React.useEffect(() => {
-    if (textareaRef.current && highlightRef.current) {
-      highlightRef.current.scrollTop = textareaRef.current.scrollTop;
-      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
+  // Sync scroll between textarea, gutter, and highlight inner
+  const handleScroll: React.UIEventHandler<HTMLTextAreaElement> = (e) => {
+    const target = e.target as HTMLTextAreaElement;
+    const top = target.scrollTop;
+    const left = target.scrollLeft;
+    if (gutterRef.current) {
+      gutterRef.current.style.transform = `translateY(-${top}px)`;
     }
-  }, [value]);
-
-  // also sync when language/theme/layout might change
-  React.useEffect(() => {
-    if (textareaRef.current && highlightRef.current) {
-      highlightRef.current.scrollTop = textareaRef.current.scrollTop;
-      highlightRef.current.scrollLeft = textareaRef.current.scrollLeft;
+    if (highlightInnerRef.current) {
+      (highlightInnerRef.current.style as any).transform = `translate(${-left}px, ${-top}px)`;
     }
-  }, [prismLangKey]);
+  };
 
   return (
     <div className={cls(styles.inputsText, styles.inputEditor, { grow })}>
@@ -133,43 +144,54 @@ export default function InputEditor({
         </div>
 
         <div className={styles.inputEditorContainer}>
-          {showLineNumbers && (
-            <div className={styles.inputEditorGutter}>
-              <div ref={gutterContentRef} className={styles.inputEditorGutterContent}>
-                {lineNumbers.map((lineNum) => (
-                  <div key={lineNum} className={styles.inputEditorLineNumber}>
-                    {lineNum}
-                  </div>
-                ))}
+          <div 
+            ref={containerRef}
+            className={styles.inputEditorScrollContainer}
+            style={dynamicHeight ? { height: dynamicHeight } : undefined}
+          >
+            {showLineNumbers && (
+              <div className={styles.inputEditorGutter}>
+                <div ref={gutterRef}>
+                  {lineNumbers.map((lineNum) => (
+                    <div key={lineNum} className={styles.inputEditorLineNumber}>
+                      {lineNum}
+                    </div>
+                  ))}
+                </div>
               </div>
+            )}
+            
+            <div className={styles.inputEditorContent}>
+              {/* Highlighted background */}
+              <div className={styles.inputEditorHighlightLayer} aria-hidden="true">
+                <div ref={highlightInnerRef} className={styles.inputEditorHighlightInner}>
+                  {highlightedLines.map((highlighted, index) => (
+                    <div 
+                      key={index} 
+                      className={styles.inputEditorLine}
+                      dangerouslySetInnerHTML={{ __html: highlighted || '\u00A0' }} // Non-breaking space for empty lines
+                    />
+                  ))}
+                </div>
+              </div>
+              
+              {/* Editable textarea */}
+              <textarea
+                id={id}
+                ref={textareaRef}
+                className={cls(styles.inputsTextInputEl, styles.inputEditorTextarea)}
+                value={value}
+                placeholder={placeholder}
+                required={required}
+                disabled={disabled}
+                onChange={handleChange}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                onScroll={handleScroll}
+                spellCheck={false}
+              />
             </div>
-          )}
-          <div className={styles.inputEditorCodeArea} style={dynamicHeight ? { height: dynamicHeight } : undefined}>
-            {/* highlight layer */}
-            <div
-              ref={highlightRef}
-              className={styles.inputEditorHighlight}
-              aria-hidden="true"
-            >
-              <pre className={cls('language-' + prismLangKey)}>
-                <code dangerouslySetInnerHTML={{ __html: highlighted }} />
-              </pre>
-            </div>
-            {/* editable layer */}
-            <textarea
-              id={id}
-              ref={textareaRef}
-              className={cls(styles.inputsTextInputEl, styles.inputEditorTextarea)}
-              value={value}
-              placeholder={placeholder}
-              required={required}
-              disabled={disabled}
-              onChange={handleChange}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setFocused(false)}
-              onScroll={handleScroll}
-              spellCheck={false}
-            />
           </div>
         </div>
       </div>

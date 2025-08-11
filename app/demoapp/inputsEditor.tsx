@@ -15,9 +15,9 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Component() {
-  const [basicValue, setBasicValue] = React.useState('// Example code\nfunction hello() {\n  console.log("Hello, world!");\n}\n\nhello();');
-  const [noGutterValue, setNoGutterValue] = React.useState('This editor has no line numbers\nJust plain text editing\nMultiple lines supported');
-  const [jsonValue, setJsonValue] = React.useState('{\n  "name": "example",\n  "version": "1.0.0",\n  "scripts": {\n    "start": "node index.js",\n    "test": "jest"\n  },\n  "dependencies": {\n    "react": "^18.0.0"\n  }\n}');
+  const [basicValue, setBasicValue] = React.useState('// Example JavaScript\nfunction hello(name = "world") {\n  const message = `Hello, ${name}!`;\n  console.log(message);\n  return message;\n}\n\n// Call the function\nhello("React");\nhello();\n\n// Try pressing Tab for indentation!');
+  const [noGutterValue, setNoGutterValue] = React.useState('This editor has no line numbers\nJust plain text editing\nMultiple lines supported\nSyntax highlighting still works!\nPress Tab to indent text');
+  const [jsonValue, setJsonValue] = React.useState('{\n  "name": "example-project",\n  "version": "1.0.0",\n  "description": "A demo project",\n  "scripts": {\n    "start": "node index.js",\n    "test": "jest",\n    "build": "webpack"\n  },\n  "dependencies": {\n    "react": "^18.0.0",\n    "typescript": "^5.0.0"\n  },\n  "devDependencies": {\n    "jest": "^29.0.0"\n  }\n}');
 
   return (
     <Column>
@@ -27,13 +27,14 @@ export default function Component() {
 
       <Card border>
         <Slot name="subtitle">Basic Editor</Slot>
-        <Slot name="description">Code editor with line numbers and monospace font</Slot>
+        <Slot name="description">Fixed cursor alignment, scrolling, and Tab key support for indentation</Slot>
         <InputEditor 
           value={basicValue} 
           onUpdate={setBasicValue}
           placeholder="Enter your code here..."
         >
           <Slot name="label">JavaScript Code</Slot>
+          <Slot name="description">Press Tab to indent, scroll to test alignment</Slot>
         </InputEditor>
       </Card>
 
