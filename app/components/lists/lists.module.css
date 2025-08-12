@@ -124,3 +124,73 @@
   align-items: center;
   gap: var(--riv-control-gap, 0.5em);
 }
+
+/*--------------------------------------*/
+/* Listbar */
+/*--------------------------------------*/
+.listbar {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--riv-outline);
+  border-radius: var(--riv-layout-border-radius);
+  transition: width 0.3s ease;
+  width: 300px;
+  position: relative;
+}
+
+.listbar:global(.collapsed) {
+  width: 32px;
+}
+
+.listbarHeader {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5em;
+  border-bottom: 1px solid var(--riv-outline);
+}
+
+.listbarHeaderContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.listbarTitle {
+  font-weight: 600;
+  font-size: 1.1em;
+  color: var(--riv-text-color);
+  margin-bottom: 0.2em;
+}
+
+.listbarSubtitle {
+  font-size: 0.9em;
+  color: var(--riv-text-color);
+  margin-bottom: 0.2em;
+}
+
+.listbarDescription {
+  font-size: 0.85em;
+  color: var(--riv-text-color-muted);
+}
+
+.listbarToolbar {
+  padding: 0.5em;
+  border-bottom: 1px solid var(--riv-outline, #ccc);
+  display: flex;
+  justify-content: space-between;
+}
+
+.listbarItems {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.listbarItem {
+  padding: 0.2em;
+}
+
+.listbarNoResults {
+  padding: 2em 1em;
+  text-align: center;
+  color: var(--riv-text-color-muted, #666);
+  font-style: italic;
+}

@@ -26,6 +26,7 @@ export default [
     // listsl sub-menu
     ...prefix('lists', [
       route('list-item', 'demoapp/listItem.tsx'),
+      route('listbar', 'demoapp/listbar.tsx'),
     ]),
     route('icons', 'demoapp/iconsAll.tsx'),
     // pickers sub-menu

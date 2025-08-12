@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './data.module.css';
+import styles from './lists.module.css';
 
 interface KvpListProps extends React.PropsWithChildren {
   data: object;

@@ -77,7 +77,7 @@
   width: 0; /* clear built-in input width */
   background-color: transparent;
   border: none;
-  /* outline: none; */
+  outline: none;
   color: var(--riv-inputs-text-fg);
 }
 .inputsTextInputEl::placeholder {

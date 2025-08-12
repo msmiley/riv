@@ -63,7 +63,6 @@ export default {
         children: [
           { title: 'Text', path: '/inputs/text' },
           { title: 'Editor', path: '/inputs/editor' },
-          { title: 'Icons', path: '/inputs/icons' },
         ],
       },
       {
@@ -71,6 +70,7 @@ export default {
         icon: 'list',
         children: [
           { title: 'List Item', path: '/lists/list-item' },
+          { title: 'Listbar', path: '/lists/listbar' },
         ],
       },
       {

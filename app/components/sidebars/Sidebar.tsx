@@ -13,7 +13,11 @@ export default function Sidebar(props: SidebarProps) {
   const [mini, setMini] = React.useState<boolean>(true);
 
   return (
-    <div className={styles.sidebar}>
+    <aside 
+      className={styles.sidebar}
+      role="navigation"
+      aria-label="Main navigation"
+    >
       {/* HEADER SLOT */}
       <div className={styles.sidebarHeaderSlot}>
         {useSlot(props.children, 'header')}
@@ -34,6 +38,6 @@ export default function Sidebar(props: SidebarProps) {
       <div className={styles.sidebarFooterSlot}>
         {useSlot(props.children, 'footer')}
       </div>
-    </div>
+    </aside>
   );
 }

@@ -5,6 +5,7 @@
 @import './forms.css';
 @import './inputs.css';
 @import './layout.css';
+@import './lists.css';
 @import './mobile.css';
 @import './pickers.css';
 @import './popups.css';
@@ -16,7 +17,7 @@
 /* GLOBAL STYLE VARIABLES */
 body {
   --riv-body-bg: #eee;
-  --riv-app-bg:#eee;
+  --riv-surface:#eee;
 
   /* global dimensions */
   --riv-base-font-size: 14px;
@@ -81,7 +82,8 @@ body {
 /* DARK UI OVERRIDES, EITHER AUTO, OR IF DARK IS FORCED THROUGH .riv-dark */
 body.riv-dark {
   --riv-body-bg: #1b1c21;
-  --riv-app-bg: #1b1c21;
+  --riv-surface: #1b1c21;
+  
 
   --riv-content-bg: #1b1c21;
   --riv-content-bg-alt: #2e2f34;
@@ -188,7 +190,7 @@ body.riv-dark {
 /* --- */
 .riv-app {
   color: var(--riv-text-color);
-  background: var(--riv-app-bg);
+  background: var(--riv-surface);
   width: 100vw;
   height: 100vh;
   display: flex;
