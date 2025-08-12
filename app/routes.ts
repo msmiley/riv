@@ -23,6 +23,11 @@ export default [
       route('text', 'demoapp/inputsText.tsx'),
       route('editor', 'demoapp/inputsEditor.tsx'),
     ]),
+    // listsl sub-menu
+    ...prefix('lists', [
+      route('list-item', 'demoapp/listItem.tsx'),
+    ]),
+    route('icons', 'demoapp/iconsAll.tsx'),
     // pickers sub-menu
     ...prefix("pickers", [
       route('color', 'demoapp/inputsColor.tsx'),

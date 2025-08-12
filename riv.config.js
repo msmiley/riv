@@ -63,7 +63,20 @@ export default {
         children: [
           { title: 'Text', path: '/inputs/text' },
           { title: 'Editor', path: '/inputs/editor' },
-        ]
+          { title: 'Icons', path: '/inputs/icons' },
+        ],
+      },
+      {
+        title: 'Lists',
+        icon: 'list',
+        children: [
+          { title: 'List Item', path: '/lists/list-item' },
+        ],
+      },
+      {
+        title: 'Icons',
+        icon: 'buckyball',
+        path: '/icons',
       },
       {
         title: 'Pickers',
@@ -95,6 +108,7 @@ export default {
         title: 'Settings',
         path: '/settings',
         icon: 'gear',
+        badgeComponent: 'DarkModeToggle',
         sidebarBottom: true,
         color: 'var(--riv-indigo)',
       },

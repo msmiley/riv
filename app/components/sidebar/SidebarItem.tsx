@@ -6,6 +6,16 @@ import Icon from '../icons/Icon';
 
 import SidebarSubRoutes from './SidebarSubRoutes';
 
+// register components which can be used in sidebar as titleComponent/iconComponent/badgeComponent
+import UsernameText from '../text/UsernameText';
+import DarkModeToggle from '../misc/DarkModeToggle';
+
+// Simple registry to resolve string component names from config
+const SidebarSubComponents: Record<string, React.ComponentType<any>> = {
+  UsernameText,
+  DarkModeToggle,
+};
+
 interface SidebarItemProps extends React.PropsWithChildren {
   item: {[key: string]: any};
 }
@@ -30,12 +40,27 @@ export default function SidebarItem(props: SidebarItemProps) {
     setIsOpen(!isOpen);
   }
 
-  // render title or titleComponent
-  const itemTitle = props.item.titleComponent ? (
-    <props.item.titleComponent />
+  // render title or titleComponent (string name resolves via registry, or direct component reference)
+  let TitleComp: any = props.item.titleComponent;
+  if (typeof TitleComp === 'string') {
+    TitleComp = SidebarSubComponents[TitleComp];
+  }
+  const itemTitle = TitleComp ? (
+    <TitleComp />
   ) : (
     props.item.title
   );
+
+  // optional badge component rendered to the right of the title
+  let BadgeComp: any = props.item.badgeComponent;
+  if (typeof BadgeComp === 'string') {
+    BadgeComp = SidebarSubComponents[BadgeComp];
+  }
+  const itemBadge = BadgeComp ? (
+    <span className={styles.sidebarItemComponentWrapper}>
+      <BadgeComp />
+    </span>
+  ) : null;
 
   // render sidebar item differently based on whether it has children or not
   if (props.item.category) {
@@ -56,7 +81,10 @@ export default function SidebarItem(props: SidebarItemProps) {
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>
           </div>
-          {itemTitle}
+          <div className={styles.sidebarItemTitle}>
+            <span>{itemTitle}</span>
+            {itemBadge}
+          </div>
         </a>
         <SidebarSubRoutes isShown={isOpen} routes={props.item.children}/>
       </div>
@@ -70,7 +98,10 @@ export default function SidebarItem(props: SidebarItemProps) {
           <div className={styles.sidebarItemIcon}>
             <Icon name={props.item.icon}/>
           </div>
-          {itemTitle}
+          <div className={styles.sidebarItemTitle}>
+            <span>{itemTitle}</span>
+            {itemBadge}
+          </div>
         </NavLink>
       </div>
     );

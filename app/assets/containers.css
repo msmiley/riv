@@ -7,13 +7,14 @@ body {
   --riv-card-description-font-size: 1em;
   --riv-card-description-font-weight: 200;
 
-  --riv-card-bg: #242425;
+  --riv-card-bg: #dcdcdc;
   --riv-card-padding: 1em;
   --riv-card-border: 1px solid var(--riv-outline);
   --riv-card-border-radius: 10px;
 }
 
 body.riv-dark {
+  --riv-card-bg: #242425;
 
 }
 

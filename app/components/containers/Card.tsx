@@ -30,12 +30,12 @@ export default function Card({
          } as React.CSSProperties}>
       {/* HEADER */}
       <div className={styles.rivCardHeader}>
-        <div className={styles.rivCardTitle}>
+        <h1 className={styles.rivCardTitle}>
           {useSlot(children, 'title')}
-        </div>
-        <div className={styles.rivCardSubTitle}>
+        </h1>
+        <h2 className={styles.rivCardSubTitle}>
           {useSlot(children, 'subtitle')}
-        </div>
+        </h2>
         <p className={styles.rivCardDescription}>
           {useSlot(children, 'description')}
         </p>

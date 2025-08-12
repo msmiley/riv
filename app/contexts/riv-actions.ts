@@ -91,6 +91,7 @@ export default {
         email: data.email || state.email,
         avatar: data.avatar || state.avatar,
         permissions: data.permissions || state.permissions,
+        isDarkMode: data.isDarkMode || state.isDarkMode,
       };
     } else {
       console.warn('RIV | login failed, invalid token');
@@ -127,5 +128,20 @@ export default {
       };
     }
     return state;
+  },
+  toggleDarkMode(state: RivState): RivState {
+    const nextIsDark = !state.isDarkMode;
+    // Toggle class on body if running in a browser
+    if (typeof document !== 'undefined' && document?.body) {
+      try {
+        document.body.classList.toggle('riv-dark', nextIsDark);
+      } catch (e) {
+        // noop if DOM isn't available
+      }
+    }
+    return {
+      ...state,
+      isDarkMode: nextIsDark,
+    };
   },
 }

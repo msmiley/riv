@@ -20,7 +20,8 @@ export interface RivState {
   email?: string;
   avatar?: string;
   permissions: string[];
-  
+  isDarkMode: boolean;
+
   // SOCKET
   ioSocket: any;
   ioConnected: boolean;

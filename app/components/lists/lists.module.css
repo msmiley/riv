@@ -1,5 +1,87 @@
 
 /*--------------------------------------*/
+/* ListItem */
+/*--------------------------------------*/
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.7em 1em;
+  min-height: 3.2em;
+  cursor: pointer;
+}
+.listItemIcon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2em;
+  min-height: 2.2em;
+}
+.listItemContent {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  gap: 0.1em;
+}
+.listItemTitle {
+  font-weight: 600;
+  font-size: 1.1em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.listItemSubtitle {
+  font-size: 0.98em;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.listItemDescription {
+  font-size: 0.95em;
+  color: var(--riv-text-color-muted);
+  line-height: 1.1;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.listItemButtons {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 2.2em;
+  min-height: 2.2em;
+  margin-left: 0.5em;
+}
+.listItemDivider {
+  width: auto;
+  margin: 0.1em 0.5em 0.1em 0.5em;
+  border-bottom: 1.5px solid var(--riv-outline);
+  opacity: 0.7;
+}
+
+/* Hide divider for the last ListItem in a container */
+.listItemDivider:last-of-type {
+  display: none;
+}
+/* Hoverable ListItem: apply background and rounded corners */
+.listItemHoverable:global(.hoverable):hover {
+  background-color: var(--riv-hover-bg);
+  border-radius: var(--riv-control-border-radius);
+}
+/* Selected ListItem: apply selection background */
+.listItem:global(.selected) {
+  background-color: var(--riv-selection);
+  border-radius: var(--riv-control-border-radius);
+}
+
+/*--------------------------------------*/
 /* KvpList */
 /*--------------------------------------*/
 .kvpList {

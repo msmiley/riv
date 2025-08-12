@@ -23,6 +23,7 @@ const rivInitialState: RivState = {
   email: '',
   avatar: '',
   permissions: [],
+  isDarkMode: true,
 
   // SOCKET
   ioSocket: null,
