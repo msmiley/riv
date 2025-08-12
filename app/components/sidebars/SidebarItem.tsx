@@ -56,10 +56,17 @@ export default function SidebarItem(props: SidebarItemProps) {
   if (typeof BadgeComp === 'string') {
     BadgeComp = SidebarSubComponents[BadgeComp];
   }
+  // Prevent clicks within the badge area from triggering NavLink or toggles
+  const stopNav: React.MouseEventHandler = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
   const itemBadge = BadgeComp ? (
-    <span className={styles.sidebarItemComponentWrapper}>
+    <div className={styles.sidebarItemComponentWrapper}
+         onClick={stopNav}
+         onMouseDown={stopNav}>
       <BadgeComp />
-    </span>
+    </div>
   ) : null;
 
   // render sidebar item differently based on whether it has children or not

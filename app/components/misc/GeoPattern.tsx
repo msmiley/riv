@@ -6,7 +6,7 @@ import styles from './misc.module.css';
 interface GeoPatternProps extends React.PropsWithChildren {
   seed: string;  // seed for geopattern generator
   blur?: boolean; // true to blur background
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
 }
 
 export default function GeoPattern(props: GeoPatternProps) {

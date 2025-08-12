@@ -3,15 +3,17 @@ import styles from './lists.module.css';
 import useSlot from '~/hooks/useSlot';
 import InputText from '~/components/inputs/InputText';
 import Icon from '~/components/icons/Icon';
-import { cls } from '~/utils';
+import { cls, parseColor } from '~/utils';
 import Button from '../buttons/Button';
 import Slot from '../slots/Slot';
+import GeoPattern from '../misc/GeoPattern';
 
 interface ListbarProps extends React.PropsWithChildren {
   items?: any[];  // Array of items to iterate over
   collapsed?: boolean;  // Whether the listbar is collapsed
   onCollapsedChange?: (collapsed: boolean) => void;  // Callback when collapse state changes
   searchPlaceholder?: string;  // Placeholder text for search input
+  color?: string;  // Background color for the header content
   style?: React.CSSProperties;
 }
 
@@ -70,27 +72,21 @@ export default function Listbar(props: ListbarProps) {
   };
 
   return (
-    <aside 
-      className={cls(styles.listbar, { collapsed })}
-      style={props.style}
-      role="complementary"
-      aria-label={title ? `${title} sidebar` : 'Sidebar'}
-    >
+    <aside className={cls(styles.listbar, { collapsed })}
+           style={props.style}
+           role="complementary"
+           aria-label={title ? `${title} sidebar` : 'Sidebar'}>
       {/* Header */}
-      <div className={styles.listbarHeader}>
-        
-        {showContent && !collapsed && (
+      {showContent && !collapsed && (
+        <div className={styles.listbarHeader}
+           style={props.color ? { backgroundColor: parseColor(props.color) } : undefined}>
           <div className={styles.listbarHeaderContent}>
-            {title && <div className={styles.listbarTitle}>{title}</div>}
-            {subtitle && <div className={styles.listbarSubtitle}>{subtitle}</div>}
-            {description && <div className={styles.listbarDescription}>{description}</div>}
+            {title && <h1 className={styles.listbarTitle}>{title}</h1>}
+            {subtitle && <h2 className={styles.listbarSubtitle}>{subtitle}</h2>}
+            {description && <p className={styles.listbarDescription}>{description}</p>}
           </div>
-        )}
-        <Button variant="tight" onClick={handleToggleCollapse}
-                aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
-          <Icon name={collapsed ? 'expand' : 'collapse'} />
-        </Button>
-      </div>
+        </div>
+      )}
 
       {/* Search */}
       {showContent && !collapsed && props.items && props.items.length > 0 && (
@@ -122,6 +118,21 @@ export default function Listbar(props: ListbarProps) {
       {showContent && !collapsed && searchTerm && filteredItems.length === 0 && props.items && props.items.length > 0 && (
         <div className={styles.listbarNoResults}>
           No items found for "{searchTerm}"
+        </div>
+      )}
+
+      {/* footer */}
+      {showContent && !collapsed && (
+        <div className={styles.listbarFooter}>
+          <Button variant="text" onClick={handleToggleCollapse}>
+            <Icon name="double-collapse"/>
+            Collapse
+          </Button>
+        </div>
+      )}
+
+      {collapsed && (
+        <div className={styles.listbarCollapsed} onClick={handleToggleCollapse}>
         </div>
       )}
     </aside>

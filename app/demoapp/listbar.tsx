@@ -81,45 +81,43 @@ export default function ListbarDemo() {
         </Slot>
       </Listbar>
 
-      <div style={{ flex: 1, padding: '2em' }}>
-        <Column gap="2em">
-          <Card>
-            <h2>Listbar Component Demo</h2>
-            <p>
-              The Listbar is a collapsible sidebar component with search functionality and customizable slots.
-            </p>
-            <ul>
-              <li><strong>Collapsible:</strong> Click the arrow button to collapse/expand</li>
-              <li><strong>Search:</strong> Filter items using the search input</li>
-              <li><strong>Slots:</strong> Customizable title, subtitle, description, toolbar, and item template</li>
-              <li><strong>Selection:</strong> Click on items to select them</li>
-            </ul>
-          </Card>
+      <Column grow>
+        <Card>
+          <h2>Listbar Component Demo</h2>
+          <p>
+            The Listbar is a collapsible sidebar component with search functionality and customizable slots.
+          </p>
+          <ul>
+            <li><strong>Collapsible:</strong> Click the arrow button to collapse/expand</li>
+            <li><strong>Search:</strong> Filter items using the search input</li>
+            <li><strong>Slots:</strong> Customizable title, subtitle, description, toolbar, and item template</li>
+            <li><strong>Selection:</strong> Click on items to select them</li>
+          </ul>
+        </Card>
 
-          {selectedUser && (
-            <Card border>
-              <h3>Selected User</h3>
-              {(() => {
-                const user = users.find(u => u.id === selectedUser);
-                return user ? (
-                  <div>
-                    <p><strong>Name:</strong> {user.name}</p>
-                    <p><strong>Role:</strong> {user.role}</p>
-                    <p><strong>Status:</strong> {user.status}</p>
-                  </div>
-                ) : null;
-              })()}
-            </Card>
-          )}
-
-          <Card>
-            <h3>Current State</h3>
-            <p><strong>Collapsed:</strong> {collapsed ? 'Yes' : 'No'}</p>
-            <p><strong>Total Users:</strong> {users.length}</p>
-            <p><strong>Selected User ID:</strong> {selectedUser || 'None'}</p>
+        {selectedUser && (
+          <Card border>
+            <h3>Selected User</h3>
+            {(() => {
+              const user = users.find(u => u.id === selectedUser);
+              return user ? (
+                <div>
+                  <p><strong>Name:</strong> {user.name}</p>
+                  <p><strong>Role:</strong> {user.role}</p>
+                  <p><strong>Status:</strong> {user.status}</p>
+                </div>
+              ) : null;
+            })()}
           </Card>
-        </Column>
-      </div>
+        )}
+
+        <Card>
+          <h3>Current State</h3>
+          <p><strong>Collapsed:</strong> {collapsed ? 'Yes' : 'No'}</p>
+          <p><strong>Total Users:</strong> {users.length}</p>
+          <p><strong>Selected User ID:</strong> {selectedUser || 'None'}</p>
+        </Card>
+      </Column>
     </Row>
   );
 }
