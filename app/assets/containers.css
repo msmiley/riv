@@ -11,6 +11,16 @@ body {
   --riv-card-padding: 1em;
   --riv-card-border: 1px solid var(--riv-outline);
   --riv-card-border-radius: 10px;
+
+  /* Semantic layout gaps */
+  --riv-gap-xs: 0.25rem;
+  --riv-gap-sm: 0.5rem;
+  --riv-gap-md: 0.75rem;
+  --riv-gap-lg: 1rem;
+  --riv-gap-xl: 1.5rem;
+  --riv-gap-2xl: 2rem;
+  /* default layout gap token (existing components may already rely on this) */
+  --riv-layout-gap: var(--riv-gap-md);
 }
 
 body.riv-dark {

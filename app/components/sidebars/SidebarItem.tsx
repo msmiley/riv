@@ -9,11 +9,13 @@ import SidebarSubRoutes from './SidebarSubRoutes';
 // register components which can be used in sidebar as titleComponent/iconComponent/badgeComponent
 import UsernameText from '../text/UsernameText';
 import DarkModeToggle from '../misc/DarkModeToggle';
+import UserAvatar from '../images/UserAvatar';
 
 // Simple registry to resolve string component names from config
 const SidebarSubComponents: Record<string, React.ComponentType<any>> = {
   UsernameText,
   DarkModeToggle,
+  UserAvatar,
 };
 
 interface SidebarItemProps extends React.PropsWithChildren {
@@ -40,13 +42,24 @@ export default function SidebarItem(props: SidebarItemProps) {
     setIsOpen(!isOpen);
   }
 
+  // optional iconComponent
+  let IconComp: any = props.item.iconComponent;
+  if (typeof IconComp === 'string') {
+    IconComp = SidebarSubComponents[IconComp];
+  }
+  const itemIcon = IconComp ? (
+    <IconComp/>
+  ) : (
+    <Icon name={props.item.icon} />
+  );
+
   // render title or titleComponent (string name resolves via registry, or direct component reference)
   let TitleComp: any = props.item.titleComponent;
   if (typeof TitleComp === 'string') {
     TitleComp = SidebarSubComponents[TitleComp];
   }
   const itemTitle = TitleComp ? (
-    <TitleComp />
+    <TitleComp/>
   ) : (
     props.item.title
   );
@@ -86,7 +99,7 @@ export default function SidebarItem(props: SidebarItemProps) {
            } as React.CSSProperties}>
         <a className={styles.sidebarItemLink} onClick={handleClick}>
           <div className={styles.sidebarItemIcon}>
-            <Icon name={props.item.icon}/>
+            {itemIcon}
           </div>
           <div className={styles.sidebarItemTitle}>
             <span>{itemTitle}</span>
@@ -103,7 +116,7 @@ export default function SidebarItem(props: SidebarItemProps) {
         <NavLink to={props.item.path}
               className={styles.sidebarItemLink}>
           <div className={styles.sidebarItemIcon}>
-            <Icon name={props.item.icon}/>
+            {itemIcon}
           </div>
           <div className={styles.sidebarItemTitle}>
             <span>{itemTitle}</span>

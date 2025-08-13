@@ -1,4 +1,6 @@
 
+// global app types
+//
 import React from 'react';
 export type RivActionData = { [key: string]: any };
   
@@ -42,3 +44,6 @@ export type PopupTriggerSlotProps = {
 export type PopupCloseSlotProps = {
   onClose: () => void;
 };
+
+// Semantic size tokens (repurposed from gap sizing)
+export type SemanticSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';

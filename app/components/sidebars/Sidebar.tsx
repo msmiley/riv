@@ -13,11 +13,9 @@ export default function Sidebar(props: SidebarProps) {
   const [mini, setMini] = React.useState<boolean>(true);
 
   return (
-    <aside 
-      className={styles.sidebar}
-      role="navigation"
-      aria-label="Main navigation"
-    >
+    <aside className={styles.sidebar}
+           role="navigation"
+           aria-label="Main navigation">
       {/* HEADER SLOT */}
       <div className={styles.sidebarHeaderSlot}>
         {useSlot(props.children, 'header')}

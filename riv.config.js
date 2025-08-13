@@ -16,7 +16,7 @@ export default {
     routes: [
       {
         titleComponent: 'UsernameText',
-        iconComponent: '',
+        iconComponent: 'UserAvatar',
         color: 'var(--riv-sidebar-user-menu-bg)',
         children: [
           {
@@ -85,7 +85,7 @@ export default {
       },
       {
         title: 'Charts',
-  icon: 'chart',
+        icon: 'chart',
         children: [
           { title: 'Stacked Bar', path: '/charts/stacked-bar' },
         ],

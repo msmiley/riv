@@ -83,6 +83,22 @@
   justify-content: center;
 }
 
+/* Ensure UserAvatar remains perfectly square and not affected by font metrics */
+.sidebarItemIcon :global(.riv-user-avatar) {
+  width: 2em;
+  height: 2em;
+  aspect-ratio: 1 / 1;
+  display: flex;
+}
+
+.sidebarItemIcon :global(.riv-user-avatar img),
+.sidebarItemIcon :global(.riv-user-avatar .riv-user-avatar-fallback) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .sidebarItemTitle {
   flex-grow: 1;
   display: flex;
