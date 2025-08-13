@@ -30,6 +30,10 @@ export default [
     ]),
     route('icons', 'demoapp/iconsAll.tsx'),
     route('images', 'demoapp/images.tsx'),
+    // charts sub-menu
+    ...prefix('charts', [
+      route('stacked-bar', 'demoapp/chartsStackedBar.tsx'),
+    ]),
     // pickers sub-menu
     ...prefix("pickers", [
       route('color', 'demoapp/inputsColor.tsx'),

@@ -80,8 +80,15 @@ export default {
       },
       {
         title: 'Images',
-  icon: 'image',
+        icon: 'image',
         path: '/images',
+      },
+      {
+        title: 'Charts',
+  icon: 'chart',
+        children: [
+          { title: 'Stacked Bar', path: '/charts/stacked-bar' },
+        ],
       },
       {
         title: 'Pickers',

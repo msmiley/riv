@@ -1,0 +1,208 @@
+.chartRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: relative;
+  /* ensure tooltip positions relative to chart root */
+}
+
+.chartArea {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.chartArea.horizontal {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+/* Each category column (vertical) */
+.barsColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 200px;
+  flex: 1;
+  min-width: 32px;
+  position: relative;
+}
+
+.horizontal .barsColumn {
+  flex-direction: row;
+  height: 40px;
+  width: 100%;
+}
+
+.stackSegment {
+  width: 100%;
+  transition: height 0.3s ease, width 0.3s ease;
+  position: relative;
+}
+
+.animate .stackSegment {
+  transition: height 0.4s ease, width 0.4s ease;
+}
+
+.horizontal .stackSegment {
+  height: 100%;
+}
+
+.categoryLabel {
+  text-align: center;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.horizontal .categoryLabel {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  margin-top: 0;
+  margin-left: 0.25rem;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legendSwatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+
+.valueLabel {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  font-size: 0.65rem;
+  pointer-events: none;
+}
+
+.horizontal .valueLabel {
+  top: 50%;
+  left: auto;
+  transform: translate(0, -50%);
+  right: -2px;
+}
+
+/* Horizontal rows layout */
+.rowsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.rowLabel {
+  font-size: 0.65rem;
+  width: 2.5rem;
+  text-align: right;
+  line-height: 1;
+  padding-top: 0.25rem;
+  color: var(--riv-fg-subtle, #666);
+}
+
+.rowBar {
+  display: flex;
+  flex: 1;
+  height: 40px;
+  position: relative;
+}
+
+.gridlines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.gridline {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--riv-border, #ddd);
+}
+
+.horizontal .gridline {
+  width: 1px;
+  height: 100%;
+  top: 0;
+}
+
+.axisLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.horizontal .axisLabels {
+  flex-direction: column;
+  height: 200px;
+  margin-top: 0;
+  margin-left: 0.5rem;
+}
+
+/* Wrapper for vertical variant to host left y-axis */
+.chartInner {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.yAxis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 200px;
+  font-size: 0.65rem;
+  color: var(--riv-fg-subtle, #666);
+  padding-right: 4px;
+  box-sizing: border-box;
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--riv-surface-raised, #222);
+  color: var(--riv-fg-on-color, #fff);
+  font-size: 0.65rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+  max-width: 160px;
+}
+
+.tooltipTitle {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.tooltipLine {
+  white-space: nowrap;
+}
