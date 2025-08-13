@@ -79,6 +79,11 @@ export default {
         path: '/icons',
       },
       {
+        title: 'Images',
+  icon: 'image',
+        path: '/images',
+      },
+      {
         title: 'Pickers',
         icon: 'pickers', 
         children: [

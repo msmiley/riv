@@ -1,0 +1,19 @@
+/* Container that allows masking (circle) and ensures child image fits */
+.wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden; /* hide overflow when using object-fit: cover */
+	display: block;
+}
+
+.circle {
+	border-radius: 9999px; /* fully rounded for circle */
+}
+
+/* Base image styles - sizing handled via inline styles based on props */
+.img {
+	display: block;
+	object-position: center;
+}
+

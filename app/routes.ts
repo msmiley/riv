@@ -29,6 +29,7 @@ export default [
       route('listbar', 'demoapp/listbar.tsx'),
     ]),
     route('icons', 'demoapp/iconsAll.tsx'),
+    route('images', 'demoapp/images.tsx'),
     // pickers sub-menu
     ...prefix("pickers", [
       route('color', 'demoapp/inputsColor.tsx'),
