@@ -9,6 +9,7 @@
   min-width: 0;
   background-color: var(--riv-card-bg);
   padding: var(--riv-card-padding);
+  opacity: var(--riv-card-opacity);
 }
 
 /* PROP OPTIONS */

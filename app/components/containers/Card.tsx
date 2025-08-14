@@ -12,6 +12,7 @@ import styles from './containers.module.css';
 interface CardProps extends React.PropsWithChildren {
   border?: boolean;     // true for a border around card
   color?: string;       // background color
+  opacity?: number;     // background opacity
   cols?: number;        // bootstrap-style column width (1-12)
   grow?: boolean;       // flex grow
 }
@@ -19,27 +20,36 @@ interface CardProps extends React.PropsWithChildren {
 export default function Card({
   border = false,
   color,
+  opacity = 1,
   cols = 0,
   grow = false,
   children,
 }: CardProps) {
+  const titleSlot = useSlot(children, 'title');
+  const subtitleSlot = useSlot(children, 'subtitle');
+  const descriptionSlot = useSlot(children, 'description');
+  const header = (
+    <div className={styles.rivCardHeader}>
+      <h1 className={styles.rivCardTitle}>
+        {titleSlot}
+      </h1>
+      <h2 className={styles.rivCardSubTitle}>
+        {subtitleSlot}
+      </h2>
+      <p className={styles.rivCardDescription}>
+        {descriptionSlot}
+      </p>
+    </div>
+  );
+
   return (
     <div className={cls(styles.rivCard, `riv-basis-${cols}`, { border, grow })}
          style={{
            '--riv-card-bg': color,
+           '--riv-card-opacity': opacity,
          } as React.CSSProperties}>
       {/* HEADER */}
-      <div className={styles.rivCardHeader}>
-        <h1 className={styles.rivCardTitle}>
-          {useSlot(children, 'title')}
-        </h1>
-        <h2 className={styles.rivCardSubTitle}>
-          {useSlot(children, 'subtitle')}
-        </h2>
-        <p className={styles.rivCardDescription}>
-          {useSlot(children, 'description')}
-        </p>
-      </div>
+      {titleSlot || subtitleSlot || descriptionSlot ? header : null}
       {/* DEFAULT SLOT */}
       {useSlot(children, 'default')}
     </div>

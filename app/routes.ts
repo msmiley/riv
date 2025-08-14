@@ -4,8 +4,8 @@ import { type RouteConfig, layout, route, prefix } from "@react-router/dev/route
 export default [
   // login/logout routes with a full-page layout
   layout("components/layouts/FullPage.tsx", [
-    route('login', 'demoapp/login.tsx'),
-    route('logout', 'demoapp/logout.tsx'),
+    route('login', 'components/layouts/Login.tsx'),
+    route('logout', 'components/layouts/Logout.tsx'),
   ]),
   // use framework mode with layout() as the top-level of each type of view
   layout("DemoApp.tsx", [

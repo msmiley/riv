@@ -11,7 +11,8 @@ interface ButtonProps extends React.PropsWithChildren {
   grow?: boolean;
   active?: boolean;
   disabled?: boolean; // disables the button
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  htmlType?: 'button' | 'submit' | 'reset'; // underlying button type
 }
 
 export default function Button({
@@ -22,6 +23,7 @@ export default function Button({
   active,
   disabled,
   onClick,
+  htmlType = 'button',
   children,
 }: ButtonProps) {
   return (
@@ -30,7 +32,7 @@ export default function Button({
               '--riv-button-color': parseColor(color)
             } as React.CSSProperties}
             {...(active ? { 'aria-pressed': active } : {})}
-            type="button"
+            type={htmlType}
             disabled={disabled}
             onClick={onClick}>
       <div className={cls(styles.buttonInner,

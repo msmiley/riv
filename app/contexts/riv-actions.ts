@@ -101,6 +101,21 @@ export default {
       };
     }
   },
+  logout(state: RivState): RivState {
+    console.log('RIV | logout action received');
+    localStorage.removeItem('rivToken');
+    state.ioSocket?.disconnect();
+    return {
+      ...state,
+      authState: 'loggedOut',
+      authToken: '',
+      username: '',
+      fullname: '',
+      email: '',
+      avatar: '',
+      permissions: [],
+    };
+  },
   connected(state: RivState): RivState {
     console.debug('RIV | socket.io connected');
     return {

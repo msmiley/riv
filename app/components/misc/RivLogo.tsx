@@ -1,7 +1,13 @@
+import React from 'react';
 
-export default function RivLogo() {
+interface RivLogoProps {
+  style?: React.CSSProperties; // allow consumer to override styling
+  className?: string;          // optional extra className
+}
 
-  const style = {
+export default function RivLogo({ style: styleOverride, className }: RivLogoProps) {
+
+  const baseStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -15,7 +21,9 @@ export default function RivLogo() {
     padding: '0.1em',
   };
 
+  const mergedStyle = { ...baseStyle, ...(styleOverride || {}) };
+
   return (
-    <div className="riv-logo" style={style}>riv</div>
-  )
+    <div className={['riv-logo', className].filter(Boolean).join(' ')} style={mergedStyle}>riv</div>
+  );
 }

@@ -19,6 +19,7 @@ interface InputsTextProps extends React.PropsWithChildren {
   required?: boolean;                               // adds "Required" text and sets aria-required flag
   disabled?: boolean;                               // disables control
   value: string;                                    // the main value setting
+  inputType?: string;                               // underlying input type (text, password, email, etc)
   onUpdate?: (value: string) => void;               // easy access to new string value
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onKeyUp?: React.KeyboardEventHandler<HTMLInputElement>;
@@ -36,6 +37,7 @@ export default function InputsText({
   clearable,
   required,
   disabled,
+  inputType = 'text',
   onUpdate,
   onChange,
   onKeyUp,
@@ -73,6 +75,7 @@ export default function InputsText({
         {/* THE INPUT */}
         <input ref={inputRef}
                className={styles.inputsTextInputEl}
+               type={inputType}
                value={value}
                placeholder={placeholder}
                aria-required={required}

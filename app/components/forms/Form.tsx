@@ -7,11 +7,15 @@ import styles from './forms.module.css';
 interface FormProps extends React.PropsWithChildren {
   variant?: string;
   onSubmit?: React.FormEventHandler<HTMLFormElement>;
+  style?: React.CSSProperties;        // optional inline style overrides
+  className?: string;                 // optional extra class name(s)
 }
 
 export default function Form({
   variant = 'regular',
   onSubmit,
+  style,
+  className = '',
   children,
 }: FormProps) {
 
@@ -24,7 +28,8 @@ export default function Form({
   };
 
   return (
-    <form className={cls(styles.form, variant)}
+    <form className={cls(styles.form, variant, className)}
+          style={style}
           noValidate
           onSubmit={submitForm}>
       {/* HEADER */}
